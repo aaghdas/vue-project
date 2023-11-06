@@ -6,7 +6,7 @@
 
           <div class="calandar-container">
                   <p id="contact-text">
-                    Hier kannst Du bequem und schnell in drei einfachen Schritten einen Termin buchen.Datum auswählen, Zeit auswählen und ausgewählten Termin bestätigen.</p>
+                    Hier kannst Du bequem und schnell in vier einfachen Schritten einen Termin buchen. Name des Terminteilnehmers eingeben, Datum und Zeit auswählen und schließlich den ausgewählten Termin bestätigen.</p>
                  
                   <v-text-field 
                     

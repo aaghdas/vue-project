@@ -12,7 +12,7 @@
                 <div class="menu-icon"  @click="showMenu ? closeMenu() : toggleMenu()"
                  :class="{ 'active': active, 'menu-close': showMenu }"
                  @transitionend="showMenu = active && showMenu">
-                     <v-icon v-if="!showMenu">mdi-menu</v-icon>
+                     <v-icon class="icon-menu" v-if="!showMenu">mdi-menu</v-icon>
                     
                       
                 </div>
