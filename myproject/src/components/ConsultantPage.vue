@@ -3,7 +3,7 @@
 <HeaderConsultant/>
   <div class="consultant-page">
     <AppearTransition :transition="['-300px',0]">
-      <p class="berater-text">Willkommen on Board Berater*in</p>
+      <p class="berater-text">Willkommen Berater*in</p>
     </AppearTransition>
 
     <div class="consultant-grid">
