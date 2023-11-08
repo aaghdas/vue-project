@@ -26,30 +26,37 @@
                   </select>
       
             <p class="noResult" v-if="noResult===true"><v-icon>mdi-information-outline</v-icon>  Keinen Hund gefunden... Filter erneut anpassen</p>
-          <v-slide-group  v-if="noResult===false" id="slide"  continuous=true v-model="slideGroup" next-icon="mdi-arrow-right-drop-circle" prev-icon="mdi-arrow-left-drop-circle"  show-arrows="always" > 
+          <v-slide-group v-show="!mobile" v-if="noResult===false" id="slide"  continuous=true v-model="slideGroup" next-icon="mdi-arrow-right-drop-circle" prev-icon="mdi-arrow-left-drop-circle"  show-arrows="always" > 
                 <template #prev="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)"  v-bind="attrs" v-on="on" > mdi-arrow-left-drop-circle </v-icon></template> 
                 <template #next="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)"  v-bind="attrs" v-on="on" > mdi-arrow-right-drop-circle</v-icon></template>
+                              
+              <v-slide-item v-for="(item,index) in dogs" :key="item.id" > 
+                                      
+                  <v-card class="gallery-card" >
+                      <v-img id="img" cover class="ma-4" v-bind:src="item.image" @click="showDogDetails(item)" /> 
+                      <v-card-text>
+                          <p id="cardtext"> {{item.name}} </p>
+                                                
+                          </v-card-text>
+                          <div id="cardnumber" >
+                              <span>{{index + 1}}/{{dogs.length}}</span>
+                          </div>
                       
-                        
-          <v-slide-item v-for="(item,index) in dogs" :key="item.id" > 
-                                  
-              <v-card class="gallery-card" >
+                  </v-card>
+              </v-slide-item>
+                      
+            </v-slide-group> 
+          
+              <v-card class="gallery-card-mobile" v-show="mobile" v-for="(item,index) in dogs" :key="item.id">
                   <v-img id="img" cover class="ma-4" v-bind:src="item.image" @click="showDogDetails(item)" /> 
                   <v-card-text>
-                      <p id="cardtext"> {{item.name}} </p>
-                                            
-                      </v-card-text>
-                      <div id="cardnumber" >
-                          <span>{{index + 1}}/{{dogs.length}}</span>
-                      </div>
-                  
+                    <p id="cardtext"> {{item.name}} </p>
+                  </v-card-text>
+                  <div id="cardnumber" >
+                    <span>{{index + 1}}/{{dogs.length}}</span>
+                  </div>
               </v-card>
-          </v-slide-item>
-                      
-                      
-                </v-slide-group> 
-
-             
+            
          </v-container>  
          
          <DogsMore v-if="showDetails" :dog="selectedDog" />  
@@ -86,6 +93,8 @@ export default{
             noResult:false,
             showDetails: false,
             selectedDog: null,
+            mobile: false,
+            windowWidth: null,
             
             
                 }
@@ -116,7 +125,24 @@ async mounted(){
      
 },
 
+created(){
+    window.addEventListener('resize',this.checkScreen);
+    this.checkScreen();
+
+  },
+
 methods: {
+
+  checkScreen(){
+      
+    this.windowWidth = window.innerWidth;
+     if(this.windowWidth <= 700){
+          this.mobile = true;
+          return;
+      }
+      this.mobile = false;
+      return;
+  },
 
    showDogDetails(dog) {
     this.$router.push({ name: "DogsMore", params: { id: dog.id } });
