@@ -9,7 +9,7 @@
                 <div id="homeText"><p>Unsere Hunde suchen neues Zuhause und nette  Spazieren BegleiterInnen</p></div>
             </AppearTransition> 
         
-
+        </v-main> 
         <div class="card-container"> 
             <div id="functions">
                
@@ -73,9 +73,9 @@
             </AppearTransition>
                
         </div>   
-         
-    </v-main>  
-    <FooterComponent/> 
+        <FooterComponent/>     
+     
+    
    </v-app> 
    
    </div>

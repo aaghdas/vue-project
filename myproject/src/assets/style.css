@@ -356,8 +356,10 @@ margin-left:auto;
 #word{
   color:whitesmoke;
 }
+
+@media only screen and (min-width:580px){
 .containerHome{
-  background-image: url('../assets/bg.jpg');
+  background-image: url('../assets/bghome.png');
   background-size:contain;
   background-repeat: no-repeat;
  
@@ -366,10 +368,63 @@ margin-left:auto;
 
   /* Zentrieren Sie das Bild horizontal und vertikal */
   background-position: center right;
-  height:auto;
+  height:90vh;
+  margin-top: 0;
   margin-bottom: 0;
   flex: 1;
 }
+}
+@media (max-width:580px){
+.containerHome{
+  background-image: url('../assets/bghome.png');
+  background-size:contain;
+  background-repeat: no-repeat;
+ 
+  /* Fixieren Sie das Bild, damit es beim Scrollen an seiner Position bleibt */
+  background-attachment: fixed;
+
+  /* Zentrieren Sie das Bild horizontal und vertikal */
+  background-position: center right;
+  height:80vh;
+  margin-top: 0;
+  margin-bottom: 0;
+  flex: 1;
+}
+}
+@media (max-width:400px){
+  .containerHome{
+    background-image: url('../assets/bghome.png');
+    background-size:contain;
+    background-repeat: no-repeat;
+   
+    /* Fixieren Sie das Bild, damit es beim Scrollen an seiner Position bleibt */
+    background-attachment: fixed;
+  
+    /* Zentrieren Sie das Bild horizontal und vertikal */
+    background-position: center right;
+    height:70vh;
+    margin-top: 0;
+    margin-bottom: 0;
+    flex: 1;
+  }
+  }
+  @media (max-width:200px){
+    .containerHome{
+      background-image: url('../assets/bghome.png');
+      background-size:contain;
+      background-repeat: no-repeat;
+     
+      /* Fixieren Sie das Bild, damit es beim Scrollen an seiner Position bleibt */
+      background-attachment: fixed;
+    
+      /* Zentrieren Sie das Bild horizontal und vertikal */
+      background-position: center right;
+      height:60vh;
+      margin-top: 0;
+      margin-bottom: 0;
+      flex: 1;
+    }
+    }
 .flatpickr-disabled{
   color:rgb(53, 53, 53)!important;
   text-decoration: line-through 1.5px rgb(181, 65, 39)!important;
@@ -536,17 +591,17 @@ select option[value="1"] {
   flex-direction: column; 
   align-items: center;
   justify-content: center;
-  
-  margin-top:50vh;
   background-color: black;
 }
 
 .card {
 
-  padding:10px 10px!important;
+  padding:1vh 1vw!important;
   opacity: 90%;
   color: beige;
-  width: 30vw !important;
+  width: 40vw !important;
+  @media(max-width:900px){width: 50vw !important;}
+  @media(max-width:580px){width:60vw !important;}
   height: fit-content(30vh, 60vh) !important;
   margin: 0 2vw 7vh 3vw;              /*Abstand zwischen den Karten auf 2vw setzen*/
   border: 1px solid rgb(250,97,0) !important;
@@ -554,19 +609,55 @@ select option[value="1"] {
   background-color:rgb(41, 40, 40) !important;      
   
 }
+
+@media (min-width:900px){
+  #homeText{
+    margin: 30vh 5vw auto 5vw;
+    width:35vw;
+  text-align: center;
+  font-family: URW Chancery L;
+  font-size: calc(18px + 8 * (100vw - 320px) / (1600 - 320));
+  color:rgb(0,255,128);
+  line-height: 2;
+  }
+  }
+@media(max-width:900px){
 #homeText{
-  margin: 30vh 5vw 0 5vw;
-  width:35vw;
+  margin: 70vh auto auto auto;
+  width:90vw;
 text-align: center;
 font-family: URW Chancery L;
 font-size: calc(18px + 8 * (100vw - 320px) / (1600 - 320));
-color:white;
+color:rgb(0,255,128);
 line-height: 2;
 }
+}
+@media(max-width:580px){
+  #homeText{
+    margin: 15vh auto auto auto;
+    width:95vw;
+  text-align: left;
+  font-family: URW Chancery L;
+  font-size: calc(18px + 6 * (100vw - 320px) / (1600 - 320));
+  color:rgb(0,255,128);
+  line-height: 2;
+  }
+  }
+  @media(max-width:280px){
+    #homeText{
+      margin: 18vh auto auto auto;
+      width:95vw;
+    text-align: left;
+    font-family: URW Chancery L;
+    font-size: calc(16px + 6 * (100vw - 320px) / (1600 - 320));
+    color:rgb(0,255,128);
+    line-height: 2;
+    }
+    }
 #about-App{
   color:rgb(192, 191, 191); 
   font-size: calc(15px + 6 * (100vw - 320px) / (1600 - 320)) ;
-  padding-bottom: 10vh;
+  padding-bottom: 3vh;
   margin-right: calc(5px + 5 * (100vw - 320px) / (1600 - 320)) ;
   text-align: center;
   cursor: pointer;
@@ -656,30 +747,7 @@ line-height: 2;
 }
 }
 
-@media(max-width:1124px)and (min-width:520px){
-  #homeText{
-    margin-top: 70vh ;
-    margin-left: 15vw;
-    width:72vw;
-  text-align: center;
-  font-family: URW Chancery L;
-  font-size: calc(20px + 10 * (100vw - 320px) / (1600 - 320));
-  color:rgb(159, 157, 157);
-  line-height: 2;
-  }
-}
-@media(max-width:800px)and (min-width:520px){
-  #homeText{
-    margin-top: 68vh ;
-    margin-left: 5vw;
-    width:90vw;
-  text-align: center;
-  font-family: URW Chancery L;
-  font-size: calc(16px + 8 * (100vw - 320px) / (1600 - 320));
-  color:beige;
-  line-height: 2;
-  }
-}
+
 
 #bearbeiten .link{
   display: flex;
