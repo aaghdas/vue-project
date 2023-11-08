@@ -4,9 +4,6 @@
       <HeaderLogedIn v-if="isLoggedIn" /><HeaderHome v-else />
         <v-container  class="gallery">
             
-          
-                
-          
                   <label id="label" for="gender-select"><v-icon>mdi-filter-outline</v-icon><span>Filter</span></label>
                   <select class="filter-select" v-model="selectedGender" v-bind:items="genders" placeholder="Geschlecht" @change="applyFilter" >
                        <option :value="null" >Jedes Geschlecht &#x25BC;</option>
@@ -30,24 +27,24 @@
       
             <p class="noResult" v-if="noResult===true"><v-icon>mdi-information-outline</v-icon>  Keinen Hund gefunden... Filter erneut anpassen</p>
           <v-slide-group  v-if="noResult===false" id="slide"  continuous=true v-model="slideGroup" next-icon="mdi-arrow-right-drop-circle" prev-icon="mdi-arrow-left-drop-circle"  show-arrows="always" > 
-                <template #prev="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)" style="font-size: 40px;" v-bind="attrs" v-on="on" > mdi-arrow-left-drop-circle </v-icon></template> 
-                <template #next="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)" style="font-size: 40px;" v-bind="attrs" v-on="on" > mdi-arrow-right-drop-circle</v-icon></template>
+                <template #prev="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)"  v-bind="attrs" v-on="on" > mdi-arrow-left-drop-circle </v-icon></template> 
+                <template #next="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)"  v-bind="attrs" v-on="on" > mdi-arrow-right-drop-circle</v-icon></template>
                       
                         
-                        <v-slide-item   v-for="(item,index) in dogs" :key="item.id" > 
+          <v-slide-item v-for="(item,index) in dogs" :key="item.id" > 
                                   
-                                  <v-card class="gallery-card" >
-                                        <v-img id="img" cover class="ma-4" v-bind:src="item.image" @click="showDogDetails(item)" /> 
-                                        <v-card-text>
-                                            <p id="cardtext"> {{item.name}} </p>
+              <v-card class="gallery-card" >
+                  <v-img id="img" cover class="ma-4" v-bind:src="item.image" @click="showDogDetails(item)" /> 
+                  <v-card-text>
+                      <p id="cardtext"> {{item.name}} </p>
                                             
-                                        </v-card-text>
-                                            <div id="cardnumber" >
-                                              <span>{{index + 1}}/{{dogs.length}}</span>
-                                            </div>
+                      </v-card-text>
+                      <div id="cardnumber" >
+                          <span>{{index + 1}}/{{dogs.length}}</span>
+                      </div>
                   
-                                  </v-card>
-                        </v-slide-item>
+              </v-card>
+          </v-slide-item>
                       
                       
                 </v-slide-group> 

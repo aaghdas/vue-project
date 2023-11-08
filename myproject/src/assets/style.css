@@ -1100,15 +1100,42 @@ background-color: whitesmoke;
 color: black;
 margin-bottom: 2vh;
 }
+
+@media (max-width: 1280px){
+
+.v-container {
+    max-width: 100% !important;
+}
+}
 #slide{
-  background-color: rgb(200, 200, 200) !important;
- margin-top:10vh;
+  background-color: black !important;
+ margin:10vh auto 2vh auto;
  width:calc(100% - 70px) !important ; 
+
  border-radius: 10px;
 }
+
+@media(max-width:1280){
+  #slide{
+    background-color: rgb(200, 200, 200) !important;
+   margin:10vh auto 2vh auto;
+   width:100% !important ; 
+  
+   border-radius: 10px;
+  }
+ }
 .v-slide-item {
   width: calc(25% - 8px) !important;
+  
 }
+
+
+
+.v-slide-group__next, .v-slide-group__prev{
+  font-size: 20px !important;
+  @media(max-width:780px){ font-size: 15px !important;}
+}
+
 .berater{
   margin-top:16vh;
   background-color: black;
@@ -1299,19 +1326,23 @@ margin-bottom: 2vh;
   text-align: center;
   color: rgb(250,97,0);
 }
-#slideitem{
- 
-  height: 50%;
-  width: 60%;
-  display:flex;
-  align-items: center;
-  justify-content: flex-start;
-}
+
+
+
 .v-img{
   
   height: 300px !important;
   width: 300px !important; /*setting the number of slides per view. With 210px shows 3 slides per view. */
-  
+  @media(max-width:1200px){
+   
+    height:  calc(200px + 70 * (100vw - 320px) / (1600 - 320))!important;
+    width:  calc(140px + 80 * (100vw - 320px) / (1600 - 320)) !important; /*setting the number of slides per view. With 210px shows 3 slides per view. */
+    }
+    @media(max-width:800px){
+   
+      height:  calc(180px + 60 * (100vw - 320px) / (1600 - 320))!important;
+      width:  calc(120px + 60 * (100vw - 320px) / (1600 - 320)) !important; /*setting the number of slides per view. With 210px shows 3 slides per view. */
+      }
 }
 
 #content{
