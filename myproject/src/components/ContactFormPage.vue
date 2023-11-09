@@ -9,13 +9,12 @@
             </div>
             <div v-else > 
                     <HeaderHome />
-                    <div id="meldung">
-                        <p>Bitte melde dich an, bevor du einen Termin buchst oder das Kontaktformular ausfüllst! </p>
-                    </div>
+                    <p class="meldung"><v-icon>mdi-information-outline</v-icon>  Bitte melde dich an, bevor du einen Termin buchst oder das Kontaktformular ausfüllst! </p>
+                    
                     <div id="loginTermin">
-                        <v-btn :to="{ name: 'LoginPage'}" id="loginbtn"> Einlogen</v-btn>
+                        <v-btn :to="{ name: 'LoginPage'}" class="loginbtn"> Einlogen</v-btn>
                         <p id="keinkonto">Noch kein Konto?</p>
-                        <v-btn :to="{ name: 'SignUp'}" id="loginbtn"> Neues Konto</v-btn>
+                        <v-btn :to="{ name: 'SignUp'}" class="loginbtn"> Neues Konto</v-btn>
                     </div>
             </div>
             <FooterComponent/> 

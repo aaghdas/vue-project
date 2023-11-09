@@ -155,27 +155,20 @@ margin-left:auto;
 .info-icon{
   margin-right:10px !important;
 }
-#meldung{
-  color:whitesmoke!important;
-  font-weight: 400;
-  font-size: calc(15px + 6 * (100vw - 320px) / (1600 - 320));
-  text-align: center;
-  width: 60vw ;
-  background-color:rgb(41, 40, 40);
-  border: 1px solid rgb(41, 40, 40) ;
-  border-radius: 10px;
-  
-  /*main container*/
-  display: flex;
-  justify-content: center;
-  margin-right: auto;
+.meldung{
+  width:fit-content;
+  @media(max-width:700px){width:70vw;}
+  color:rgb(232, 79, 7);
+  font-size:calc(14px + 6 * (100vw - 320px) / (1600 - 320));
+  padding: 2vh 2vw;
+  border-bottom-left-radius:20px ;
+  border-bottom-right-radius: 20px;
+  border-top-right-radius: 20px;
+  background-color: rgb(40, 39, 39);
+  margin-top:30vh;
   margin-left: auto;
-  margin-top:27vh;
-  margin-bottom: 5vh;
-  padding-left:1vw;
-  padding-right: 1vw;
-  padding-top: 5vh;
-  padding-bottom: 5vh;
+  margin-right:auto;
+  margin-bottom: 10vh;
    
 }
 
@@ -235,7 +228,7 @@ margin-left:auto;
   margin-left: auto;
   
 }
-#loginbtn{
+.loginbtn{
   display: flex;
   margin-right: auto;
   margin-left: auto;
@@ -243,17 +236,19 @@ margin-left:auto;
  padding-right: 1vw;
  padding-top: 1vh;
  padding-bottom: 1vh;
-  width:18vw;
-  background-color:rgb(129,214,141)!important;
+  width:20vw!important;
+  @media(max-width:680px){width:40vw!important;}
+  @media(max-width:480px){width:50vw!important;}
+  @media(max-width:220px){width:80vw!important;}
+  background-color:rgb(18, 141, 79)  !important;
   color: rgb(240, 237, 237)!important;
-  font-size: calc(10px + 6 * (100vw - 320px) / (1600 - 320));
-  font-weight: 400;
-  width:20vw;
+  font-size: calc(14px + 2 * (100vw - 320px) / (1600 - 320)) !important;
+  text-transform: capitalize !important;
   border-radius: 10px !important; 
 }
 #keinkonto{
   color:rgb(250,97,0)  ;
-  font-size: calc(12px + 6 * (100vw - 320px) / (1600 - 320));
+  font-size: calc(12px + 4 * (100vw - 320px) / (1600 - 320));
   padding-top: 3vh;
   padding-bottom: 3vh;
 }
