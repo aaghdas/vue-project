@@ -4,27 +4,28 @@
       <HeaderLogedIn v-if="isLoggedIn" /><HeaderHome v-else />
         <v-container  class="gallery">
             
-                  <label id="label" for="gender-select"><v-icon>mdi-filter-outline</v-icon><span>Filter</span></label>
-                  <select class="filter-select" v-model="selectedGender" v-bind:items="genders" placeholder="Geschlecht" @change="applyFilter" >
-                       <option :value="null" >Jedes Geschlecht &#x25BC;</option>
-                      <option v-for="gender in genders" :value="gender" :key="gender">{{gender}}</option>
-                  </select>
+                <label class="label" ><v-icon>mdi-filter-outline</v-icon><span>Filter</span></label>
+                
+                      <select class="filter-select" v-model="selectedGender" v-bind:items="genders" placeholder="Geschlecht" @change="applyFilter" >
+                          <option  :value="null" >Jedes Geschlecht &#x25BC;</option>
+                          <option v-for="gender in genders" :value="gender" :key="gender">{{gender}}</option>
+                      </select>
 
-                  <select class="filter-select" v-model="selectedAge" v-bind:items="ages" label="Alter"  @change="applyFilter">
-                      <option :value="null" >Jedes Alter &#x25BC;</option>
-                      <option v-for="age in ages" :value="age" :key="age">{{age}}</option>
-                  </select>
+                      <select class="filter-select" v-model="selectedAge" v-bind:items="ages" label="Alter"  @change="applyFilter">
+                          <option  :value="null" >Jedes Alter &#x25BC;</option>
+                          <option v-for="age in ages" :value="age" :key="age">{{age}}</option>
+                      </select>
+                  
+                      <select class="filter-select" v-model="selectedSize" v-bind:items="sizes" label="Größe" @change="applyFilter">
+                          <option   :value="null" >Jede Größe &#x25BC;</option>
+                          <option v-for="size in sizes" :value="size" :key="size">{{size}}</option>
+                      </select>
+                  
+                      <select class="filter-select" v-model="selectedPlace" v-bind:items="places" label="Aufenthaltsort" @change="applyFilter" >
+                          <option  :value="null" >Jeder Ort &#x25BC;</option>
+                          <option v-for="place in places" :value="place" :key="place">{{place}}</option>
+                      </select>
                
-                  <select class="filter-select" v-model="selectedSize" v-bind:items="sizes" label="Größe" @change="applyFilter">
-                      <option :value="null" >Jede Größe &#x25BC;</option>
-                      <option v-for="size in sizes" :value="size" :key="size">{{size}}</option>
-                  </select>
-               
-                  <select class="filter-select" v-model="selectedPlace" v-bind:items="places" label="Aufenthaltsort" @change="applyFilter" >
-                      <option :value="null" >Jeder Ort &#x25BC;</option>
-                      <option v-for="place in places" :value="place" :key="place">{{place}}</option>
-                  </select>
-      
             <p class="noResult" v-if="noResult===true"><v-icon>mdi-information-outline</v-icon>  Keinen Hund gefunden... Filter erneut anpassen</p>
           <v-slide-group v-show="!mobile" v-if="noResult===false" id="slide"  continuous=true v-model="slideGroup" next-icon="mdi-arrow-right-drop-circle" prev-icon="mdi-arrow-left-drop-circle"  show-arrows="always" > 
                 <template #prev="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)"  v-bind="attrs" v-on="on" > mdi-arrow-left-drop-circle </v-icon></template> 
@@ -45,19 +46,18 @@
                   </v-card>
               </v-slide-item>
                       
-            </v-slide-group> 
-          
-              <v-card class="gallery-card-mobile" v-show="mobile" v-for="(item,index) in dogs" :key="item.id">
+            </v-slide-group>
+          </v-container>  
+            <div class="cards-mobile">
+              <v-card class="gallery-card-mobile" v-show="mobile" v-for="(item) in dogs" :key="item.id">
                   <v-img id="img" cover class="ma-4" v-bind:src="item.image" @click="showDogDetails(item)" /> 
                   <v-card-text>
                     <p id="cardtext"> {{item.name}} </p>
                   </v-card-text>
-                  <div id="cardnumber" >
-                    <span>{{index + 1}}/{{dogs.length}}</span>
-                  </div>
+                 
               </v-card>
-            
-         </v-container>  
+            </div>
+          
          
          <DogsMore v-if="showDetails" :dog="selectedDog" />  
       
