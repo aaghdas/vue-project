@@ -9,7 +9,7 @@
             </div>
             <div v-else > 
                     <HeaderHome />
-                    <p class="meldung"><v-icon>mdi-information-outline</v-icon>  Bitte melde dich an, bevor du einen Termin buchst oder das Kontaktformular ausfüllst! </p>
+                    <p class="meldung"><v-icon>mdi-information-outline</v-icon>  Bitte melde dich an, bevor du einen Beratungstermin buchst oder das Kontaktformular ausfüllst! </p>
                     
                     <div id="loginTermin">
                         <v-btn :to="{ name: 'LoginPage'}" class="loginbtn"> Einlogen</v-btn>

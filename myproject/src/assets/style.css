@@ -156,10 +156,10 @@ margin-left:auto;
   margin-right:10px !important;
 }
 .meldung{
-  width:fit-content;
-  @media(max-width:700px){width:70vw;}
+  
+ width:65vw;
   color:rgb(232, 79, 7);
-  font-size:calc(14px + 6 * (100vw - 320px) / (1600 - 320));
+  font-size:calc(13px + 6 * (100vw - 320px) / (1600 - 320));
   padding: 2vh 2vw;
   border-bottom-left-radius:20px ;
   border-bottom-right-radius: 20px;

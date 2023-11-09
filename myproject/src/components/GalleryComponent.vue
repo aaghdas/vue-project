@@ -26,7 +26,7 @@
                           <option v-for="place in places" :value="place" :key="place">{{place}}</option>
                       </select>
                
-            <p class="noResult" v-if="noResult===true"><v-icon>mdi-information-outline</v-icon>  Keinen Hund gefunden... Filter erneut anpassen</p>
+            <p class="noResult" v-if="noResult===true"><v-icon>mdi-information-outline</v-icon>  Keinen Hund gefunden... Filter erneut anpassen!</p>
           <v-slide-group v-show="!mobile" v-if="noResult===false" id="slide"  continuous=true v-model="slideGroup" next-icon="mdi-arrow-right-drop-circle" prev-icon="mdi-arrow-left-drop-circle"  show-arrows="always" > 
                 <template #prev="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)"  v-bind="attrs" v-on="on" > mdi-arrow-left-drop-circle </v-icon></template> 
                 <template #next="{ on, attrs }"> <v-icon color="rgb(22, 175, 98)"  v-bind="attrs" v-on="on" > mdi-arrow-right-drop-circle</v-icon></template>
