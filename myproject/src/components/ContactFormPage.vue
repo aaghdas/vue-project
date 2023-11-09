@@ -52,10 +52,11 @@ export default{
 
             let user = localStorage.getItem('user-info')
             user = JSON.parse(user);
-            this.benutzername = await user.benutzername;
-            this.name = await user.name;
+            
                 if(user) {
-                this.isLoggedIn = true;
+                    this.isLoggedIn = true;
+                    this.benutzername = await user.benutzername;
+                    this.name = await user.name;
                 }  
         }
 };

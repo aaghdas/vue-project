@@ -1322,22 +1322,22 @@ margin-bottom: 2vh;
 }
 
 .dogsMore{
-  background-color: rgb(67, 67, 67) ;
+  background-color: black;
   display:flex;
   flex-direction: column;
   text-align: center;
 }
 .dogsMore-title{
   color: rgb(250,97,0) !important;
-  font-size: calc(15px + 15 * (100vw - 320px) / (1600 - 320)) !important;
+  font-size: calc(18px + 6 * (100vw - 320px) / (1600 - 320)) !important;
   font-weight: bold;
   font-family: URW Chancery L, cursive;
-  
+  margin-bottom: 2vh;
 }
 .dogsmore-text{
   font-size: calc(15px + 4 * (100vw - 320px) / (1600 - 320)) !important;
   color: rgb(219, 219, 219);
-  
+  margin-top:3vh;
 }
 .label{
   @media (max-width:570px) {
@@ -1404,9 +1404,6 @@ margin-bottom: 2vh;
 }
 
 
-  @media(max-width:700px){
-     
-    }
   
 
 #content{
@@ -1734,13 +1731,16 @@ button {
 .dogsMore-card{
   background-color:transparent  !important;
   width:40vw !important;
+  @media(max-width:800px){
+    
+    width: 50vw !important; 
+    }
+    @media(max-width:800px){
+    
+      width:  90vw !important; 
+      }
   margin:10vh auto 2vh auto;
-  padding:1vh 1vw !important;
-  border-radius: 10% !important;
-  border:solid 1px rgb(250,97,0)!important;
- 
-  
- 
+  background-color: rgb(67, 67, 67) ;
 }
 .dogsMore-card-describe{
   width:40vw !important;
@@ -1752,11 +1752,23 @@ button {
  border-radius: 10px;
  width:500px !important;
  height: 400px !important;
+ @media(max-width:800px){
+  height:300px !important;
+  width: 300px !important;
+    }
+    @media(max-width:400px){
+      height:250px !important;
+      width: 250px !important; 
+      }
+    @media(max-width:200px){
+      height:200px !important;
+      width: 200px !important; 
+      }
 }
 .describe-btn{
-  background-color: rgb(2, 167, 84)!important;
+  background-color: rgb(2, 150, 76)!important;
   color: rgb(225, 225, 225) !important;
-  font-size:  calc(14px + 4 * (100vw - 320px) / (1600 - 320)) !important;
+  font-size:  calc(12px + 6 * (100vw - 320px) / (1600 - 320)) !important;
   font-weight: bold !important;
   text-transform:lowercase !important;
   border-radius: 5px !important;
