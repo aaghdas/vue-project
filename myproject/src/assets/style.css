@@ -1744,6 +1744,8 @@ button {
 }
 .dogsMore-card-describe{
   width:40vw !important;
+  padding:3px !important;
+  @media(max-width:780px){width:70vw  !important;}
   margin:2vh auto 2vh auto;
 
 }
@@ -1775,9 +1777,11 @@ button {
   margin-top: 3vh !important;
 }
 .close-icon{
-  align-self: right !important;
-margin-left:37vw!important;
-color: red !important;
+  margin-left:37vw !important;
+  @media(max-width:780px){  margin-left:62vw !important;}
+  @media(max-width:300px){  margin-left:50vw !important;}
+
+color:rgb(210, 83, 4) !important;
 }
 #links{
   text-decoration: none;

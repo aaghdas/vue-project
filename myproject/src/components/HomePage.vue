@@ -13,8 +13,8 @@
         <div class="card-container"> 
             <div id="functions">
                
-                <p id="about-App" @click="scrollToPosition(320)">Funktionen in der Web-Applikation</p>
-                <v-icon  id="scroll" @click="scrollToPosition(320)">mdi-chevron-double-down</v-icon>
+                <p id="about-App" @click="scrollToPosition(200)">Funktionen in der Web-Applikation</p>
+                <v-icon  id="scroll" @click="scrollToPosition(200)">mdi-chevron-double-down</v-icon>
                 
             </div>
         <AppearTransition :transition="['-300px',0]">
@@ -31,7 +31,7 @@
                     </v-card>
                     
             </AppearTransition>  
-            <AppearTransition :transition="['300px',0]">
+            
                     
                     <v-card class="card">
                         <v-card-title class="title mb-0"><span id="word">Quiz</span></v-card-title>
@@ -43,10 +43,10 @@
                         
                     </v-card>
                     
-            </AppearTransition> 
+            
         
             
-        <AppearTransition :transition="['-300px',0]">
+        
         <v-card class="card">
                         <v-card-title class="title mb-0"><span id="word">Beratungstermin</span></v-card-title>
                     
@@ -57,9 +57,9 @@
                         
                     </v-card>
             
-            </AppearTransition>
+           
 
-            <AppearTransition :transition="['-300px',0]">
+            
         <v-card class="card">
                         <v-card-title class="title mb-0"><span id="word">Kontaktformular </span></v-card-title>
                     
@@ -69,8 +69,7 @@
                         </v-card-text>
                         
                     </v-card>
-            
-            </AppearTransition>
+          
                
         </div>   
         <FooterComponent/>     
