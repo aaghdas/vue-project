@@ -270,10 +270,10 @@
         this.passwordWiederholen = this.strongPassword;
       },
 
-      async checkName() {
+      checkName() {
         this.nameErrors = []
         for (let rule of this.nameRules) {
-          let isNameValid = await rule(this.name);
+          let isNameValid = rule(this.name);
           if (!isNameValid) {
             this.nameErrors.push("Name ist erforderlich und muss mindestens 3 Zeichen lang sein.")
           }
@@ -283,10 +283,10 @@
         return this.isNameValid;
       },
 
-      async checkEmail() {
+      checkEmail() {
         this.emailErrors = []
         for (let rule of this.emailRules) {
-          let isEmailValid = await rule(this.email);
+          let isEmailValid = rule(this.email);
           
           if (!isEmailValid) {
             this.emailErrors.push("Email ist erforderlich und muss gültig sein.")
@@ -298,10 +298,10 @@
         return this.isEmailValid;
       },
 
-      async checkConfirmEmail() {
+      checkConfirmEmail() {
         this.confirmEmailErrors = []
         for (let rule of this.confirmEmailRules) {
-          let isConfirmEmailValid = await rule(this.confirmEmail);
+          let isConfirmEmailValid = rule(this.confirmEmail);
           if (!isConfirmEmailValid) {
             this.confirmEmailErrors.push("Email Wiederholen ist erforderlich und muss mit Email übereinstimmen.")
         }
@@ -315,7 +315,7 @@
         this.benutzernameErrors = []
         for (let rule of this.benutzernameRules) {
           
-          let isBenutzernameGültig = await rule(this.benutzername);
+          let isBenutzernameGültig = rule(this.benutzername);
           if (!isBenutzernameGültig) {
             this.benutzernameErrors.push("Benutzername erforderlich!")
           }
@@ -362,10 +362,10 @@
       },
 
 
-      async checkPassword() {
+      checkPassword() {
           this.passwordErrors = []
           for (let rule of this.passwordRules) { 
-          let isPasswordValid = await rule(this.password); 
+          let isPasswordValid = rule(this.password); 
           if (!isPasswordValid) {
             this.passwordErrors.push("gültiges Passwort erforderlich!")
           }
@@ -375,10 +375,10 @@
           return this.isPasswordValid; 
         },
 
-        async checkPasswordConfirm() {
+        checkPasswordConfirm() {
           this.passwordWiederholenErrors = []
           for (let rule of this.passwordWiederholenRules) { 
-          let isPasswordConfirmValid = await rule(this.passwordWiederholen); 
+          let isPasswordConfirmValid =  rule(this.passwordWiederholen); 
           if (!isPasswordConfirmValid) {
             this.passwordWiederholenErrors.push("Ihre Eingabe muss mit Ihrem Passwort übereinstimmen!")
           }
@@ -390,13 +390,13 @@
 
 
       async signUp(){
-        let isBenutzernameGültig = await this.checkBenutzername();
-        let isPasswordValid = await this.checkPassword();
-        let isNameValid = await this.checkName();
-        let isEmailValid = await this.checkEmail();
-        let isEmailUnique = await this.checkEmailUnique();
-        let isConfirmEmailValid = await this.checkConfirmEmail();
-        let isPasswordConfirmValid = await this.checkPasswordConfirm();
+        let isBenutzernameGültig = this.checkBenutzername();
+        let isPasswordValid = this.checkPassword();
+        let isNameValid = this.checkName();
+        let isEmailValid =  this.checkEmail();
+        let isEmailUnique = this.checkEmailUnique();
+        let isConfirmEmailValid =  this.checkConfirmEmail();
+        let isPasswordConfirmValid =  this.checkPasswordConfirm();
 
         if(isPasswordValid===true && isPasswordConfirmValid===true && isBenutzernameGültig===true && isNameValid===true && isEmailValid===true && isEmailUnique===true && isConfirmEmailValid===true){
             

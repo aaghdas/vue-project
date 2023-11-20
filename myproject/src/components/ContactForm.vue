@@ -4,36 +4,64 @@
     </p>
     
   
-  <v-form  v-model="valid" @submit.prevent="onSubmit">
-   
-    <v-text-field 
-     onkeydown="return event.key != 'Enter';"
-      label="E-Mail-Adresse"
-      type="email"
-      v-model="email"
-      variant="outlined"
-      
-      >
+  <v-form   @submit.prevent="onSubmit">
+    <v-autocomplete
+            
+            v-model="bundesland"
+            :rules="[() => !!bundesland || 'erforderliches Feld']"
+            :items="bundesländer"
+            label="Bundesland"
+            variant="outlined"
+            required
+          ></v-autocomplete>
+
+      <v-text-field
+       v-model="email"
+        label="E-Mail-Adresse"
+        variant="outlined"
+        :error-messages="emailErrors"
+        :rules="emailRules " 
+        clearable>
+      </v-text-field>
+
+      <v-text-field
+          
+          label="Email Wiederholen"
+          variant="outlined"
+          type="email"
+          v-model="confirmEmail"
+          :error-messages="confirmEmailErrors"
+          :rules="confirmEmailRules"
+          clearable >
       </v-text-field>
    
-    <v-text-field 
-      onkeydown="return event.key != 'Enter';"
+    <v-text-field
+      
       label="Telefonnummer"
       type="tel"
       v-model="phone"
       variant="outlined" 
-      >
-      </v-text-field>
+      :error-messages="phoneNumberErrors"
+      :rules="phoneNumberRules"
+      clearable>
+    </v-text-field>
 
     <v-textarea 
-      label="Ihre Nachricht"
+      label="Ihre Nachricht ..."
       type="text"
       variant="outlined"
-      v-model="message">
+      v-model="message"
+      :error-messages="messageErrors"
+      :rules="messageRules"
+      counter="1000"
+      :counter-value="message.length + '/' + 1000"
+      clearable>
     </v-textarea>
-    <v-btn class="contactform-btn" type="submit"  :disabled="false">Absenden</v-btn>
+    <v-btn class="contactform-btn" 
+    @click="checkEmail();checkConfirmEmail();checkPhoneNumber();checkMessage(),onSubmit()" 
+    type="submit"  :disabled="false">Absenden</v-btn>
   </v-form>
-  <p v-if ="showMessageBox" class="messageform" v-html="messageContent"></p>
+  <p v-if ="showMessageBox" class="message" v-html="messageContent"></p>
 </template>
 
 <script>
@@ -45,14 +73,47 @@ export default {
 
   data() {
     return {
-      valid: false,
+      bundesländer:[
+        "Baden-Württemberg",
+        "Bayern",
+        "Berlin",
+        "Brandenburg",
+        "Bremen",
+        "Hamburg",
+        "Hessen",
+        "Mecklenburg-Vorpommern",
+        "Niedersachsen",
+        "Nordrhein-Westfalen",
+        "Rheinland-Pfalz",
+        "Saarland",
+        "Sachsen",
+        "Sachsen-Anhalt",
+        "Schleswig-Holstein",
+        "Thüringen"],
+      bundesland:"",
       email: "",
+      confirmEmail: "",
       phone: "",
       message: "",
       messageContent: '',
       showMessageBox:false,
-      name:""
-     
+      name:"",
+      
+      emailRules:[v => !!v || 'erforderliches Feld' , v => /.+@.+\..+/.test(v),v => /\.[a-zA-Z]{2,10}$/.test(v)],
+      confirmEmailRules: [v => !!v || 'erforderliches Feld', v => v === this.email],
+      phoneNumberRules: [v => !!v || 'erforderliches Feld', v => /^[0-9]{12}$/.test(v)],
+      messageRules: [v => !!v || 'erforderliches Feld'],
+
+      emailErrors: [],
+      confirmEmailErrors: [],
+      phoneNumberErrors: [],
+      messageErrors: [],
+      isEmailValid: false,
+      isConfirmEmailValid: false,
+      isPhoneNumberValid: false,
+      isMessageValid: false,
+           
+            
     };
   },
 
@@ -71,34 +132,96 @@ export default {
     showMessage(content) {
       this.messageContent = content;
     },
+    
+    checkEmail() {
+        this.emailErrors = []
+        for (let rule of this.emailRules) {
+          let isEmailValid = rule(this.email);
+          
+          if (!isEmailValid) {
+            this.emailErrors.push("Ungültige Email-Adresse ")
+          }
+          
+          this.isEmailValid = isEmailValid;
+        }
+        console.warn("email", this.isEmailValid);
+        return this.isEmailValid;
+      },
 
-    onSubmit() {
+    checkConfirmEmail() {
+        this.confirmEmailErrors = []
+        for (let rule of this.confirmEmailRules) {
+          let isConfirmEmailValid =  rule(this.confirmEmail);
+          if (!isConfirmEmailValid) {
+            this.confirmEmailErrors.push("Email-Wiederholung stimmt mit der Email nicht überein")
+        }
+        this.isConfirmEmailValid = isConfirmEmailValid;
+        }
+        console.warn("confirm email", this.isConfirmEmailValid);
+        return this.isConfirmEmailValid;
+      },
+
+    checkPhoneNumber() {
+    this.phoneNumberErrors = [];
+    for (let rule of this.phoneNumberRules) {
+      let isPhoneNumberValid = rule(this.phone);
+      if (!isPhoneNumberValid) {
+            this.phoneNumberErrors.push("Ungültige Telefonnummer")
+          }
+          
+          this.isPhoneNumberValid = isPhoneNumberValid;
+        }
+        console.warn("Telefon", this.isPhoneNumberValid);
+        return this.isPhoneNumberValid;
+      },
+
+    checkMessage() {
+      this.messageErrors = [];
+      for (let rule of this.messageRules) {
+        let isMessageValid = rule(this.message);
+        if (!isMessageValid) {
+            this.messageErrors.push("Nachricht ist Erfordelich")
+          }
+          
+          this.isMessageValid = isMessageValid;
+        }
+        console.warn("Nachricht", this.isMessageValid);
+        return this.isMessageValid;
+      },
+
+     
+    async onSubmit() {
+      if(this.isEmailValid===true && this.isConfirmEmailValid===true &&
+      this.isPhoneNumberValid===true && this.isMessageValid===true ){
+
       // Create a new contact object with the form data
       const newContact = {
         datumZeit: new Date().toString(),
         email: this.email,
         phone: this.phone,
         message: this.message,
-        name: this.name
+        name: this.name,
+        state: this.bundesland,
       };
       // Send a POST request to the db.json file with the new contact object
-      axios.post(`http://localhost:3000/contacts`, newContact).then(() => {
+      await axios.post(`http://localhost:3000/contacts`, newContact).then(() => {
           // Show a success message
           this.showMessageBox = true;
           let content = "Ihre Nachricht wurde erfolgreich gesendet!";
           this.showMessage(content);
-          // Clear the form fields
+          this.bundesland ="",
           this.email = "";
-          this.phone = "";
+          this.confirmEmail = "",
+          this.phone= "";
           this.message = "";
-        })
-        .catch(() => {
-          // Show an error message
-          alert("Es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.");
-        });
-    },
-  },
+          
+          
+         
+        })}
+      
 
- 
+    }
+  
+  }
 };
 </script>

@@ -16,7 +16,7 @@
            <v-icon class="close-icon" @click="showBeschreibung = false">mdi-close</v-icon> 
            
              
-           <v-card-text >
+           <v-card-text class="dogsMore-text">
            {{ dog.name }} lebt aktuell in {{dog.Ort}}. mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
            </v-card-text>
         </v-card>

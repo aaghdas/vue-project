@@ -11,7 +11,7 @@
                   <v-text-field 
                     
                     onkeydown="return event.key != 'Enter';"
-                      label="Name des Teilnehmers hier eingeben"
+                      label="Name des Teilnehmers"
                       type="name"
                       v-model="name"
                       >

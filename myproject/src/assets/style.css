@@ -193,12 +193,12 @@ margin-left:auto;
 }
 #contact-text{
   color:rgb(54, 53, 53);
-  margin:1vh 5vw 4vh auto;
+  margin:1vh auto 4vh auto;
   
   text-align:left;
   word-spacing: -0.1em;
   font-weight: 100;
-  font-size: calc(14px + 5 * (100vw - 320px) / (1600 - 320)) ;
+  font-size: calc(14px + 6 * (100vw - 320px) / (1600 - 320)) ;
 }
 #termin-text{
   color:rgb(206, 202, 202);
@@ -886,9 +886,10 @@ font-weight: bold;
  margin-bottom: 5vh;
  width:100%!important;
 }
- 
+
   .v-card-text{
     padding:0!important;
+    
   }
 
 .gallery-card-mobile{
@@ -1254,7 +1255,7 @@ margin-bottom: 2vh;
   justify-content: space-between;
   align-items: center;
   width:80vw;
-  margin: 5vh auto 5vh auto !important;
+  margin: 5vh auto 8vh auto !important;
 }
 
 .consultant-card {
@@ -1299,7 +1300,7 @@ margin-bottom: 2vh;
     display:block;
     
     width:80vw;
-    margin: 4vh auto 4vh auto !important;
+    margin: 4vh auto 12vh auto !important;
   }
 
   .consultant-card {
@@ -1311,9 +1312,13 @@ margin-bottom: 2vh;
 }
 .berater-card-text{
   text-align:left;
-  font-size: calc(12px + 5 * (100vw - 320px) / (1600 - 320)) !important;
+  font-size: calc(14px + 5 * (100vw - 320px) / (1600 - 320)) !important;
   word-spacing: -0.1em;
+ padding: 1vh 1vw !important;
+ line-height: 1.5 !important;
+ 
 }
+
 
 #sort #search #read{
   margin-left:0;
@@ -1333,11 +1338,15 @@ margin-bottom: 2vh;
   font-weight: bold;
   font-family: URW Chancery L, cursive;
   margin-bottom: 2vh;
+  margin-top:1vh;
 }
 .dogsmore-text{
-  font-size: calc(15px + 4 * (100vw - 320px) / (1600 - 320)) !important;
   color: rgb(219, 219, 219);
   margin-top:3vh;
+  font-size: calc(14px + 6 * (100vw - 320px) / (1600 - 320)) !important;
+  
+  font-family: URW Chancery L, cursive;
+  margin-bottom: 2vh;
 }
 .label{
   @media (max-width:570px) {
@@ -1739,7 +1748,7 @@ button {
     
       width:  90vw !important; 
       }
-  margin:10vh auto 2vh auto;
+  margin:6vh auto 2vh auto;
   background-color: rgb(67, 67, 67) ;
 }
 .dogsMore-card-describe{
@@ -1771,7 +1780,7 @@ button {
   background-color: rgb(2, 150, 76)!important;
   color: rgb(225, 225, 225) !important;
   font-size:  calc(12px + 6 * (100vw - 320px) / (1600 - 320)) !important;
-  font-weight: bold !important;
+
   text-transform:lowercase !important;
   border-radius: 5px !important;
   margin-top: 3vh !important;
@@ -1789,10 +1798,28 @@ color:rgb(210, 83, 4) !important;
 
  
 }
+.contact-container {
+  margin:12vh auto 3vh auto; 
+}
 
-.calandar-container, .contact-container{
+.contact-container-termin{
+  margin:2vh auto 3vh auto; 
+}
+
+.contact-container , .contact-container-termin{
   
-    
+    background-color: white;
+   
+    width:60%;
+    display: flex; /* Aktiviert das Flexbox-Layout */
+    flex-direction: column; /* Ordnet die Elemente in einer Spalte an */
+    align-items: center; /* Zentriert die Elemente horizontal */
+    padding: 2vh 3vw;
+    border-radius: 10px;
+  
+}
+.calandar-container{
+  
     background-color: white;
    
     width:60%;
@@ -1806,19 +1833,17 @@ color:rgb(210, 83, 4) !important;
 .calandar-container{
   margin:20vh auto 2vh auto; 
 }
-.contact-container{
-  margin:3vh auto 6vh auto; 
-}
+
 
 @media((min-width:360px) and (max-width:560px)){
-  .calandar-container, .contact-container{
+  .calandar-container, .contact-container, .contact-container-termin{
    
     width:90%;
     
 }
 }
 @media(max-width:360px){
-  .calandar-container, .contact-container{
+  .calandar-container, .contact-container , .contact-container-termin{
   
     width:100%;
 }

@@ -34,7 +34,7 @@
             </div>
     </div> 
     <p class="form-text">Oder möchteuns du uns kontaktieren?</p>   
-   <div class="contact-container">
+   <div class="contact-container-termin">
       <contactForm /> 
     </div>
  
