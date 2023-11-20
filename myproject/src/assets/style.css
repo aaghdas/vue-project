@@ -2051,7 +2051,7 @@ color:rgb(210, 83, 4) !important;
   height:fit-content !important;
 }
 .filter-option{
-  font-size: calc(12px + 12 * (100vw - 320px) / (1600 - 320));
+  font-size: calc(12px + 8 * (100vw - 320px) / (1600 - 320));
 }
 input[type="checkbox"] {
   transform: scale(1.7); /*Größe ändern*/
