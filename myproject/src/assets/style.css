@@ -2036,7 +2036,7 @@ color:rgb(210, 83, 4) !important;
 }
 .read-termin{
   
-  font-size: calc(12px + 6 * (100vw - 320px) / (1600 - 320));
+  font-size: calc(13px + 4 * (100vw - 320px) / (1600 - 320));
  
   padding-bottom: 3px;
 }
@@ -2054,7 +2054,7 @@ color:rgb(210, 83, 4) !important;
   font-size: calc(12px + 8 * (100vw - 320px) / (1600 - 320));
 }
 input[type="checkbox"] {
-  transform: scale(1.7); /*Größe ändern*/
+  transform: scale(1.2); /*Größe ändern*/
   
   margin-top:15px;
   margin-right: 6px;
