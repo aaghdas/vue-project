@@ -44,6 +44,7 @@
                 <td class="date-row">{{ formatDate(item.datumZeit) }}</td>
                 <td class="read"> <input  type="checkbox" v-model="item.isRead" /><label class="container">Als gelesen markieren</label></td>
                 <td>Von: {{ item.name }}</td>
+                <td>Bundesland: {{ item.state }}</td>
                 <td>Telefonnummer: {{ item.phone }}</td>
                 <td>Email-Adresse: {{ item.email }}</td>
                 <td class="message-row">Nachricht:<br/>{{ item.message }}</td>  

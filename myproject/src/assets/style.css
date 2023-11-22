@@ -193,7 +193,7 @@ margin-left:auto;
 }
 #contact-text{
   color:rgb(54, 53, 53);
-  margin:1vh auto 4vh auto;
+  margin:5vh auto 0 auto;
   
   text-align:left;
   word-spacing: -0.1em;
@@ -455,7 +455,7 @@ margin-left:auto;
   color: rgb(184, 180, 180);
 }
 .termin{
-  margin:1vh auto 2vh auto;
+  margin:3vh auto 2vh auto;
   display:flex;
 }
 
@@ -530,9 +530,9 @@ margin-left:auto;
   margin-bottom: 1vh;
   border-width: 3px !important;
   border-style: solid !important;
-  border-color:rgb(220, 86, 3) !important;
+  border-color:rgb(71, 70, 70)!important;
   border-radius: 5px;
-  background-color: rgb(220, 86, 3) !important;
+  background-color: rgb(71, 70, 70)!important;
   border:transparent !important;
   color:whitesmoke!important;
   font-weight: 400!important;
@@ -567,7 +567,7 @@ margin-left:auto;
  
 }
 select option[value="1"] {
-  background-color: rgb(222, 96, 18) !important;
+  background-color: rgb(71, 70, 70)!important;
   color: white;
   text-align: center;
   font-weight: 400!important;
@@ -1707,7 +1707,7 @@ button {
   justify-content: center;
   padding: 2vh 1vw;
   font-size:calc(15px + 4 * (100vw - 320px) / (1600 - 320));
-  color: rgb(210, 83, 4) ;
+  color: white ;
  
 }
 .login-btn{
@@ -1798,17 +1798,36 @@ color:rgb(210, 83, 4) !important;
 
  
 }
-.contact-container {
-  margin:12vh auto 3vh auto; 
-}
+
+  
 
 .contact-container-termin{
   margin:2vh auto 3vh auto; 
+  background-image: url('contact2.jpg');
+  background-size:auto;
+  background-repeat: no-repeat;
+ 
+  /* Fixieren Sie das Bild, damit es beim Scrollen an seiner Position bleibt */
+  background-attachment: fixed;
+   
+    width:60%;
+    display: flex; /* Aktiviert das Flexbox-Layout */
+    flex-direction: column; /* Ordnet die Elemente in einer Spalte an */
+    align-items: center; /* Zentriert die Elemente horizontal */
+    padding: 2vh 3vw;
+    border-radius: 10px;
+  
 }
 
-.contact-container , .contact-container-termin{
-  
-    background-color: white;
+.contact-container {
+  margin:12vh auto 3vh auto; 
+
+  background-image: url('contact2.jpg');
+  background-size:auto;
+  background-repeat: no-repeat;
+ 
+  /* Fixieren Sie das Bild, damit es beim Scrollen an seiner Position bleibt */
+  background-attachment: fixed;
    
     width:60%;
     display: flex; /* Aktiviert das Flexbox-Layout */
@@ -1819,8 +1838,14 @@ color:rgb(210, 83, 4) !important;
   
 }
 .calandar-container{
-  
-    background-color: white;
+  margin:20vh auto 2vh auto; 
+  background-image: url('contact.jpg');
+  background-size:cover;
+  background-repeat: no-repeat;
+ 
+  /* Fixieren Sie das Bild, damit es beim Scrollen an seiner Position bleibt */
+  background-attachment: fixed;
+   
    
     width:60%;
     display: flex; /* Aktiviert das Flexbox-Layout */
@@ -1829,9 +1854,6 @@ color:rgb(210, 83, 4) !important;
     padding: 3vh 3vw;
     border-radius: 10px;
   
-}
-.calandar-container{
-  margin:20vh auto 2vh auto; 
 }
 
 
