@@ -878,7 +878,7 @@ font-weight: bold;
   
 }
 
-.cards-mobile{
+.cards-mobile, .cards-mobile-admin{
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
@@ -887,45 +887,67 @@ font-weight: bold;
  width:100%!important;
 }
 
+.cards-mobile-admin{
+  margin-top: 5vh;
+}
+
   .v-card-text{
     padding:0!important;
     
   }
-
+.admin-top{
+  display:flex;
+  color:white;
+  font-size: calc(12px + 4 * (100vw - 320px) / (1600 - 320)) ;
+  margin-top:15vh;
+  margin-right: auto;
+}
+.plus{
+  color:rgb(131, 187, 240);
+  
+}
+.delete{
+  color:rgb(231, 58, 58);
+  background-color: #d1cfcf;
+  border-radius: 5px;
+  padding:2px;
+}
+.edit{
+  color:rgb(70, 70, 238);
+  margin-right:1vw;
+  background-color: #d1cfcf;
+  border-radius: 5px;
+  padding:2px;
+}
+.admin-top-item{
+  margin-right:1vw;
+  color:rgb(131, 187, 240);
+  margin-left:5vw;
+  margin-bottom: 2vh;
+}
+.icon-wrapper {
+  position: absolute;
+  top: 20px;
+  left: 30px;
+  padding:3px;
+ 
+}
 .gallery-card-mobile{
+  position: relative;
   padding-left: 0 !important;
   padding-right: 0 !important;
-  background-color: black !important;
-  @media(min-width:540px){ width:30%!important;}
-  @media(max-width:540px){ width:45%!important;}
-  @media(max-width:300px){
-    width:70%!important;
-   
-    margin-left: auto;
-    margin-right: auto;
-
-  }
   margin:1vh 1vw;
+  background-color: black !important;
   
- 
+  @media(min-width:700px){ width:20% !important;}
+  @media(max-width:700px){ width:30% !important;}
+  @media(max-width:540px){ width:45% !important;}
+  @media(max-width:300px){
+    width:70% !important;
+    margin-left: auto !important;
+    margin-right: auto !important;
   }
-.register button, .login button, .add button{
-    color:white;
-    font-size:1.7 vw;
-    background-color:beige;
-    width:21.5%;
-    margin-bottom:1%;
-    padding-left:1%;
-    padding-top:1%;
-    padding-bottom:1%;
-    margin-right:auto;
-    margin-left:auto;
-    border: 1px solid;
-    border-color:beige;
-    background-color:rgb(217, 170, 100);
-   
 }
-
 
 #texthomepage{
  margin-top: 5%; 
