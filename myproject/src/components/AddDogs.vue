@@ -1,84 +1,117 @@
 <template>
-    <HeaderHome />
-    <h1> Hallo User, willkommen in Add Dogs Page</h1>
-    <form class="add">
+     <v-app id="gallery-app" >
+    <HeaderAdmin  /> 
+<div class="addDogs">
+    <v-form ref="form">
 
-        <input type="text" name="name" placeholder="Name" v-model="dogs.name" />
+        <v-text-field  type="text" name="name" label="Name" v-model="dogs.name"  clearable></v-text-field>
 
-         <select class="selectorAdmin" name="Geschlecht" v-model="dogs.Geschlecht">
-            <option value="">-- Geschlecht --</option>
-            <option value="Männlich">Männlich</option>
-            <option value="Weiblich">Weiblich</option>
-        </select>
-        
-        <select class="selectorAdmin" name="Alter" v-model="dogs.Alter">
-            <option value="">-- Alter --</option>
-            <option value="Welpe">Welpe</option>
-            <option value="Jungtier">Jungtier</option>
-            <option value="Erwachsen">Erwachsen</option>
-            <option value="Senior">Senior</option>
-        </select>
-        
-        <select class="selectorAdmin"  name="Rasse" v-model="dogs.Rasse">
-            <option value="">-- Rasse --</option>
-            <option value="Alaskan Malamute">Alaskan Malamute</option>
-            <option value="Bandog">Bandog</option>
-            <option value="Barbet">Barbet</option>
-            <option value="Bulldog">Bulldog</option>
-            <option value="Bully">Bully</option>
-            <option value="Deutscher Schäferhund">Deutscher Schäferhund</option>
-            <option value="Golden Retriever">Golden Retriever</option>
-            <option value="Hirtenhund">Hirtenhund</option>
-            <option value="Labrador">Labrador</option>
-            <option value="Terrier">Terrier</option>
-            <option value="Windhund">Windhund</option>
-            <option value="Andere Rasse">Andere Rasse</option>
-        </select>
-        
-        <select class="selectorAdmin" name="Größe" v-model="dogs.Groesse">
-            <option value="">-- Größe --</option>
-            <option value="Sehr klein">Sehr klein</option>
-            <option value="Klein">Klein</option>
-            <option value="Mittel">Mittel</option>
-            <option value="Groß">Groß</option>
-            <option value="Sehr groß">Sehr groß</option>
-        </select>
-        
-        <select class="selectorAdmin" name="Ort" v-model="dogs.Ort">
-            <option value="">-- Aufenthaltsort --</option>
-            <option value="Leipzig">Leipzig</option>
-            <option value="Dresden">Dresden</option>
-            <option value="Berlin">Berlin</option>
-        </select>
-  
-        <input type="file" name="image" v-on:change="readImage">
+        <v-text-field  type="text" name="rasse"  label="Rasse" v-model="dogs.rasse"  clearable></v-text-field>
        
-        <button type="button" v-on:click="addDogs">Einen neuen Hund hinzufügen</button>
-    </form>
+        <v-autocomplete
+            v-model="dogs.Geschlecht"
+            :items="Geschlecht"
+            label=" Geschlecht "
+            variant="solo"
+            required
+            clearable
+       ></v-autocomplete>
+       <v-autocomplete
+            v-model="dogs.Alter"
+            :items="Alter"
+            label=" Alter "
+            variant="solo"
+            required
+            clearable
+       ></v-autocomplete>
     
+       <v-autocomplete
+            v-model="dogs.Groesse"
+            :items="Groesse"
+            label=" Größe "
+            variant="solo"
+            required
+            clearable
+       ></v-autocomplete>
+
+       <v-autocomplete
+            v-model="dogs.Ort"
+            :items="Bundesländer"
+            label="Bundesland "
+            variant="solo"
+            required
+            clearable
+       ></v-autocomplete>
+    </v-form>  
+       
+    <div class="file-input">
+        <v-btn color="primary" small outlined @click="openFileInput">
+            <v-icon left>mdi-upload</v-icon>
+           Bild auswählen
+        </v-btn>
+        <input ref="fileInput" type="file" name="image" v-on:change="readImage" style="display: none"  accept="image/jpeg, image/jpg, image/png, image/webp">
+    <div>
+        <p v-if="selectedFileName">{{ selectedFileName }}</p>
+    <v-icon v-if="selectedFileName"  @click="toggleSelectedFileName"> mdi-close-circle </v-icon>
+    </div>  
+    <v-btn type="button" v-on:click="addDogs">Hinzufügen</v-btn>  
+    <v-btn type="button" v-on:click="reset">weitere Hunde hinzufügen</v-btn>    
+    </div>
+    
+    
+    
+</div>
+    <FooterComponent/>
+</v-app>  
 </template>
 
 
 <script>
-import HeaderHome from './HeaderHome.vue';
-
+import HeaderAdmin from './HeaderAdmin.vue';
+import FooterComponent from './FooterComponent.vue'
 import axios from 'axios';
 
 
 export default{
     name:'AddDogs',
     components:{
-        HeaderHome
+        HeaderAdmin,
+        FooterComponent  
     },
 
     data(){
+
         return {
+
+            fileInput: null,
+            selectedFileName: null,
+            Geschlecht:["Männlich","Weiblich"],
+            Alter:["Welpe","Jungtier","Erwachsen"],
+            Groesse:["Klein","Mittel","Groß"],
+           Bundesländer:[
+                "Baden-Württemberg",
+                "Bayern",
+                "Berlin",
+                "Brandenburg",
+                "Bremen",
+                "Hamburg",
+                "Hessen",
+                "Mecklenburg-Vorpommern",
+                "Niedersachsen",
+                "Nordrhein-Westfalen",
+                "Rheinland-Pfalz",
+                "Saarland",
+                "Sachsen",
+                "Sachsen-Anhalt",
+                "Schleswig-Holstein",
+                "Thüringen"],
+           
             dogs:{
             
             name:'',
             Geschlecht:'',
             Alter:'',
-            Rasse:'',
+            rasse:'',
             Groesse:'',
             Ort:'',
             
@@ -97,7 +130,7 @@ export default{
                 name:this.dogs.name,
                 Geschlecht:this.dogs.Geschlecht,
                 Alter:this.dogs.Alter,
-                Rasse:this.dogs.Rasse,
+                Rasse:this.dogs.rasse,
                 Groesse:this.dogs.Groesse,
                 Ort:this.dogs.Ort,
                 image:this.dogs.image
@@ -106,27 +139,51 @@ export default{
             
             if(result.status==201){
 
-               alert('Sie haben einen neuen Hund erfolgreich hizugefügt!'),
-               this.$router.push({name:'HomePage'})
+               alert('Sie haben einen neuen Hund erfolgreich hizugefügt!');
+               
             }
         },
 
         readImage(event) { 
             const file = event.target.files[0]; 
             const reader = new FileReader(); 
-            reader.onloadend = () => { this.dogs.image = reader.result; }; 
-            reader.readAsDataURL(file); 
-            },
+            reader.onloadend = () => {
+             this.dogs.image = reader.result;
+             this.selectedFileName = file.name;
+            }; 
+            try {
+                if (file.size > 200000) { // Max. 200 KB
+                    alert('Die Dateigröße darf 200 KB nicht überschreiten.');
+                }else{
+            reader.readAsDataURL(file);}
+            } catch (error) {
+            console.error(error);
+            this.selectedFileName = null; // Setzt selectedFileName zurück, um keinen fehlerhaften Dateinamen anzuzeigen
+            }
+        
+        },
 
-        
-    mounted(){
-        let user = localStorage.getItem('user-info');
-        
-        if(!user){
-            this.$router.push({name:'SignUp'})
+        openFileInput() {
+           this.$refs.fileInput.click();
+        },
+
+        toggleSelectedFileName(){
+            this.selectedFileName= null;
+        },
+
+        reset(){
+            this.dogs.name="";
+            this.dogs.Geschlecht="";
+            this.dogs.Alter="";
+            this.dogs.rasse="";
+            this.dogs.Groesse="";
+            this.dogs.Ort="";    
+            this.$refs.form.reset();
+            this.fileInput= null;
+            this.selectedFileName= null;
+
         }
-        
-    }
+   
 
 }
 }

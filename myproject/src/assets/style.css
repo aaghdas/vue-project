@@ -198,7 +198,11 @@ margin-left:auto;
   text-align:left;
   word-spacing: -0.1em;
   font-weight: 100;
-  font-size: calc(14px + 6 * (100vw - 320px) / (1600 - 320)) ;
+  font-size: calc(12px + 6 * (100vw - 320px) / (1600 - 320)) ;
+ 
+}
+.flatpickr-wrapper{
+  box-shadow:3px 3px 3px 4px rgb(73, 73, 73) !important;
 }
 #termin-text{
   color:rgb(206, 202, 202);
@@ -527,12 +531,12 @@ margin-left:auto;
 }
 .form-control.input{
   width:307.88px !important;
-  margin-bottom: 1vh;
+ 
   border-width: 3px !important;
   border-style: solid !important;
-  border-color:rgb(71, 70, 70)!important;
-  border-radius: 5px;
-  background-color: rgb(71, 70, 70)!important;
+  border-color:rgb(73, 73, 73)!important;
+  
+  background-color: rgb(73, 73, 73)!important;
   border:transparent !important;
   color:whitesmoke!important;
   font-weight: 400!important;
@@ -557,7 +561,7 @@ margin-left:auto;
   margin:2vh auto;
   width:307.88px;
   height:100%;
-  box-shadow:3px 3px 5px rgb(73, 73, 73);
+  box-shadow:3px 3px 5px 5px rgb(73, 73, 73);
   background-color: white;
   border-radius: 5px;
   color:black;
@@ -894,6 +898,14 @@ font-weight: bold;
   .v-card-text{
     padding:0!important;
     
+  }
+
+  .addDogs{
+    margin-top:12vh;
+    margin-bottom: 15vh;;
+  }
+  .file-input{
+    background-color: #eee;
   }
 .admin-top{
   display:flex;
@@ -1861,7 +1873,7 @@ color:rgb(210, 83, 4) !important;
 }
 .calandar-container{
   margin:20vh auto 2vh auto; 
-  background-image: url('contact.jpg');
+  background-image: url('contact2.jpg');
   background-size:cover;
   background-repeat: no-repeat;
  
