@@ -905,7 +905,15 @@ font-weight: bold;
     margin-bottom: 15vh;;
   }
   .file-input{
-    background-color: #eee;
+    width:30%;
+    margin-left: auto;
+    margin-right: auto;
+  }
+  .file-name{
+    display: flex;
+    flex-direction: row;
+    color:white !important;
+    padding-right:5px !important;
   }
 .admin-top{
   display:flex;

@@ -17,7 +17,7 @@
            
              
            <v-card-text class="dogsMore-text">
-           {{ dog.name }} lebt aktuell in {{dog.Ort}}. mmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmmnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnnn
+           {{ dog.name }} lebt aktuell in {{dog.Ort}}.<br/> {{dog.Beschreibung}}
            </v-card-text>
         </v-card>
                              

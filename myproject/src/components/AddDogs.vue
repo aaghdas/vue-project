@@ -42,20 +42,36 @@
             required
             clearable
        ></v-autocomplete>
+       <v-textarea 
+        label="&#9998;  Beschreibung "
+        type="text"
+        variant="solo"
+        v-model="dogs.Beschreibung"
+        clearable>
+        </v-textarea>
+       
+
     </v-form>  
        
     <div class="file-input">
-        <v-btn color="primary" small outlined @click="openFileInput">
-            <v-icon left>mdi-upload</v-icon>
+        
+        <input ref="fileInput" type="file" name="image" v-on:change="readImage" style="display: none"  accept="image/jpeg, image/jpg, image/png, image/webp">
+        
+        <div class="file-name">
+            <v-btn class="admin-button" small outlined @click="openFileInput">
+            <v-icon  >mdi-upload</v-icon>
            Bild auswählen
         </v-btn>
-        <input ref="fileInput" type="file" name="image" v-on:change="readImage" style="display: none"  accept="image/jpeg, image/jpg, image/png, image/webp">
-    <div>
-        <p v-if="selectedFileName">{{ selectedFileName }}</p>
-    <v-icon v-if="selectedFileName"  @click="toggleSelectedFileName"> mdi-close-circle </v-icon>
-    </div>  
-    <v-btn type="button" v-on:click="addDogs">Hinzufügen</v-btn>  
-    <v-btn type="button" v-on:click="reset">weitere Hunde hinzufügen</v-btn>    
+            <p  v-if="selectedFileName">{{ selectedFileName }}</p>
+            <v-icon  v-if="selectedFileName"  @click="toggleSelectedFileName"> mdi-close-circle </v-icon>
+           
+        </div>  
+        <v-btn class="admin-button" type="button" v-on:click="addDogs">Hinzufügen</v-btn> 
+        <div v-if="showMessageBox" class="message">
+            <p v-html="messageContent"></p>
+            <v-btn v-if="showNextButton" class="admin-button-next" type="button" v-on:click="reset">weitere Hunde hinzufügen</v-btn> 
+            <v-btn v-if="showCloseButton" class="admin-button-close" type="button" v-on:click="reset">Vorgang beenden</v-btn>
+        </div>   
     </div>
     
     
@@ -82,12 +98,15 @@ export default{
     data(){
 
         return {
-
+            showMessageBox:false,
+            messageContent: '',
+            showNextButton:false,
+            showCloseButton:false,
             fileInput: null,
             selectedFileName: null,
             Geschlecht:["Männlich","Weiblich"],
             Alter:["Welpe","Jungtier","Erwachsen"],
-            Groesse:["Klein","Mittel","Groß"],
+            Groesse:["Klein","Mittelgroß","Groß"],
            Bundesländer:[
                 "Baden-Württemberg",
                 "Bayern",
@@ -114,6 +133,7 @@ export default{
             rasse:'',
             Groesse:'',
             Ort:'',
+            Beschreibung:'',
             
             },
        
@@ -123,6 +143,22 @@ export default{
 
     methods:{
 
+    showMessage(content) {
+      this.messageContent = content;
+      this.showMessageBox = true;
+      this.showNextButton = true;
+      this.showCloseButton = true;
+    },
+
+    hideMessageBox() {
+     
+      this.showMessageBox = false;
+      this.showNextButton = false;
+      this.showCloseButton  = false;
+      this.messageContent = '';
+      
+    },
+    
         async addDogs(){
             console.warn(this.dogs)
             const result = await axios.post("http://localhost:3000/dogs",{
@@ -133,13 +169,15 @@ export default{
                 Rasse:this.dogs.rasse,
                 Groesse:this.dogs.Groesse,
                 Ort:this.dogs.Ort,
+                Beschreibung: this.dogs.Beschreibung,
                 image:this.dogs.image
             });
             
             
             if(result.status==201){
-
-               alert('Sie haben einen neuen Hund erfolgreich hizugefügt!');
+                let content = 'Sie haben einen neuen Hund erfolgreich hizugefügt!'
+                this.showMessage(content)
+              
                
             }
         },
@@ -181,6 +219,7 @@ export default{
             this.$refs.form.reset();
             this.fileInput= null;
             this.selectedFileName= null;
+            this.hideMessageBox();
 
         }
    
