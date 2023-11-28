@@ -53,7 +53,7 @@ const routes = [
     {
         name: 'UpdateDogs',
         component: UpdateDogs,
-        path: '/update'
+        path: '/update/:id'
     },
     
     {
