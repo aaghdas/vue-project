@@ -11,11 +11,8 @@
               
             <ul v-show="!mobile" class="navigation">
                 <li><v-icon id="homeIcon-dropdown" @click="$router.push({path: '/login'})">mdi-account-circle </v-icon>
-                <span id="anmelden" > <router-link class="link" :to="{name: 'LoginPage'}"> {{benutzername}}</router-link></span>
-                <span class="username">
+                <span id="anmelden" class="link" @click="toggleArrowbox"> {{benutzername}}</span>
                 
-                <span id="bearbeiten" ><router-link class="link" :to="{name: 'HomePage'}">Konto bearbeiten</router-link></span>
-                </span>
                 </li>
                 
                 <li><router-link class="link" :to="{name: 'ContactFormPage'}">Kontakt</router-link></li>
@@ -26,6 +23,15 @@
                     <span class="link" @click="logout">Abmelden</span></li>
                 
             </ul>
+            <div v-if="showArrowBox" class="arrowBox">
+                
+                <p class="link-konto" @click="toggleConfirmMessage" >Konto löschen</p>
+                <div>
+                    <p class="confirmMessage" v-if="showConfirmMessage">Möchtest du wirklich dein Konto löchen? </p>
+                    <v-btn  v-if="showConfirmMessage" class="admin-button-close" type="button"   @click="deleteAccount(this.id)"> Ja löschen</v-btn>
+                    <v-btn  v-if="showConfirmMessage" @click="toggleConfirmMessage"  class="admin-button" type="button" >Abbrechen</v-btn>
+                </div>
+            </div>
             <div class="icon">
                 <i id="icon" @click="toggleMobileNav" v-show="mobile" class="fa fa-navicon"  :class="{'icon-active' : mobileNav}"></i>
             </div>
@@ -65,6 +71,8 @@
 
 
 <script>
+ import axios from 'axios'
+
  
     export default {
 
@@ -72,8 +80,10 @@
         
         data(){
         return{
-            
+            showArrowBox :false,
+            showConfirmMessage:false,
             benutzername:'', 
+            id:'', 
             scrollPosition: null,
             mobile: false,
             mobileNav: false,
@@ -89,6 +99,34 @@
         },
 
     methods:{
+
+        async deleteAccount(id){
+            try {
+                let result = await axios.delete("http://localhost:3000/users/"+id);
+                console.warn(result)
+                if(result.status == 200){
+                    this.loadData();
+                    this.toggleArrowbox();
+                    this.logout();
+                }
+            } catch (error) {
+                console.error(`Error: ${error}`);
+            }
+        },
+
+    async loadData(){
+        let result =await axios.get("http://localhost:3000/users");
+        this.users = result.data;
+
+        
+    },
+
+        toggleConfirmMessage(){
+            this.showConfirmMessage = !this.showConfirmMessage;
+        },
+        toggleArrowbox(){
+            this.showArrowBox = !this.showArrowBox;
+        },
         logout() {
             localStorage.clear();
             this.$emit('update:this.isLoggedIn', false);
@@ -124,8 +162,11 @@
        
         let user = await localStorage.getItem('user-info');
         this.benutzername = await JSON.parse(user).benutzername;
+        this.id = await JSON.parse(user).id;
          if (user) {
                 this.isLoggedIn = true;
+                console.log(this.benutzername )
+                console.log(this.id)
              }
          else{
             this.isLoggedIn = true;

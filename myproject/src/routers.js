@@ -4,6 +4,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Login from './components/LoginPage.vue'
 import AddDogs from './components/AddDogs.vue'
 import UpdateDogs from './components/UpdateDogs.vue'
+
 import Quiz from './components/QuizApp.vue'
 import DogsMore from './components/DogsMore.vue'
 import HomePage from './components/HomePage.vue'
@@ -48,7 +49,8 @@ const routes = [
         component: AddDogs,
         path: '/add'
     },
-    
+
+   
     
     {
         name: 'UpdateDogs',

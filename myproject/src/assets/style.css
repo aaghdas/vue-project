@@ -47,7 +47,32 @@ li{
   border-color:rgb(0,255,128) ;
 }
 
+.arrowBox{
+  width:200px;
+  height:fit-content;
+  background-color: rgb(212, 206, 206);
+  border-radius: 5px;
+  position: fixed;
+  top:6vh;
+  right:350px;
+ padding: 10px;
+  text-decoration: none !important;
+  
+}
+.arrowBox:after{
+  content: ' ';
+  width: 0px;
+  height: 0px;
+  border-left: 10px solid transparent;
+  border-right:10px solid transparent;
+  border-top: 10px solid transparent;
+  border-bottom: 10px solid rgb(212, 206, 206);
+  position:absolute;
+  left:50%;
+  bottom: 100%;
+  margin-left:-10px;
 
+}
 
 .icon{
   cursor: pointer;
@@ -764,7 +789,28 @@ line-height: 2;
  text-transform:capitalize;
   
 }
+.h1{
+  color: white;
+  margin-top:50%;
+}
+.link-konto{
+  display: flex;
+  flex-direction: column;
+  transition: .5s ease all;
+  line-height: 2;
+  text-decoration: none;
+  color: rgb(36, 35, 35);
+  font-size:calc(12px + 4 * (100vw - 320px) / (1600 - 320)); 
+ text-transform:capitalize;
+}
+.confirmMessage{
+  color: black;
+}
+.link-konto:hover{
+text-decoration: underline;
 
+  
+}
  
 #anmelden{
   padding-left: 8px;
