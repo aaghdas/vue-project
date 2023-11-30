@@ -47,19 +47,27 @@ li{
   border-color:rgb(0,255,128) ;
 }
 
-.arrowBox{
-  width:200px;
+.arrowBox, .arrowBox-dropdown{
+  
+  width:180px;
   height:fit-content;
   background-color: rgb(212, 206, 206);
   border-radius: 5px;
-  position: fixed;
-  top:6vh;
-  right:350px;
+  position: absolute;
+  
  padding: 10px;
   text-decoration: none !important;
   
 }
-.arrowBox:after{
+.arrowBox{
+  top:45px;
+  right:-30px;
+}
+.arrowBox-dropdown{
+  top:350px;
+}
+
+.arrowBox:after, .arrowBox-dropdown:after{
   content: ' ';
   width: 0px;
   height: 0px;
@@ -108,9 +116,10 @@ li{
   position: fixed;
   width: 100%;
   max-width:200px;
-  height:70%;
-  background-color: black;
-  top:15px;
+  height:fit-content;
+  padding-bottom: 20px;
+  background-color: rgb(41, 40, 40);
+  top:0;
   left:0;
 
 }
@@ -324,7 +333,7 @@ margin-left:auto;
 #li-dropdown{
   display: flex;
   justify-content:flex-start;
-  margin-left: 40px;
+  margin-left: 10px;
   margin-top: 5px;
   padding-top: 15px;
   font-family: "Lucida Sans"; 
@@ -343,8 +352,10 @@ margin-left:auto;
   color:white;
   text-decoration: none;
   padding-left:3px;
-  font-size: 13px;
+  
   border-bottom: 1px solid transparent;
+  text-transform: capitalize;
+  font-size: calc(16px + 4 * (100vw - 320px) / (1600 - 320));
   
 }
 .link-dropdown:hover{
@@ -800,11 +811,15 @@ line-height: 2;
   line-height: 2;
   text-decoration: none;
   color: rgb(36, 35, 35);
-  font-size:calc(12px + 4 * (100vw - 320px) / (1600 - 320)); 
+  font-size:calc(13px + 4 * (100vw - 320px) / (1600 - 320)); 
  text-transform:capitalize;
 }
 .confirmMessage{
   color: black;
+  font-size:calc(12px + 3 * (100vw - 320px) / (1600 - 320)); 
+  color: rgb(201, 57, 57);
+  font-weight: bold;
+  text-transform: capitalize;
 }
 .link-konto:hover{
 text-decoration: underline;
@@ -975,7 +990,7 @@ font-weight: bold;
   .admin-button{
     background-color: rgb(49, 49, 155) !important;
     color: rgb(255, 255, 255) !important;
-    font-size: calc(13px + 4 * (100vw - 320px) / (1600 - 320)) !important;
+    font-size: calc(12px + 2 * (100vw - 320px) / (1600 - 320)) !important;
     text-transform: capitalize !important;
     margin-right: 1vw;
     justify-self: left;
@@ -1008,9 +1023,9 @@ font-weight: bold;
   .admin-button-close{
     background-color: rgb(194, 89, 3) !important;
     color: rgb(255, 255, 255) !important;
-    font-size: calc(13px + 4 * (100vw - 320px) / (1600 - 320)) !important;
+    font-size: calc(12px + 2 * (100vw - 320px) / (1600 - 320)) !important;
     text-transform: capitalize !important;
-    margin-right: 1vw;
+    margin-right: 1vw !important;
    
   }
   .content{
@@ -1052,6 +1067,9 @@ font-weight: bold;
   left: 30px;
   padding:3px;
  
+}
+.account{
+  position: relative;
 }
 .gallery-card-mobile{
   position: relative;

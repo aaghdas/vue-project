@@ -10,28 +10,32 @@
                
               
             <ul v-show="!mobile" class="navigation">
-                <li><v-icon id="homeIcon-dropdown" @click="$router.push({path: '/login'})">mdi-account-circle </v-icon>
-                <span id="anmelden" class="link" @click="toggleArrowbox"> {{benutzername}}</span>
                 
-                </li>
-                
+                <div class="account"> 
+                    <li>
+                        <v-icon id="homeIcon-dropdown" @click="toggleArrowbox">mdi-account-circle </v-icon>
+                        <span id="anmelden" class="link" @click="toggleArrowbox"> {{benutzername}}</span>
+                    </li>
+                    <div v-if="showArrowBox" class="arrowBox">
+                        <p class="link-konto" @click="toggleConfirmMessage" >Konto löschen</p>
+                        <div v-if="showConfirmMessage">
+                            <p class="confirmMessage" >Möchtest du wirklich dein Konto löchen? </p>
+                            <v-btn   class="admin-button-close" type="button"   @click="deleteAccount(this.id)"> Ja löschen</v-btn>
+                            <v-btn   @click="toggleConfirmMessage"  class="admin-button" type="button" >Abbrechen</v-btn>
+                        </div>
+                    </div>
+                </div>    
                 <li><router-link class="link" :to="{name: 'ContactFormPage'}">Kontakt</router-link></li>
                 <li><router-link class="link" :to="{name: 'GalleryComponent'}">Gallery</router-link></li>
                 <li><router-link class="link" :to="{name: 'QuizApp'}">Quiz</router-link></li>
                 <li >
                     <v-icon id="homeIcon-dropdown" @click="logout">mdi-logout</v-icon>
-                    <span class="link" @click="logout">Abmelden</span></li>
+                    <span class="link" @click="logout">Abmelden</span>
+                </li>
+                
                 
             </ul>
-            <div v-if="showArrowBox" class="arrowBox">
-                
-                <p class="link-konto" @click="toggleConfirmMessage" >Konto löschen</p>
-                <div>
-                    <p class="confirmMessage" v-if="showConfirmMessage">Möchtest du wirklich dein Konto löchen? </p>
-                    <v-btn  v-if="showConfirmMessage" class="admin-button-close" type="button"   @click="deleteAccount(this.id)"> Ja löschen</v-btn>
-                    <v-btn  v-if="showConfirmMessage" @click="toggleConfirmMessage"  class="admin-button" type="button" >Abbrechen</v-btn>
-                </div>
-            </div>
+            
             <div class="icon">
                 <i id="icon" @click="toggleMobileNav" v-show="mobile" class="fa fa-navicon"  :class="{'icon-active' : mobileNav}"></i>
             </div>
@@ -55,8 +59,22 @@
                     <li id="li-dropdown" ><i class="fa fa-question-circle-o" id="quiz-icon-dropdown" @click="$router.push({path: '/quiz'})"></i>
                     <span> <router-link class="link-dropdown" :to="{name: 'QuizApp'}">Quiz</router-link></span></li>
                     <li id="li-dropdown">
-                    <v-icon id="quiz-icon-dropdown" @click="logout">mdi-logout</v-icon>
-                    <span class="link-dropdown" @click="logout"> Abmelden</span></li>
+                        <v-icon id="quiz-icon-dropdown" @click="logout">mdi-logout</v-icon>
+                        <span class="link-dropdown" @click="logout"> Abmelden</span>
+                    </li>
+                    <li  id="li-dropdown">  
+                        <v-icon id="quiz-icon-dropdown" >mdi-delete</v-icon>
+                        <span class="link-dropdown" @click="toggleConfirmMessageAndArrowbox">Konto Löschen</span>
+                        
+                        <div v-if="showArrowBox" class="arrowBox-dropdown">
+                            <p class="confirmMessage" >Möchtest du wirklich dein Konto löchen? </p>
+                            <div >
+                                
+                                <v-btn   class="admin-button-close" type="button"   @click="deleteAccount(this.id)"> Ja löschen</v-btn>
+                                <v-btn   @click="toggleConfirmMessageAndArrowbox"  class="admin-button" type="button" >Abbrechen</v-btn>
+                            </div>
+                        </div>
+                    </li>
                     
                     
                     
@@ -126,6 +144,10 @@
         },
         toggleArrowbox(){
             this.showArrowBox = !this.showArrowBox;
+        },
+        toggleConfirmMessageAndArrowbox(){
+            this.toggleConfirmMessage();
+            this.toggleArrowbox();
         },
         logout() {
             localStorage.clear();
