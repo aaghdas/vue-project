@@ -21,20 +21,38 @@
     export default {
 
         name:'HeaderAdmin',
-        
+        data(){
+            return{
+                benutzername:'',
+            }
+        },
         
 
     methods:{
         logout() {
+            
+            if (this.benutzername === 'Admin' ) {
+                    this.$router.push({ name: 'HomePage' });            
+            }
         localStorage.clear();
         this.$emit('update:isLoggedIn', false);
-        this.$router.push({ name:'LogOut' }).catch(() => {});
+        
         },
 
          
     },
+
    
-      
+
+    async mounted(){
+       
+       let user = await localStorage.getItem('user-info');
+       if(user){
+        this.benutzername = await JSON.parse(user).benutzername;
+       }
+       
+   
+    } 
 };
 
 

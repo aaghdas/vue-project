@@ -1851,23 +1851,23 @@ button {
       }
 .formContainer-login{
   margin:15vh auto 2vh auto !important;
-  width:35vw;
+  width:fit-content;
   display: flex; /* Aktiviert das Flexbox-Layout */
   flex-direction: column; /* Ordnet die Elemente in einer Spalte an */
   align-items: center; /* Zentriert die Elemente horizontal */
   justify-content: center;
-  padding: 3vh 1vw;
+  padding: 3vh 3vw;
   background-color: whitesmoke;
   border-radius: 10px;
 }
 .formContainer-register{
   margin:5vh auto 2vh auto !important;
-  width:35vw;
+  width:fit-content;
   display: flex; /* Aktiviert das Flexbox-Layout */
   flex-direction: column; /* Ordnet die Elemente in einer Spalte an */
   align-items: center; /* Zentriert die Elemente horizontal */
   justify-content: center;
-  padding: 3vh 1vw;
+  padding: 3vh 3vw;
   background-color: whitesmoke;
   border-radius: 10px;
 }
@@ -1879,7 +1879,12 @@ button {
   justify-content: center;
   padding: 2vh 1vw;
   font-size:calc(15px + 4 * (100vw - 320px) / (1600 - 320));
-  color: white ;
+  color: rgb(196, 70, 11);
+ 
+}
+.password-tipps{
+  margin-left: auto;
+  margin-right: auto;
  
 }
 .login-btn{
@@ -1900,12 +1905,23 @@ button {
 }
 .strong-password{
   background-color: rgb(210, 83, 4) !important;
-  font-size:  calc(8px + 4 * (100vw - 320px) / (1600 - 320)) !important;
+  font-size:  calc(12px + 4 * (100vw - 320px) / (1600 - 320)) !important;
+  color: white !important;
   padding-bottom: 5vh;
+  text-transform:none!important;
+  margin-bottom: 15px !important;
   
 }
 .card-form{
   margin:2vh auto;
+  width:36vw;
+  padding-left:5px !important;
+  padding-right:5px !important;
+  padding-bottom: 5px !important;
+  text-align: center;
+  @media(max-width:550px){width:90vw;}
+  
+  
   
 }
 
@@ -2356,4 +2372,17 @@ td:before ,.td-termin:before{
   }
 }
 
+.notfound{
+  background-color: white;
+  width:100vw;
+  height: 100vh;
+}
+.notfound-text{
+  color: black;
+  text-align: center;
+  text-decoration: underline;
+  margin-top: 10vh;
+  
+  
 
+}

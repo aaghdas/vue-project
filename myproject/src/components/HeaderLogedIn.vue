@@ -152,15 +152,13 @@
         logout() {
             localStorage.clear();
             this.$emit('update:this.isLoggedIn', false);
-           setTimeout(() => {
-            // Reload page after a short delay to ensure that `isLoggedIn` emits before the page refreshes
-                if (this.$route.path === '/termin') {
+            let path = this.$route.path;
+            if (path === '/termin' || path === '/kontakt' )  {
                     this.$router.push({ name: 'HomePage' });
                 }else{
                 this.$router.go(0);
                 }
-            }, 50);
-                    
+            
         },
 
         toggleMobileNav(){

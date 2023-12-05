@@ -18,8 +18,7 @@
                     
                     <div class="icon-wrapper">
                         <router-link :to="'/update/'+item.id"><v-icon class="edit" >mdi-pencil</v-icon></router-link>
-                            <v-icon class="delete" @click="deleteDogs(item.id)">mdi-delete</v-icon>
-                            
+                        <v-icon class="delete" @click="deleteDogs(item.id)">mdi-delete</v-icon>        
                     </div>
                 </div>
                 
@@ -42,7 +41,8 @@ export default{
         return{ 
 
             showMessageBox:false,
-            dogs:[], 
+            dogs:[],
+           
           
         }
     },
@@ -74,8 +74,9 @@ methods:{
 
 },
 
-async mounted(){
-   this.loadData();
+ mounted(){
+   
+    this.loadData();
     
 },
 

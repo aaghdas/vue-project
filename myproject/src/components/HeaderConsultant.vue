@@ -73,20 +73,11 @@
         logout() {
             localStorage.clear();
             this.$emit('update:this.isLoggedIn', false);
-           setTimeout(() => {
-            // Reload page after a short delay to ensure that `isLoggedIn` emits before the page refreshes
-                if (this.$route.path === '/termin') {
-                    this.$router.push({ name: 'HomePage' });
-                }else if(this.$route.path === '/berater') {
-                    this.$router.push({ name: 'HomePage' });
-                }
-                
-                else{
-                this.$router.go(0);
-                }
-            }, 50);
-                    
-        },
+            let path = this.$route.path;
+            if (path === '/berater' || path === '/termine' || path === '/terminbuchen' || path === '/nachrichten') {
+                    this.$router.push({ name: 'HomePage' });            
+            }
+        }
     }
 }
   

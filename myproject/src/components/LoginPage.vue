@@ -102,13 +102,13 @@
           :rules="passwordRules"  
           >
           <template v-slot:append-inner>
-            <v-btn class="strong-password" @click="generateStrongPassword">Starkes Passwort</v-btn>  
+              
             <v-icon  id="eye" @click="showPassword =!showPassword">
               {{ showPassword ? 'mdi-eye' : 'mdi-eye-off' }}
             </v-icon>   
           </template>
           </v-text-field>
-          
+          <v-btn class="strong-password" @click="generateStrongPassword">Starkes Passwort generieren lassen</v-btn>
            <v-text-field 
             label="Passwort wiederholen"
             variant="outlined"
@@ -126,14 +126,14 @@
             </template>
         </v-text-field>
 
-        <v-card class="card-form">
-            <v-card-title>Tipps für Starkes Passwort:</v-card-title>
-            <v-card-text> Im Eingabefeld "Passwort" auf dem Knopf "starkes Passwort" klicken, um automatisch und zufällig ein starkes Passwort generieren zu lassen. Alternative kannst Du auch eigenes Passwort mit folgenden Regeln verwenden:<br/> mind. 8 Charakter lang, mind. einen Großbuchstaben und einen Kleinbuchstaben, mind. ein Sonderzeichen.Viel Erfolg</v-card-text>
-          </v-card>
+        
 
         <v-btn class="login-btn" @click="checkBenutzername();checkPassword();checkName();checkEmail();checkEmailUnique();checkConfirmEmail();signUp()">Registrieren</v-btn>
       </v-form> 
-
+      <v-card class="card-form">
+            <v-card-title class="password-tipps">Tipps für Starkes Passwort:</v-card-title>
+            <v-card-text class="password-tipps"> mind. 8 Charakter lang, mind. einen Großbuchstaben und einen Kleinbuchstaben, mind. ein Sonderzeichen.</v-card-text>
+          </v-card>
         </v-container > 
         
         <FooterComponent/> 

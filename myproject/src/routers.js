@@ -15,6 +15,7 @@ import ConsultantPage from './components/ConsultantPage.vue'
 import ConsultantAppointments from './components/ConsultantAppointments.vue'
 import ConsultantBookAppointments from './components/ConsultantBookAppointments.vue'
 import ConsultantMessages from './components/ConsultantMessages.vue'
+import NotFoundComponent from './components/NotFoundComponent';
 
 const routes = [
     {
@@ -40,14 +41,22 @@ const routes = [
     {
         name:'AdminDashboard',
         component: AdminDashboard,
-        path: '/admin'
+        path: '/admin',
+        meta: { requiresAdmin: true } 
     },
 
-    
+    {
+    name:'NotFoundComponent',
+    component: NotFoundComponent,
+    path: '/:pathMatch(.*)*',
+  },
+
+  
     {
         name: 'AddDogs',
         component: AddDogs,
-        path: '/add'
+        path: '/add',
+        meta: { requiresAdmin: true } 
     },
 
    
@@ -55,7 +64,8 @@ const routes = [
     {
         name: 'UpdateDogs',
         component: UpdateDogs,
-        path: '/update/:id'
+        path: '/update/:id',
+        meta: { requiresAdmin: true } 
     },
     
     {
@@ -88,22 +98,26 @@ const routes = [
     {
         name: 'ConsultantPage',
         component: ConsultantPage,
-        path: '/berater'
+        path: '/berater',
+        meta: { requiresBerater: true } 
     },
     {
         name: 'ConsultantBookAppointments',
         component: ConsultantBookAppointments,
-        path: '/terminbuchen'
+        path: '/terminbuchen',
+        meta: { requiresBerater: true } 
     },
     {
         name: 'ConsultantMessages',
         component: ConsultantMessages,
-        path: '/nachrichten'
+        path: '/nachrichten',
+        meta: { requiresBerater: true } 
     },
     {
         name: 'ConsultantAppointments',
         component: ConsultantAppointments,
-        path: '/termine'
+        path: '/termine',
+        meta: { requiresBerater: true } 
     }
 
 
@@ -126,5 +140,22 @@ const router = createRouter(
    localStorage.setItem('lastPath', from.path) 
    next()
  });
+
+ router.beforeEach((to, from, next) => {
+    // Überprüfen, ob der Benutzer eingeloggt ist und welche Rolle er hat
+    const isLoggedIn = localStorage.getItem('user-info');
+    const userInfo = isLoggedIn ? JSON.parse(isLoggedIn) : null;
+    const isAdmin = userInfo && userInfo.benutzername === 'Admin';
+    const isBerater = userInfo && userInfo.benutzername === 'Berater';
+  
+    // Wenn der Benutzer nicht eingeloggt ist oder nicht die erforderliche Rolle hat, leite zu 404 um
+    if (to.matched.some(record => record.meta.requiresAdmin) && !isAdmin) {
+      next({ path: '/404' });
+    } else if (to.matched.some(record => record.meta.requiresBerater) && !isBerater) {
+      next({ path: '/404' });
+    } else {
+      next();
+    }
+  });
 
 export default router;
