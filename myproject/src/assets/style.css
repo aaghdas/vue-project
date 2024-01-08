@@ -1,4 +1,16 @@
-
+.datenschutz{
+  color: white;
+  margin-top:20vh;
+  margin-left: 25vw;
+  text-align: justify;
+  max-width: 50vw;
+  line-height: 2;
+}
+.datenschutz-title{
+  color: white;
+  
+  font-size: calc(14px + 6 * (100vw - 320px) / (1600 - 320));
+}
 #headertest{
 background-color: black;
 
@@ -26,7 +38,7 @@ ul, .link{
   color: white;
   list-style:none;
   text-decoration: none;
-   text-transform: capitalize;
+   text-transform: none;
 }
 li{
   text-transform: uppercase;
@@ -46,7 +58,27 @@ li{
   color:rgb(0,255,128);
   border-color:rgb(0,255,128) ;
 }
+.legal-info {
+  margin-top: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+}
 
+.legal-info .legal {
+  color: white !important;
+  margin: 0 8px;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+.legal-info p {
+  font-weight: bold;
+  font-size: 16px;
+  margin: 0 8px;
+  color: white !important;
+}
 .arrowBox, .arrowBox-dropdown{
   
   width:180px;
@@ -354,7 +386,7 @@ margin-left:auto;
   padding-left:3px;
   
   border-bottom: 1px solid transparent;
-  text-transform: capitalize;
+  text-transform:none;
   font-size: calc(16px + 4 * (100vw - 320px) / (1600 - 320));
   
 }

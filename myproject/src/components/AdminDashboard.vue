@@ -1,6 +1,6 @@
 <template>
     <v-app id="gallery-app" >
-        <HeaderAdmin  /> 
+        <HeaderAdmin/> 
     <div class="admin-top">
             <p class="admin-top-item">Neue Hunde der Gallerie  hinzufügen</p>
             <span >
@@ -49,7 +49,7 @@ export default{
 
 
 components:{
-    HeaderAdmin ,
+    HeaderAdmin,
     FooterComponent,
     
 },

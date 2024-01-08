@@ -28,6 +28,7 @@
                 <li><router-link class="link" :to="{name: 'ContactFormPage'}">Kontakt</router-link></li>
                 <li><router-link class="link" :to="{name: 'GalleryComponent'}">Gallery</router-link></li>
                 <li><router-link class="link" :to="{name: 'QuizApp'}">Quiz</router-link></li>
+                <li><router-link class="link" :to="{name: 'BookAppointment'}">Beratungstermin</router-link></li>
                 <li >
                     <v-icon id="homeIcon-dropdown" @click="logout">mdi-logout</v-icon>
                     <span class="link" @click="logout">Abmelden</span>
@@ -50,9 +51,12 @@
                     <li id="li-dropdown"><i class="fa fa-home" id="homeIcon-dropdown" @click="$router.push({path: '/'})"></i>
                     <span> <router-link class="link-dropdown" :to="{name: 'HomePage'}">Startseite</router-link></span></li>
 
-                    <li id="li-dropdown"><i class="fa fa-envelope-o" id="contact-icon-dropdown" @click="$router.push({path: '/'})"></i>
-                    <span> <router-link class="link-dropdown" :to="{name: 'HomePage'}">Kontakt</router-link></span></li>
+                    <li id="li-dropdown"><i class="fa fa-envelope-o" id="contact-icon-dropdown" @click="$router.push({path: '/kontakt'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'ContactFormPage'}">Kontakt</router-link></span></li>
                     
+                    <li id="li-dropdown" ><i class="fa fa-calendar" id="gallery-icon-dropdown" @click="$router.push({path: '/termin'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'BookAppointment'}">Beratungstermin</router-link></span></li>
+
                     <li id="li-dropdown" ><i class="fa fa-image" id="gallery-icon-dropdown" @click="$router.push({path: '/'})"></i>
                     <span> <router-link class="link-dropdown" :to="{name: 'GalleryComponent'}">Gallery</router-link></span></li>
                    

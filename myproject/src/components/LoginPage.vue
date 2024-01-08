@@ -128,7 +128,7 @@
 
         
 
-        <v-btn class="login-btn" @click="checkBenutzername();checkPassword();checkName();checkEmail();checkEmailUnique();checkConfirmEmail();signUp()">Registrieren</v-btn>
+        <v-btn class="login-btn" @click="signUp">Registrieren</v-btn>
       </v-form> 
       <v-card class="card-form">
             <v-card-title class="password-tipps">Tipps für Starkes Passwort:</v-card-title>
@@ -389,41 +389,46 @@
         },
 
 
-      async signUp(){
-        let isBenutzernameGültig = this.checkBenutzername();
-        let isPasswordValid = this.checkPassword();
-        let isNameValid = this.checkName();
-        let isEmailValid =  this.checkEmail();
-        let isEmailUnique = this.checkEmailUnique();
-        let isConfirmEmailValid =  this.checkConfirmEmail();
-        let isPasswordConfirmValid =  this.checkPasswordConfirm();
+        async signUp() {
+  let isBenutzernameGültig = await this.checkBenutzername();
+  let isPasswordValid = await this.checkPassword();
+  let isNameValid = await this.checkName();
+  let isEmailValid = await this.checkEmail();
+  let isEmailUnique =await this.checkEmailUnique();
+  let isConfirmEmailValid =await this.checkConfirmEmail();
+  let isPasswordConfirmValid = await this.checkPasswordConfirm();
 
-        if(isPasswordValid===true && isPasswordConfirmValid===true && isBenutzernameGültig===true && isNameValid===true && isEmailValid===true && isEmailUnique===true && isConfirmEmailValid===true){
-            
-              let result = await axios.post("http://localhost:3000/users", {
-                name:this.name,
-                email:this.email,
-                benutzername:this.benutzername,
-                password:this.password
-              });
+  if (
+    isPasswordValid === true &&
+    isPasswordConfirmValid === true &&
+    isBenutzernameGültig === true &&
+    isNameValid === true &&
+    isEmailValid === true &&
+    isEmailUnique === true &&
+    isConfirmEmailValid === true
+  ) {
+    try {
+      let response = await axios.post(`http://localhost:3000/users`, {
+        name: this.name,
+        email: this.email,
+        benutzername: this.benutzername,
+        password: this.password,
+      });
 
-              console.warn("user",result);
-              
-              if(result.status==201){
-            
-                localStorage.setItem("user-info",JSON.stringify(result.data))
-                let lastPath = localStorage.getItem('lastPath') 
-                  if (lastPath) { 
-                    this.$router.push(lastPath)
-                  }else{
-                  this.$router.push({name:'HomePage'});
-                  }
-              }
-        } 
-        
-        
-      },
-
+      if (response.status === 201) {
+        localStorage.setItem("user-info", JSON.stringify(response.data));
+        let lastPath = localStorage.getItem("lastPath");
+        if (lastPath) {
+          this.$router.push(lastPath);
+        } else {
+          this.$router.push({ name: "HomePage" });
+        }
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+}
        
 
         

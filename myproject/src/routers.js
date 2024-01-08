@@ -16,6 +16,8 @@ import ConsultantAppointments from './components/ConsultantAppointments.vue'
 import ConsultantBookAppointments from './components/ConsultantBookAppointments.vue'
 import ConsultantMessages from './components/ConsultantMessages.vue'
 import NotFoundComponent from './components/NotFoundComponent';
+import DatenSchutz from './components/DatenSchutz.vue';
+import AGB from './components/AGB.vue';
 
 const routes = [
     {
@@ -23,7 +25,16 @@ const routes = [
         component: GalleryComponent,
         path: '/gallery'
     },
-   
+    {
+        name: 'DatenSchutz',
+        component: DatenSchutz,
+        path: '/datenschutz'
+    },
+    {
+        name: 'AGB',
+        component: AGB,
+        path: '/agb'
+    },
     
     {
 

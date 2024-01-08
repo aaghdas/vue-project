@@ -1,64 +1,194 @@
 <template>
-    
-       
-            <v-app-bar id="header">
+    <header id="headertest" :class="{'scrolled-nav' : scrollPosition}">
+        <nav>
+           
+            <div id="home-icon" class="home" @click="$router.push({path: '/'})">
+                   <span id="dogs24">&nbsp; Hunde.de</span> <v-icon @click="$router.push({path: '/'})">mdi-home </v-icon>
+                    <v-spacer></v-spacer>    
+            </div>                     
+              
+               
+              
+            <ul v-show="!mobile" class="navigation">
                 
-                <v-btn> HübscheHunde Admin </v-btn> 
+                <div class="account"> 
+                    <li>
+                        <v-icon id="homeIcon-dropdown" @click="toggleArrowbox">mdi-account-circle </v-icon>
+                        <span id="anmelden" class="link" @click="toggleArrowbox"> {{benutzername}}</span>
+                    </li>
+                    <div v-if="showArrowBox" class="arrowBox">
+                        <p class="link-konto" @click="toggleConfirmMessage" >Konto löschen</p>
+                        <div v-if="showConfirmMessage">
+                            <p class="confirmMessage" >Möchtest du wirklich dein Konto löchen? </p>
+                            <v-btn   class="admin-button-close" type="button"   @click="deleteAccount(this.id)"> Ja löschen</v-btn>
+                            <v-btn   @click="toggleConfirmMessage"  class="admin-button" type="button" >Abbrechen</v-btn>
+                        </div>
+                    </div>
+                </div>    
+                <li><router-link class="link" :to="{name: 'ContactFormPage'}">Kontakt</router-link></li>
+                <li><router-link class="link" :to="{name: 'GalleryComponent'}">Gallery</router-link></li>
+                <li><router-link class="link" :to="{name: 'QuizApp'}">Quiz</router-link></li>
+                <li >
+                    <v-icon id="homeIcon-dropdown" @click="logout">mdi-logout</v-icon>
+                    <span class="link" @click="logout">Abmelden</span>
+                </li>
                 
-                <v-spacer></v-spacer>
-                <v-app-bar-items class="hidden sm-and-down">
+                
+            </ul>
+            
+            <div class="icon">
+                <i id="icon" @click="toggleMobileNav" v-show="mobile" class="fa fa-navicon"  :class="{'icon-active' : mobileNav}"></i>
+            </div>
+            <transition name="mobile-nav">
+                <ul v-show="mobileNav" class="dropdown-nav">
+
+                    <li id="account-li-dropdown">
+                    <v-icon id="homeIcon-dropdown" @click="$router.push({path: '/login'})">mdi-account-circle </v-icon>
+                    <span> <router-link class="link-dropdown" :to="{name: 'LoginPage'}">{{benutzername}}</router-link></span></li>
+                    <v-divider thickness="3px" :dark="isDark"></v-divider>
+
+                    <li id="li-dropdown"><i class="fa fa-home" id="homeIcon-dropdown" @click="$router.push({path: '/'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'HomePage'}">Startseite</router-link></span></li>
+
+                    <li id="li-dropdown"><i class="fa fa-envelope-o" id="contact-icon-dropdown" @click="$router.push({path: '/'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'HomePage'}">Kontakt</router-link></span></li>
                     
-                    <v-btn  @click="logout" >Logout</v-btn>
-                </v-app-bar-items>
-            </v-app-bar>
-        
-     
+                    <li id="li-dropdown" ><i class="fa fa-image" id="gallery-icon-dropdown" @click="$router.push({path: '/'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'GalleryComponent'}">Gallery</router-link></span></li>
+                   
+                    <li id="li-dropdown" ><i class="fa fa-question-circle-o" id="quiz-icon-dropdown" @click="$router.push({path: '/quiz'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'QuizApp'}">Quiz</router-link></span></li>
+                    <li id="li-dropdown">
+                        <v-icon id="quiz-icon-dropdown" @click="logout">mdi-logout</v-icon>
+                        <span class="link-dropdown" @click="logout"> Abmelden</span>
+                    </li>
+                    <li  id="li-dropdown">  
+                        <v-icon id="quiz-icon-dropdown" >mdi-delete</v-icon>
+                        <span class="link-dropdown" @click="toggleConfirmMessageAndArrowbox">Konto Löschen</span>
+                        
+                        <div v-if="showArrowBox" class="arrowBox-dropdown">
+                            <p class="confirmMessage" >Möchtest du wirklich dein Konto löchen? </p>
+                            <div >
+                                
+                                <v-btn   class="admin-button-close" type="button"   @click="deleteAccount(this.id)"> Ja löschen</v-btn>
+                                <v-btn   @click="toggleConfirmMessageAndArrowbox"  class="admin-button" type="button" >Abbrechen</v-btn>
+                            </div>
+                        </div>
+                    </li>
+                    
+                    
+                    
+                </ul>
+            </transition>
+            
+        </nav>
+    </header>
 </template>
 
 
+
+
 <script>
+ import axios from 'axios'
+
  
     export default {
 
         name:'HeaderAdmin',
+        
         data(){
-            return{
-                benutzername:'',
-            }
-        },
-        
-
-    methods:{
-        logout() {
-            
-            if (this.benutzername === 'Admin' ) {
-                    this.$router.push({ name: 'HomePage' });            
-            }
-        localStorage.clear();
-        this.$emit('update:isLoggedIn', false);
-        
-        },
-
-         
+        return{
+            showArrowBox :false,
+            showConfirmMessage:false,
+            benutzername:'', 
+            id:'', 
+            scrollPosition: null,
+            mobile: false,
+            mobileNav: false,
+            windowWidth: null,   
+            isLoggedIn: false  
+        }
     },
 
-   
+    created(){
+            window.addEventListener('resize',this.checkScreen);
+            this.checkScreen();
+
+        },
+
+    methods:{
+
+        async deleteAccount(id){
+            try {
+                let result = await axios.delete("http://localhost:3000/users/"+id);
+                console.warn(result)
+                if(result.status == 200){
+                    this.loadData();
+                    this.toggleArrowbox();
+                    this.logout();
+                }
+            } catch (error) {
+                console.error(`Error: ${error}`);
+            }
+        },
+
+    async loadData(){
+        let result =await axios.get("http://localhost:3000/users");
+        this.users = result.data;
+
+        
+    },
+
+        toggleConfirmMessage(){
+            this.showConfirmMessage = !this.showConfirmMessage;
+        },
+        toggleArrowbox(){
+            this.showArrowBox = !this.showArrowBox;
+        },
+        toggleConfirmMessageAndArrowbox(){
+            this.toggleConfirmMessage();
+            this.toggleArrowbox();
+        },
+        logout() {
+            
+            
+            localStorage.clear();
+            this.$emit('update:isLoggedIn', false);
+            this.$router.push({ name: 'HomePage' });
+            
+            },
+
+        toggleMobileNav(){
+            this.mobileNav = !this.mobileNav;
+           },
+
+        checkScreen(){
+            this.windowWidth = window.innerWidth;
+            if(this.windowWidth <= 750){
+                this.mobile = true;
+                return;
+            }
+                
+            this.mobile = false;
+            this.mobileNav= false;
+            return;
+        }     
+    },
 
     async mounted(){
        
-       let user = await localStorage.getItem('user-info');
+       let user = localStorage.getItem('user-info');
        if(user){
         this.benutzername = await JSON.parse(user).benutzername;
        }
        
    
-    } 
+    }     
 };
-
-
 </script>
 
 
 
 
 
+           
