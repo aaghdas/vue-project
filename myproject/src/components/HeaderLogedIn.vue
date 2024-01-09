@@ -57,7 +57,7 @@
                     <li id="li-dropdown" ><i class="fa fa-calendar" id="gallery-icon-dropdown" @click="$router.push({path: '/termin'})"></i>
                     <span> <router-link class="link-dropdown" :to="{name: 'BookAppointment'}">Beratungstermin</router-link></span></li>
 
-                    <li id="li-dropdown" ><i class="fa fa-image" id="gallery-icon-dropdown" @click="$router.push({path: '/'})"></i>
+                    <li id="li-dropdown" ><i class="fa fa-image" id="gallery-icon-dropdown" @click="$router.push({path: '/gallery'})"></i>
                     <span> <router-link class="link-dropdown" :to="{name: 'GalleryComponent'}">Gallery</router-link></span></li>
                    
                     <li id="li-dropdown" ><i class="fa fa-question-circle-o" id="quiz-icon-dropdown" @click="$router.push({path: '/quiz'})"></i>

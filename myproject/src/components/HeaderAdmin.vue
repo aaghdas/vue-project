@@ -50,10 +50,13 @@
                     <li id="li-dropdown"><i class="fa fa-home" id="homeIcon-dropdown" @click="$router.push({path: '/'})"></i>
                     <span> <router-link class="link-dropdown" :to="{name: 'HomePage'}">Startseite</router-link></span></li>
 
-                    <li id="li-dropdown"><i class="fa fa-envelope-o" id="contact-icon-dropdown" @click="$router.push({path: '/'})"></i>
-                    <span> <router-link class="link-dropdown" :to="{name: 'HomePage'}">Kontakt</router-link></span></li>
+                    <li id="li-dropdown"><i class="fa fa-envelope-o" id="contact-icon-dropdown" @click="$router.push({path: '/kontakt'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'ContactFormPage'}">Kontakt</router-link></span></li>
                     
-                    <li id="li-dropdown" ><i class="fa fa-image" id="gallery-icon-dropdown" @click="$router.push({path: '/'})"></i>
+                    <li id="li-dropdown" ><i class="fa fa-calendar" id="gallery-icon-dropdown" @click="$router.push({path: '/termin'})"></i>
+                    <span> <router-link class="link-dropdown" :to="{name: 'BookAppointment'}">Beratungstermin</router-link></span></li>
+
+                    <li id="li-dropdown" ><i class="fa fa-image" id="gallery-icon-dropdown" @click="$router.push({path: '/gallery'})"></i>
                     <span> <router-link class="link-dropdown" :to="{name: 'GalleryComponent'}">Gallery</router-link></span></li>
                    
                     <li id="li-dropdown" ><i class="fa fa-question-circle-o" id="quiz-icon-dropdown" @click="$router.push({path: '/quiz'})"></i>
