@@ -1,13 +1,16 @@
 .datenschutz{
-  color: white;
+  
   margin-top:20vh;
   margin-left: 25vw;
   text-align: justify;
   max-width: 50vw;
   line-height: 2;
+  background-color: whitesmoke;
+  padding:3vh 3vw;
+  border-radius: 5px;
 }
 .datenschutz-title{
-  color: white;
+  
   
   font-size: calc(14px + 6 * (100vw - 320px) / (1600 - 320));
 }
@@ -34,7 +37,7 @@ margin: 0 auto;
 }
 }
 ul, .link{
-  font-weight: 300;
+  font-weight: 200;
   color: white;
   list-style:none;
   text-decoration: none;
@@ -48,7 +51,7 @@ li{
   font-family: "Lucida Sans";  
 }
 .link{
-  font-size: 14px;
+  font-size: 16px;
   transition: .5s ease all;
   padding-bottom: 4px;
   border-bottom: 1px solid transparent;
@@ -67,12 +70,14 @@ li{
 }
 
 .legal-info .legal {
-  color: white !important;
+  color: whitesmoke;
   margin: 0 8px;
   font-size: 14px;
-  text-decoration: none;
+ 
 }
-
+.legal-info .legal:hover {
+  color: rgb(21, 190, 64);
+ }
 .legal-info p {
   font-weight: bold;
   font-size: 16px;
@@ -828,7 +833,7 @@ line-height: 2;
   margin-top: 2px;
   
   color: white;
-  font-size:calc(10px + 4 * (100vw - 320px) / (1600 - 320)); 
+  font-size:calc(12px + 6 * (100vw - 320px) / (1600 - 320)); 
  text-transform:capitalize;
   
 }
@@ -1915,16 +1920,17 @@ button {
  
 }
 .password-tipps{
-  margin-left: auto;
-  margin-right: auto;
+  
+ text-align: left !important;
  
 }
 .login-btn{
-  width:20vw;
-  background-color: rgb(2, 221, 112)!important;
+  width:30vw;
+  @media(max-width:600px){  width: 50vw!important;}
+  background-color: rgb(12, 170, 91)!important;
   color: rgb(255, 255, 255) !important;
-  font-size:  calc(12px + 4 * (100vw - 320px) / (1600 - 320)) !important;
-  font-weight: bold !important;
+  font-size:  calc(12px + 6 * (100vw - 320px) / (1600 - 320)) !important;
+  
   text-transform: capitalize !important;
   border-radius: 5px !important;
 }
@@ -1952,8 +1958,7 @@ button {
   padding-bottom: 5px !important;
   text-align: center;
   @media(max-width:550px){width:90vw;}
-  
-  
+  background-color: rgb(197, 194, 194) !important;
   
 }
 

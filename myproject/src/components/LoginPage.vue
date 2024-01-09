@@ -108,7 +108,7 @@
             </v-icon>   
           </template>
           </v-text-field>
-          <v-btn class="strong-password" @click="generateStrongPassword">Starkes Passwort generieren lassen</v-btn>
+          
            <v-text-field 
             label="Passwort wiederholen"
             variant="outlined"
@@ -125,15 +125,22 @@
                   </v-icon>
             </template>
         </v-text-field>
-
-        
-
-        <v-btn class="login-btn" @click="signUp">Registrieren</v-btn>
-      </v-form> 
-      <v-card class="card-form">
-            <v-card-title class="password-tipps">Tipps für Starkes Passwort:</v-card-title>
+        <v-card class="card-form">
+            <v-card-title >Tipps für Starkes Passwort:</v-card-title>
             <v-card-text class="password-tipps"> mind. 8 Charakter lang, mind. einen Großbuchstaben und einen Kleinbuchstaben, mind. ein Sonderzeichen.</v-card-text>
+            <v-btn class="strong-password" @click="generateStrongPassword">Starkes Passwort generieren</v-btn>
           </v-card>
+        <v-card class="card-form">
+          <p class="password-tipps">
+          {{ string1 }} <router-link to="/agb">AGB</router-link> {{ string2 }}<router-link class="legal" to="/datenschutz">Datenschutzerklärung</router-link> lesen.
+          </p> </v-card>
+      
+        <v-card class="card-form"><input  class="password-tipps" type="checkbox" /><label class="password-tipps"> {{ string3 }}</label> </v-card>
+        <v-btn class="login-btn" @click="signUp">Registrieren</v-btn>
+        
+        
+      </v-form> 
+      
         </v-container > 
         
         <FooterComponent/> 
@@ -205,8 +212,10 @@
               v => /(?=.*[#?!@$+_%^&:.=*~^§|{}(),;-])/.test(v)  
             ],
             passwordWiederholenRules:[v=> !!v , 
-            v => v === this.password ]
-
+            v => v === this.password ],
+            string1 :"Durch die Erstellung eines Kontos erklärst du dich mit der ",
+            string2:  " von Hunde.de einverstanden. Hier kannst du auch unsere ",
+            string3:"Ich möchte den Newsletter der Plattform Hunde.de, betrieben von der Hunde.de, erhalten und per E-Mail informiert werden."
 
 
       };
