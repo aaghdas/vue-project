@@ -204,9 +204,9 @@ export default{
        },
 
        // Methode zum Lesen des Bildes
-       readImage(event) { //Diese Methode wird aufgerufen, wenn ein Benutzer eine Datei auswählt. Das event-Objekt enthält Informationen über das ausgelöste Ereignis.
-           const file = event.target.files[0]; //Hier wird die erste (und in diesem Fall einzige) Datei aus der Dateiauswahl extrahiert. event.target verweist auf das Element, das das Ereignis ausgelöst hat, in diesem Fall das Dateieingabeelement. files[0] verweist auf die erste ausgewählte Datei.
-           const reader = new FileReader(); //Ein FileReader-Objekt zum Lesen der Datei erstellen
+       readImage(event) { // Diese Methode wird aufgerufen, wenn ein Benutzer eine Datei auswählt. Das event-Objekt enthält Informationen über das ausgelöste Ereignis.
+           const file = event.target.files[0]; // Hier wird die erste (und in diesem Fall einzige) Datei aus der Dateiauswahl extrahiert. event.target verweist auf das Element, das das Ereignis ausgelöst hat, in diesem Fall das Dateieingabeelement. files[0] verweist auf die erste ausgewählte Datei.
+           const reader = new FileReader(); // Ein FileReader-Objekt zum Lesen der Datei erstellen
            
            /*ein Ereignishandler, der aufgerufen wird, 
            wenn das Laden der Datei abgeschlossen ist. 
@@ -219,9 +219,9 @@ export default{
            try {
                if (file.size > 200000) { // Wenn die Dateigröße größer als 200 KB ist, Warnung anzeigen
                    alert('Die Dateigröße darf 200 KB nicht überschreiten.');
-               }else{ // wenn Dateigröße max 200kB ist, Datei als Data-URL lesen
+               }else{  // wenn Dateigröße max 200kB ist, Datei als Data-URL lesen
            reader.readAsDataURL(file);}
-           } catch (error) { //Bei einem Fehler in der Konsole anzeigen und Setzt selectedFileName zurück, um keinen fehlerhaften Dateinamen anzuzeigen
+           } catch (error) { // Bei einem Fehler in der Konsole anzeigen und Setzt selectedFileName zurück, um keinen fehlerhaften Dateinamen anzuzeigen
            console.error(error);
            this.selectedFileName = null; 
            }
@@ -241,7 +241,7 @@ export default{
            
        },
 
-       resetFileInput() {  //Methode zum Zurücksetzen der Dateieingabe
+       resetFileInput() {  // Methode zum Zurücksetzen der Dateieingabe
         this.$refs.fileInput.value = null; // setzt das input-Element auf null zurück
         this.selectedFileName = null;
         },
