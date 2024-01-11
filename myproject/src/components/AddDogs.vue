@@ -1,7 +1,8 @@
 <template>
     <v-app id="gallery-app" >
    <HeaderAdmin  /> 
-<div class="addDogs">
+<!-- Formular zum Hinzufügen von Hunden -->
+<div class="addDogs"> 
    <v-form ref="form">
 
        <v-text-field  type="text" name="name" label="Name" v-model="dogs.name"  clearable></v-text-field>
@@ -52,17 +53,19 @@
       
 
    </v-form>  
-      
+   <!-- Container für die Dateieingabe, wenn Benutzer ein Bild für den Hund auswählen möchte  -->
    <div class="file-input">
        
+  <!--  Verstecktes Dateieingabeelement, das auf Dateiänderungen reagiert und die Methode "readImage" aufruft -->
        <input ref="fileInput" type="file" name="image" v-on:change="readImage" style="display: none"  accept="image/jpeg, image/jpg, image/png, image/webp">
        
         <div  class="file-name">
-            <v-btn v-if="!selectedFileName" class="admin-button" small outlined @click="openFileInput">
+            <v-btn v-if="!selectedFileName" class="admin-button" small outlined @click="openFileInput">  <!--  Button zum Öffnen der Dateiauswahl. Wird nur angezeigt, wenn kein Dateiname ausgewählt ist. -->
                 <v-icon  >mdi-upload</v-icon>
                 Bild auswählen
             </v-btn>
 
+           <!-- wenn ein Dateiname ausgewählt ist und die Nachrichtenbox nicht angezeigt wird, zeigt den ausgewählten Dateinamen an. -->
             <div v-if="selectedFileName && !showMessageBox">
                 <v-btn  class="admin-button-filename">{{ selectedFileName }} &nbsp;</v-btn>
                 
@@ -93,6 +96,7 @@ import FooterComponent from './FooterComponent.vue'
 import axios from 'axios';
 
 
+
 export default{
    name:'AddDogs',
    components:{
@@ -100,7 +104,12 @@ export default{
        FooterComponent  
    },
 
-   data(){
+   /*In Vue.js ist data eine Funktion, die ein Objekt zurückgibt. 
+   Dieses Objekt enthält alle Eigenschaften, die man in Vue-Instanz oder -Komponente verfolgen möchte. 
+   Jede Eigenschaft, die in das return-Objekt der data-Funktion aufgenommen wird, ist reaktiv. Das bedeutet,
+   dass Vue.js Änderungen an diesen Eigenschaften erkennt und die Komponente automatisch neu rendert, wenn eine Änderung erkannt wird. */
+
+   data(){ // Methode, die das Datenobjekt zurückgibt, das alle Eigenschaften, die man in Vue-Instanz oder -Komponente verfolgen möchte, enthält. 
 
        return {
            showMessageBox:false,
@@ -130,7 +139,7 @@ export default{
                "Schleswig-Holstein",
                "Thüringen"],
               
-          
+        // Datenobjekt für Hundeinformationen  
            dogs:{
            
            name:'',
@@ -149,24 +158,30 @@ export default{
 
    methods:{
 
-   showMessage(content) {
+    /* Methode zum Anzeigen einer Nachricht, die den Nachrichtinhalt als Parameter entgegennimmt.
+        es beinhaltet Nachrichtinhalt, ein container für Nachrichtinhalt, next-Knopf sowie close-Knopf */
+    showMessage(content) {
      this.messageContent = content;
      this.showMessageBox = true;
      this.showNextButton = true;
      this.showCloseButton = true;
    },
 
+   // Methode zum Ausblenden der container für Nachrichtinhalt, next-Knopf sowie close-Knopf und löscht den Nachrichtinhalt //  
    hideMessageBox() {
     
      this.showMessageBox = false;
      this.showNextButton = false;
      this.showCloseButton  = false;
-     this.messageContent = '';
+     this.messageContent = ''; // Nachrichteninhalt löschen
      
    },
    
+   // Asynchrone Methode zum Hinzufügen von Hunden
        async addDogs(){
            console.warn(this.dogs)
+           /* POST-Anforderung an den Server senden, 
+           in array dogs wird einen Hund mit Eigenschaften Name, Geschlecht usw. eingefügt*/
            const result = await axios.post("http://localhost:3000/dogs",{
                
                name:this.dogs.name,
@@ -179,7 +194,7 @@ export default{
                image:this.dogs.image
            });
            
-           
+           // Wenn der Status der Antwort 201 ist, d.h. die Post-Anforderung erfolgreich ist, gibt die Nachricht mit gegebenen Inhalt aus.
            if(result.status==201){
                let content = 'Sie haben einen neuen Hund erfolgreich hizugefügt!'
                this.showMessage(content)
@@ -188,41 +203,51 @@ export default{
            }
        },
 
-       readImage(event) { 
-           const file = event.target.files[0]; 
-           const reader = new FileReader(); 
+       // Methode zum Lesen des Bildes
+       readImage(event) { //Diese Methode wird aufgerufen, wenn ein Benutzer eine Datei auswählt. Das event-Objekt enthält Informationen über das ausgelöste Ereignis.
+           const file = event.target.files[0]; //Hier wird die erste (und in diesem Fall einzige) Datei aus der Dateiauswahl extrahiert. event.target verweist auf das Element, das das Ereignis ausgelöst hat, in diesem Fall das Dateieingabeelement. files[0] verweist auf die erste ausgewählte Datei.
+           const reader = new FileReader(); //Ein FileReader-Objekt zum Lesen der Datei erstellen
+           
+           /*ein Ereignishandler, der aufgerufen wird, 
+           wenn das Laden der Datei abgeschlossen ist. 
+           In diesem Fall wird das Ergebnis des FileReader (das ist die Bilddaten als Data-URL) in this.dogs.image gespeichert, 
+           und der Dateiname wird in this.selectedFileName gespeichert. */
            reader.onloadend = () => {
             this.dogs.image = reader.result;
             this.selectedFileName = file.name;
            }; 
            try {
-               if (file.size > 200000) { // Max. 200 KB
+               if (file.size > 200000) { // Wenn die Dateigröße größer als 200 KB ist, Warnung anzeigen
                    alert('Die Dateigröße darf 200 KB nicht überschreiten.');
-               }else{
+               }else{ // wenn Dateigröße max 200kB ist, Datei als Data-URL lesen
            reader.readAsDataURL(file);}
-           } catch (error) {
+           } catch (error) { //Bei einem Fehler in der Konsole anzeigen und Setzt selectedFileName zurück, um keinen fehlerhaften Dateinamen anzuzeigen
            console.error(error);
-           this.selectedFileName = null; // Setzt selectedFileName zurück, um keinen fehlerhaften Dateinamen anzuzeigen
+           this.selectedFileName = null; 
            }
        
        },
 
+       // Methode zum Öffnen der Dateiauswahl
        openFileInput() {
        
+        // Klick-Ereignis auf das Dateieingabeelement auslösen und danach Dateieingabe zurücksetzen
         this.$refs.fileInput.click();
-        this.resetFileInput(); // zurücksetzen des inputs und des Dateinamens
+        this.resetFileInput(); 
        },
-
+       // Methode zum Zurücksetzen der Ausgewählten Dateinamen 
        toggleSelectedFileName(){
            this.selectedFileName= null;
            
        },
-       resetFileInput() {
+
+       resetFileInput() {  //Methode zum Zurücksetzen der Dateieingabe
         this.$refs.fileInput.value = null; // setzt das input-Element auf null zurück
         this.selectedFileName = null;
         },
 
-       reset(){
+
+       reset(){ // Methode zum Zurücksetzen des Formulars
            this.dogs.name="";
            this.dogs.Geschlecht="";
            this.dogs.Alter="";
@@ -233,7 +258,7 @@ export default{
            this.fileInput= null;
            this.selectedFileName= null;
            
-           this.hideMessageBox();
+           this.hideMessageBox();  // Nachrichtenbox ausblenden
 
        }
   
