@@ -98,4 +98,4 @@
 
         <!--  die transform-CSS-Eigenschaft definiert, die eine Transformation (wie z.B. Verschiebung, Skalierung, Drehung) auf ein Element anwendet. -->
 
-         <!-- In JavaScript, wenn Sie setTimeout ohne einen zweiten Parameter (die Verzögerungszeit) aufrufen, wird die Funktion so bald wie möglich ausgeführt, aber immer noch nachdem der aktuelle Codeblock abgeschlossen ist. Dies wird oft als “asynchron” bezeichnet, weil es unabhängig vom Rest des Codes ausgeführt wird.
+         <!-- In JavaScript, wenn Sie setTimeout ohne einen zweiten Parameter (die Verzögerungszeit) aufrufen, wird die Funktion so bald wie möglich ausgeführt, aber immer noch nachdem der aktuelle Codeblock abgeschlossen ist. Dies wird oft als “asynchron” bezeichnet, weil es unabhängig vom Rest des Codes ausgeführt wird. -->
