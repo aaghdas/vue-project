@@ -121,7 +121,7 @@ export default {
       });
     },
   
-    sortContacts() { 
+    sortContacts(event) { 
       if (event.target.value === 'aktuellste zuerst') {
         this.contacts = this.contacts.sort(function(a, b) {
           return new Date(b.datumZeit) - new Date(a.datumZeit); 
