@@ -70,20 +70,18 @@
     }
 </script>
 
-/*`this.$nextTick()` ist eine Methode in Vue.js, 
-die einen Rückruf (Callback) ausführt, nachdem Vue.js seine 
+<!--  this.$nextTick() ist eine Methode in Vue.js, die einen Rückruf (Callback) ausführt, nachdem Vue.js seine 
 Änderungen an der DOM abgeschlossen hat. Die Methode akzeptiert eine Funktion als Argument,
- die dann nach der Aktualisierung der DOM ausgeführt wird.
- DOM steht für Document Object Model und ist eine Programmierschnittstelle für Webdokumente. 
- Mit DOM kann eine Webseite als Baumstruktur dargestellt werden, in der jeder Knoten (Node) einem
-  Element, Attribut oder Textknoten entspricht. Mit Hilfe von DOM können Webentwickler auf diese 
-  Baumstruktur zugreifen und Veränderungen an der Webseite in Echtzeit vornehmen.
+die dann nach der Aktualisierung der DOM ausgeführt wird.
+DOM steht für Document Object Model und ist eine Programmierschnittstelle für Webdokumente. 
+Mit DOM kann eine Webseite als Baumstruktur dargestellt werden, in der jeder Knoten (Node) einem
+Element, Attribut oder Textknoten entspricht. Mit Hilfe von DOM können Webentwickler auf diese 
+Baumstruktur zugreifen und Veränderungen an der Webseite in Echtzeit vornehmen.
 
 DOM wird oft in Verbindung mit JavaScript verwendet, um dynamische Webseiten zu erstellen. 
 Das bedeutet, dass Elemente und Inhalte einer Seite in Abhängigkeit von Nutzerinteraktionen oder 
 Datenveränderungen aktualisiert werden können. Ein Beispiel hierfür ist die Erstellung von
- HTML-Forms oder das Hinzufügen von Event-Listenern über JavaScript.
+HTML-Forms oder das Hinzufügen von Event-Listenern über JavaScript.
 
 DOM ist also eine wichtige Grundlage für viele JavaScript-Bibliotheken und Frameworks wie jQuery, 
-React und Vue.js.
-*/
+React und Vue.js. -->

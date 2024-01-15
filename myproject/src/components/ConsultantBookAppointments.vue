@@ -4,38 +4,52 @@
 
           <HeaderConsultant/>
 
-          <div class="calandar-container">
-                  <p id="contact-text">
+          <div class="calandar-container"> <!-- Container für den Kalender und die Terminbuchung -->
+                  <p id="contact-text"> <!-- Textabschnitt, der den Benutzer durch den Buchungsprozess führt -->
                     Hier kannst Du bequem und schnell in vier einfachen Schritten einen Termin buchen. Name des Terminteilnehmers eingeben, Datum und Zeit auswählen und schließlich den ausgewählten Termin bestätigen.</p>
                  
+                    <!-- Eingabefeld für Name des Terminteilnehmers -->
                   <v-text-field 
                     
-                    onkeydown="return event.key != 'Enter';"
-                      label="Name des Teilnehmers"
-                      type="name"
-                      v-model="name"
-                      >
+                    label="Name des Teilnehmers" 
+                    onkeydown="return event.key != 'Enter';"  
+                    type="name"
+                    v-model="name"  
+                  > 
+                      <!-- label: Beschriftung des Eingabefelds -->
+                      <!-- v-model="name" bindet den Wert des Eingabefelds an die Variable "name" -->
+                      <!-- onkeydown="return event.key != 'Enter';" verhindert das Absenden des Formulars mit der Eingabetaste -->
                   </v-text-field>
                   
-                  <div class="termin">
+                  <div class="termin"> <!-- Container für das Datumseingabefeld -->
+                   
+                    <!-- Das Eingabefeld greift auf dem datepicker zu (ref), ermöglicht dem Benutzer, ein Datum einzugeben und ruft bei jeder Eingabe die Funktion checkBooked auf, um die Verfügbarkeit des gewählten Termins zu überprüfen --> 
                     <input  type="text" id="datepicker" ref="datepicker" @input= "checkBooked" placeholder="Datum Auswählen">
                   </div>
-
-
-                  <div class="termin" v-if="timeSlots.length > 0">
-                              <select size="4" class="termin-zeit" id="time" v-model="selectedTime"  >
+                  
+                  <!-- Überprüfen, ob Zeitschlitze vorhanden sind -->
+                  <div class="termin" v-if="timeSlots.length > 0">  
+                    <!-- v-model="selectedTime" bindet den Wert des <select>-Elements an die selectedTime-Eigenschaft der Vue-Instanz.
+                    Wenn ein Benutzer eine Option in der Dropdown-Liste auswählt, wird der Wert dieser Option automatisch der 
+                    selectedTime-Eigenschaft zugewiesen. Umgekehrt, wenn der Wert von selectedTime geändert wird, wird die Auswahl in der 
+                    Dropdown-Liste entsprechend aktualisiert. -->
+                              <select size="4" class="termin-zeit" id="time" v-model="selectedTime"  > <!-- Einen Auswahlliste erstellen -->
                               
                                 <option class="zeitwahl" value="1" >Zeit Auswählen &#128338;</option>
+                                <!-- Für die Optionen in select-Menü wird das Array timeSlots durchitteriert und Start- und Endzeit anzeigt.
+                                Falls time.booked Eigenschaft für jeweiliges Element des Arrays timeSlots true ist, wird diese Option deaktiviert(disabled)   -->
                                 <option class="zeitwahl" v-for="time in timeSlots" :value="time.start" :key="time.start" :disabled="time.booked">{{ time.start }} - {{ time.end }}
+                                  <!--  vor den Optionen, bei denen time.booked den wert true hat, wird string nicht verfügbar angezeigt. -->
                                   <span v-if="time.booked===true">  Nicht verfügbar</span>
                                 </option>
                               </select>
                   </div>
-                      
+                      <!-- Einen Button zum Bestätigen der Buchung hinzufügen, beim klicken wird die Methode confirmBooking aufgerufen -->
                       <v-btn class="termin-absenden" v-if="!showMessageBox" @click="confirmBooking">Termin Buchen</v-btn>
                 
                       <div v-if="showMessageBox" class="message">
                         <p v-html="messageContent"></p>
+                        <!-- Einen Button zur Buchung hinzufügen, beim klicken wird die Methode bookConfirmed aufgerufen, wobei die tatsächtliche Buchung ausgeführt  -->
                         <v-btn v-if="showConfirmButton" @click="bookConfirmed" class="confirmation-buttonJa">Bestätigen</v-btn>
                         <v-btn v-if="showConfirmButton" @click="hideMessageBox" class="confirmation-buttonNein">Abbrechen</v-btn>
                         <v-btn v-if="showCloseButton" @click="close" class="close-button">Vorgang beenden</v-btn>
@@ -62,11 +76,16 @@ export default{
    HeaderConsultant,
    FooterComponent
  },
+
+ /* Die data-Funktion in Vue.js verwenden, um ein Objekt zurückzugeben.
+Dieses Objekt enthält alle Eigenschaften, die in der Vue-Komponente verfolgt oder beobachtet werden sollen.
+Diese Eigenschaften sind reaktiv, d.h. Vue erkennt die Änderungen an diesen Eigenschaften und die Komponente automatisch neu rendert, 
+wenn sie geändert werden. */
  data() {
     return {
       startDate: new Date(),
       numOfDays: 364,
-      timeSlots: [
+      timeSlots: [ // Eine Liste von verfügbaren Zeitschlitzen, jedes Element ist ein Zeitschlitz mit Start- und Endzeit sowie dem boolischen Variable booked.
         { start: '10:00', end: '11:00', booked: false },
         { start: '11:00', end: '12:00', booked: false },
         { start: '12:00', end: '13:00', booked: false },
@@ -95,18 +114,23 @@ export default{
     };
   },
 
-   async mounted() {
+  /* Die mounted-Lifecycle-Hook-Funktion in Vue.js verwenden, die aufgerufen wird, 
+  unmittelbar nachdem die Komponente an den DOM angehängt wurde. 
+  Da die Komponente nun eingebunden ist, können wir auf die Eigenschaften zugreifen, die zur Komponenteninstanz gehören */
    
-    for (let i = 0; i < this.numOfDays; i++) {
-      const date = new Date(this.startDate);
-      date.setDate(date.getDate() + i);
-      const dateStr = date.toISOString().slice(0, 10);
-      const timeSlots = [
-        { start: '10:00', end: '11:00', booked: false },
+  async mounted() {  //jedes mal beim Laden der Seite müssen die Daten über verfügare Datum und Zeit aktualisiert werden.
+    
+    //Diese Methode erstellt eine Liste von Datumsoptionen (dateOptions), wobei jede Option ein bestimmtes Datum und die zugehörigen Zeitschlitze enthält. 
+    for (let i = 0; i < this.numOfDays; i++) {  // Diese Schleife läuft für die Anzahl der Tage, die in this.numOfDays definiert sind. Für jeden Tag wird eine Reihe von Operationen durchgeführt.
+      const date = new Date(this.startDate);  // Ein neues Datum basierend auf dem Startdatum erstellen
+      date.setDate(date.getDate() + i); // Das Datum um die aktuelle Schleifeniteration erhöhen.Das Datum wird um i Tage erhöht. 
+      //date.getDate() gibt den Tag des Monats (zwischen 1 und 31) für das angegebene Datum zurück.
+      const timeSlots = [ // Eine Liste von Zeitschlitzen erstellen
+        { start: '10:00', end: '11:00', booked: false }, // Jeden Zeitschlitz mit Startzeit, Endzeit und Buchungsstatus definieren
         { start: '11:00', end: '12:00', booked: false },
         { start: '12:00', end: '13:00', booked: false },
-      ].map(slot => ({ ...slot, selected: false }));
-      this.dateOptions.push({ date: dateStr, timeSlots });
+      ].map(slot => ({ ...slot, selected: false })); // Jeden Zeitschlitz klonen und eine `selected`-Eigenschaft hinzufügen
+      this.dateOptions.push({ date: dateStr, timeSlots }); // Das Datum und die zugehörigen Zeitschlitze zu den Datumsoptionen Array hinzufügen
     }
    },
 
@@ -192,16 +216,16 @@ export default{
     },
 
     async booked(date, start) {
-  // Rufen Sie die Daten vom Server ab
+  // Ruft die Daten vom Server ab, mit get HTTP Anforderung
   const response = await axios.get(`http://localhost:3000/dates?date=${date}&start=${start}`);
   // Initialisieren Sie eine Variable für den Wert von booked
   let booked = false;
-  // Überprüfen Sie, ob die Antwort leer ist oder nicht
+  // Überprüft, ob die Antwort leer ist oder nicht
   if (response.data.length > 0) {
-    // Wenn nicht, lesen Sie den Wert von booked für das erste Element in der Antwort
+    // den Wert von booked für das erste Element in der Antwort lesen
     booked = response.data[0].booked;
   }
-  // Geben Sie den Wert von booked zurück oder zeigen Sie ihn an
+  // Gibt den Wert von booked zurück 
   return booked;
   
 },
@@ -311,5 +335,36 @@ else{
 };
 
 </script>
+
+
+ <!-- Die Zeile onkeydown="return event.key != 'Enter';" ist ein Event-Handler in JavaScript, der auf das Drücken einer Taste reagiert (onkeydown).
+event.key gibt den Wert der Taste zurück, die gedrückt wurde.
+
+event.key != 'Enter' überprüft, ob die gedrückte Taste NICHT die Eingabetaste (Enter) ist.
+
+return event.key != 'Enter'; gibt true zurück, wenn eine andere Taste als die Eingabetaste gedrückt wurde, 
+und false, wenn die Eingabetaste gedrückt wurde.
+
+  Wenn der Ausdruck event.key != 'Enter' true ergibt (d.h., die gedrückte Taste ist nicht die Enter), 
+wird das keydown-Ereignis normal ausgeführt und die gedrückte Taste wird im Eingabefeld angezeigt.
+  Wenn der Ausdruck event.key != 'Enter' false ergibt (d.h., die gedrückte Taste ist die Enter), 
+wird das keydown-Ereignis unterbrochen und die Eingabetaste hat keine Auswirkung(das Formular wird nicht abgeschickt).
+
+Durch dieser Zeile wird es verhindert, dass das Formular abgeschickt wird, wenn der Benutzer 
+die Eingabetaste drückt, während er im Textfeld ist. Dies kann nützlich sein, um zu verhindern, dass das Formular versehentlich abgeschickt wird, bevor der 
+Benutzer alle erforderlichen Informationen eingegeben hat. -->
+
+<!-- das Html input-Tag nutzt Event-Listener @input und Atribut ref, um eine reaktive Benutzererfahrung zu ermöglichen. Dieses Eingabefeld Text akzeptiert --> 
+<!-- ref ist ein spezielles Attribut in Vue.js, das einen direkten Zugriff auf dieses DOM-Element (datepicker)ermöglicht -->
+<!-- Ein Vue.js-Event-Listener, der die Funktion "checkBooked" aufruft, wenn der Benutzer eine Eingabe in dieses Feld macht -->
+
+<!-- const date = new Date(this.startDate); in js kann ein date objekt aus date string erstellt werden. 
+  hier ist this.startDatum ein date objekt, aber weil als parameter an new date gegeben wurde, wird automatisch in
+  string konvertiert. also es wird ein neues date objekt gleich wie statrtDatum erstellt.
+in jeder itteration wird das date objekt date.setDate(date.getDate() + i); um i Tage erhöht. Bei der ersten Iteration bleibt das Datum unverändert (da i gleich 0 ist), bei der zweiten Iteration wird das Datum um einen Tag erhöht, bei der dritten Iteration um zwei Tage, und so weiter.
+am ende wird eine liste aus dateoptions erstellt, die dateoptions bestehend aus datum und zugehörige timeslots enthölt.
+z.b. 1 januar 10-11, 1 januar 11-12, 1 jan 12-13 usw. -->
+
+
 
 
