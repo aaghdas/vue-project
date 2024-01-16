@@ -1,8 +1,9 @@
-export default function generatePassword() { 
+export default 
+function generatePassword() { 
     const lowerCase = "abcdefghijklmnopqrstuvwxyz";
     const upperCase = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
     const numbers = "0123456789";
-    const symbols = "#?!@$%^&*-";
+    const symbols = "#?!@$%^&*-_,.;";
     const length = 12;
   
     

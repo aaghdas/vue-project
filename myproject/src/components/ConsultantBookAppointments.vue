@@ -127,7 +127,7 @@ wenn sie geändert werden. */
         { start: '10:00', end: '11:00', booked: false }, // Jeden Zeitschlitz mit Startzeit, Endzeit und Buchungsstatus definieren
         { start: '11:00', end: '12:00', booked: false },
         { start: '12:00', end: '13:00', booked: false },
-      ].map(slot => ({ ...slot, selected: false })); // Jeden Zeitschlitz klonen und eine `selected`-Eigenschaft mit dem initialen Wert false hinzufügen
+        ].map(slot => ({ ...slot, selected: false })); // Jeden Zeitschlitz klonen und eine `selected`-Eigenschaft mit dem initialen Wert false hinzufügen
       this.dateOptions.push({ date: dateStr, timeSlots }); // Das Datum und die zugehörigen Zeitschlitze zu den Datumsoptionen Array hinzufügen
       /* Jedes Element im dateOptions Array ist ein Objekt, das aus einem Datum (date) und einem Array von Zeitschlitzen (timeSlots) besteht.
        Jeder Zeitschlitz ist ebenfalls ein Objekt, das die Eigenschaften start, end, booked und selected hat. */
@@ -140,7 +140,7 @@ wenn sie geändert werden. */
   
     
      
-      async function dl() {
+    async function dl() {
         let disableList =[];
         let response = await axios.get('http://localhost:3000/disable');
         let disableListFromApi = response.data.map(item => new Date(item.date));
@@ -148,33 +148,29 @@ wenn sie geändert werden. */
         console.log(disableList); // Zur Bestätigung, dass beide Datumsangaben enthalten sind
         return disableList;
   }
-
-  dl().then(disableList => {
-   /* Die Vue-Referenzen sind bereits in der beforeMount-Methode verfügbar. 
-   Es wird auf die referenzierten DOM-Elemente über die `$refs`-Eigenschaft der Vue-Komponente zugegriefen und nicht auf die tatsächlichen DOM-Knoten.*/
-    // Initialisierung von flatpickr 
-  let fp =  flatpickr(this.$refs.datepicker, {
-      altInput: true,
-      
-      altFormat: "F j, Y",
-      dateFormat: 'Y-m-d',
-      inline:true,
-      static:true,
-      minDate: this.startDate,
-      disable: disableList, 
+        dl().then(disableList => {
+          /* Die Vue-Referenzen sind bereits in der beforeMount-Methode verfügbar. 
+          Es wird auf die referenzierten DOM-Elemente über die `$refs`-Eigenschaft der Vue-Komponente zugegriefen und nicht auf die tatsächlichen DOM-Knoten.*/
+            // Initialisierung von flatpickr 
+          let fp =  flatpickr(this.$refs.datepicker, {
+          altInput: true,
+          altFormat: "F j, Y",
+          dateFormat: 'Y-m-d',
+          inline:true,
+          static:true,
+          minDate: this.startDate,
+          disable: disableList, 
      
-      onClose: (selectedDates) => {
-        if (selectedDates.length === 0) return;
-        const selectedDate = selectedDates[0].toISOString().slice(0, 10);
-        this.selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
-      },
-    });
-    fp.set('disable', disableList);
-    });
+          onClose: (selectedDates) => {
+            if (selectedDates.length === 0) return;
+            const selectedDate = selectedDates[0].toISOString().slice(0, 10);
+            this.selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
+          },
+          });
+          fp.set('disable', disableList);
+        });
     
   },
-
-
 
   methods: {
     
@@ -187,14 +183,10 @@ wenn sie geändert werden. */
             axios.post(`http://localhost:3000/disable`, {
              date,
             });
-            
-
         }
       }, 
 
-   
-
-     async checkBooked(){
+    async checkBooked(){
       for (let time of this.timeSlots){
         // Rufen Sie die Methode booked auf und speichern Sie den Wert in einer Variablen
         let booked = await this.booked(this.$refs.datepicker.value,time.start);
@@ -204,27 +196,24 @@ wenn sie geändert werden. */
     },
 
     async booked(date, start) {
-  // Ruft die Daten vom Server ab, mit get HTTP Anforderung
-  const response = await axios.get(`http://localhost:3000/dates?date=${date}&start=${start}`);
-  // Initialisieren Sie eine Variable für den Wert von booked
-  let booked = false;
-  // Überprüft, ob die Antwort leer ist oder nicht
-  if (response.data.length > 0) {
-    // den Wert von booked für das erste Element in der Antwort lesen
-    booked = response.data[0].booked;
-  }
-  // Gibt den Wert von booked zurück 
-  return booked;
-  
-},
+      // Ruft die Daten vom Server ab, mit get HTTP Anforderung
+      const response = await axios.get(`http://localhost:3000/dates?date=${date}&start=${start}`);
+      // Initialisieren Sie eine Variable für den Wert von booked
+      let booked = false;
+      // Überprüft, ob die Antwort leer ist oder nicht
+      if (response.data.length > 0) {
+        // den Wert von booked für das erste Element in der Antwort lesen
+        booked = response.data[0].booked;
+      }
+      // Gibt den Wert von booked zurück 
+      return booked;
+    },
     
-
     async searchDate(date) {
     
         let url = `http://localhost:3000/dates?date=${date}`;
         const response = await axios.get(url);
-        return response.data;
-      
+        return response.data;    
     },
 
     selectTimeSlot(dateOption, timeSlot) {
@@ -243,29 +232,24 @@ wenn sie geändert werden. */
 
     async confirmBooking() {
       const selectedDate = this.$refs.datepicker.value;
-const selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
+      const selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
 
-let selectedTimeSlot; // Hier deklarieren wir selectedTimeSlot zum ersten Mal außerhalb der if-Anweisung
+      let selectedTimeSlot; // Hier deklarieren wir selectedTimeSlot zum ersten Mal außerhalb der if-Anweisung
 
-if (selectedDateOption) {
-  // Nur wenn selectedDateOption existiert, können wir auf seine Eigenschaften zugreifen
-  selectedTimeSlot = selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime); // Hier weisen wir selectedTimeSlot einen Wert zu
-  // ...
-}
+      if (selectedDateOption) {
+        // Nur wenn selectedDateOption existiert, können wir auf seine Eigenschaften zugreifen
+        selectedTimeSlot = selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime); // Hier weisen wir selectedTimeSlot einen Wert zu
+        // ...
+      }
 
-if (!selectedDate || !selectedDateOption || !selectedTimeSlot) {
-  const content = 'Bitte wählen Sie ein verfügbares Datum und eine verfügbare Zeit aus.';
-  this.showMessage(content,false,false,true);
-  return;
-}
-
-else{
-  let content = `Möchten Sie den Termin am ${selectedDate} um ${selectedTimeSlot.start} Uhr buchen?`; // Hier verwenden wir selectedTimeSlot
-  this.showMessage(content, true,false,false);
-}
-
-
-
+      if (!selectedDate || !selectedDateOption || !selectedTimeSlot) {
+        const content = 'Bitte wählen Sie ein verfügbares Datum und eine verfügbare Zeit aus.';
+        this.showMessage(content,false,false,true);
+        return;
+      } else{
+        let content = `Möchten Sie den Termin am ${selectedDate} um ${selectedTimeSlot.start} Uhr buchen?`; // Hier verwenden wir selectedTimeSlot
+        this.showMessage(content, true,false,false);
+      }
     },
 
     bookConfirmed() {
@@ -281,7 +265,6 @@ else{
       }).then(() => {
         let content = `Termin am ${selectedDate} von ${selectedTimeSlot.start} - ${selectedTimeSlot.end} Uhr erfolgreich gebucht.`;
         this.showMessage(content, false,true,false);
-        
         selectedTimeSlot.booked = true;
         this.resetSelectedTimeSlots();
         this.isDisabled(selectedDate);
