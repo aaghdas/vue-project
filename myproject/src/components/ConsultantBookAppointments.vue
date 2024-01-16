@@ -69,6 +69,7 @@ import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import axios from 'axios';
 
+
 export default{
  name:'ConsultantBookAppointments',
 
@@ -106,37 +107,40 @@ wenn sie geändert werden. */
       messageContent: '',
       timeBooked: false,
       disableList: [], 
-      mobile: false,
-      windowWidth: null,
       name:"",
       
       
     };
   },
 
-  /* Die mounted-Lifecycle-Hook-Funktion in Vue.js verwenden, die aufgerufen wird, 
-  unmittelbar nachdem die Komponente an den DOM angehängt wurde. 
-  Da die Komponente nun eingebunden ist, können wir auf die Eigenschaften zugreifen, die zur Komponenteninstanz gehören */
+  
    
-  async mounted() {  //jedes mal beim Laden der Seite müssen die Daten über verfügare Datum und Zeit aktualisiert werden.
+  beforeMount() {  //jedes mal beim Laden der Seite müssen die Daten über verfügare Datum und Zeit aktualisiert sein.
     
     //Diese Methode erstellt eine Liste von Datumsoptionen (dateOptions), wobei jede Option ein bestimmtes Datum und die zugehörigen Zeitschlitze enthält. 
     for (let i = 0; i < this.numOfDays; i++) {  // Diese Schleife läuft für die Anzahl der Tage, die in this.numOfDays definiert sind. Für jeden Tag wird eine Reihe von Operationen durchgeführt.
       const date = new Date(this.startDate);  // Ein neues Datum basierend auf dem Startdatum erstellen
       date.setDate(date.getDate() + i); // Das Datum um die aktuelle Schleifeniteration erhöhen.Das Datum wird um i Tage erhöht. 
       //date.getDate() gibt den Tag des Monats (zwischen 1 und 31) für das angegebene Datum zurück.
+      let dateStr = date.toString();
       const timeSlots = [ // Eine Liste von Zeitschlitzen erstellen
         { start: '10:00', end: '11:00', booked: false }, // Jeden Zeitschlitz mit Startzeit, Endzeit und Buchungsstatus definieren
         { start: '11:00', end: '12:00', booked: false },
         { start: '12:00', end: '13:00', booked: false },
-      ].map(slot => ({ ...slot, selected: false })); // Jeden Zeitschlitz klonen und eine `selected`-Eigenschaft hinzufügen
+      ].map(slot => ({ ...slot, selected: false })); // Jeden Zeitschlitz klonen und eine `selected`-Eigenschaft mit dem initialen Wert false hinzufügen
       this.dateOptions.push({ date: dateStr, timeSlots }); // Das Datum und die zugehörigen Zeitschlitze zu den Datumsoptionen Array hinzufügen
+      /* Jedes Element im dateOptions Array ist ein Objekt, das aus einem Datum (date) und einem Array von Zeitschlitzen (timeSlots) besteht.
+       Jeder Zeitschlitz ist ebenfalls ein Objekt, das die Eigenschaften start, end, booked und selected hat. */
     }
-   },
-
-   beforeMount () {
-   
-    async function dl() {
+    console.log("test-dateOptions Array :" +this.dateOptions[0].date);
+    this.dateOptions[0].timeSlots.forEach(slot => {
+      console.log(`Start: ${slot.start}, End: ${slot.end}, booked:${slot.booked}, selected: ${slot.selected}`);
+    });
+    console.log(`test first timeSlot in first date from dateoptions array : ${this.dateOptions[0].date}, ${JSON.stringify(this.dateOptions[0].timeSlots[0])}` );
+  
+    
+     
+      async function dl() {
         let disableList =[];
         let response = await axios.get('http://localhost:3000/disable');
         let disableListFromApi = response.data.map(item => new Date(item.date));
@@ -146,7 +150,9 @@ wenn sie geändert werden. */
   }
 
   dl().then(disableList => {
-   
+   /* Die Vue-Referenzen sind bereits in der beforeMount-Methode verfügbar. 
+   Es wird auf die referenzierten DOM-Elemente über die `$refs`-Eigenschaft der Vue-Komponente zugegriefen und nicht auf die tatsächlichen DOM-Knoten.*/
+    // Initialisierung von flatpickr 
   let fp =  flatpickr(this.$refs.datepicker, {
       altInput: true,
       
@@ -168,29 +174,11 @@ wenn sie geändert werden. */
     
   },
 
-  created(){
-            window.addEventListener('resize',this.checkScreen);
-            this.checkScreen();
 
-        },
 
   methods: {
-     
-      checkScreen(){
-                this.windowWidth = window.innerWidth;
-                if(this.windowWidth <= 1180){
-                    this.mobile = true;
-                    return;
-                }
-                
-                this.mobile = false;
-                this.mobileNav= false;
-                return;
-                
-            },
-
-
-      async isDisabled(date) { 
+    
+    async isDisabled(date) { 
       
         let result = await this.searchDate(date);
         if (Array.isArray(result) && result.length > 2){
@@ -330,7 +318,7 @@ else{
             element.scrollIntoView({ behavior: "smooth" });
             }
         }
-   
+  
   
 };
 
@@ -359,12 +347,12 @@ Benutzer alle erforderlichen Informationen eingegeben hat. -->
 <!-- Ein Vue.js-Event-Listener, der die Funktion "checkBooked" aufruft, wenn der Benutzer eine Eingabe in dieses Feld macht -->
 
 <!-- const date = new Date(this.startDate); in js kann ein date objekt aus date string erstellt werden. 
-  hier ist this.startDatum ein date objekt, aber weil als parameter an new date gegeben wurde, wird automatisch in
-  string konvertiert. also es wird ein neues date objekt gleich wie statrtDatum erstellt.
-in jeder itteration wird das date objekt date.setDate(date.getDate() + i); um i Tage erhöht. Bei der ersten Iteration bleibt das Datum unverändert (da i gleich 0 ist), bei der zweiten Iteration wird das Datum um einen Tag erhöht, bei der dritten Iteration um zwei Tage, und so weiter.
-am ende wird eine liste aus dateoptions erstellt, die dateoptions bestehend aus datum und zugehörige timeslots enthölt.
-z.b. 1 januar 10-11, 1 januar 11-12, 1 jan 12-13 usw. -->
-
+  hier ist this.startDatum ein date objekt, aber weil als parameter an new date gegeben wurde, wird automatisch in string konvertiert. 
+Also es wird ein neues date objekt gleich wie statrtDatum erstellt.
+In jeder itteration wird das date objekt date.setDate(date.getDate() + i); um i Tage erhöht. Bei der ersten Iteration bleibt das Datum 
+unverändert (da i gleich 0 ist), bei der zweiten Iteration wird das Datum um einen Tag erhöht, bei der dritten Iteration um zwei Tage, und so
+weiter. Am Ende wird eine liste aus dateoptions erstellt, Jedes Element im dateOptions Array ist ein Objekt, das aus einem Datum (date) 
+und einem Array von Zeitschlitzen (timeSlots) besteht. Jeder Zeitschlitz ist ebenfalls ein Objekt, das die Eigenschaften start, end, booked und selected hat. -->
 
 
 

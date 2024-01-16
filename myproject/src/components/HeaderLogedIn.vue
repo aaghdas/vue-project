@@ -200,6 +200,11 @@
 };
 </script>
 
+<!-- Die created-Hook in Vue.js ist ein guter Ort, um Event-Listener hinzuzufügen, da sie aufgerufen wird, sobald die Vue-Instanz erstellt ist
+und die reaktiven Daten und Ereignisse initialisiert sind. Zu diesem Zeitpunkt ist das Template und noch nicht gerendert oder 
+an das DOM noch nicht eingehängt ist, aber vollen Zugriff auf die Methoden und Daten innerhalb der Vue-Instanz vorhanden ist. 
+Dies kann besonders nützlich sein, wenn der Event-Listener auf Ereignisse hören soll, die sofort nach der Erstellung der Komponente auftreten 
+können, wie z.B. Bildschirmgröße. -->
 
 
 

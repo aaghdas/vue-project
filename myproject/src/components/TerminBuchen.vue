@@ -142,28 +142,10 @@ export default {
     
   },
 
-  created(){
-            window.addEventListener('resize',this.checkScreen);
-            this.checkScreen();
-
-        },
+  
 
   methods: {
      
-      checkScreen(){
-                this.windowWidth = window.innerWidth;
-                if(this.windowWidth <= 1180){
-                    this.mobile = true;
-                    return;
-                }
-                
-                this.mobile = false;
-                this.mobileNav= false;
-                return;
-                
-            },
-
-
       async isDisabled(date) { 
       
         let result = await this.searchDate(date);
