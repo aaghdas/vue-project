@@ -184,28 +184,44 @@ wenn sie geändert werden. */
   },
 
   methods: {
+
+
+    /* Die `searchDate`-Methode sucht nach bestimmten Daten in dates Array, indem sie eine HTTP GET-Anfrage an den Server sendet. 
+    Wenn date Eigenschaft eines Elements in dates Array mit dem als Argument eingegebenen Datum übereinstimmt, bildet dann eine URL für dieses Element 
+    und sendet eine get Anfrage an Server, speichert das gesuchte Datum in Variable response(Das `response`-Objekt ist eine Instanz der `AxiosResponse`-Klasse von Axios.)
+    Ein Array von Datum-objekte ist Rückgabewert der Methode. So sieht ein Datum Objekt in http://localhost:3000/dates aus:
+     {
+      "date": "2023-10-28",
+      "start": "10:00",
+      "end": "11:00",
+      "booked": true,
+      "name": "ana",
+      "id": 2
+    } */
+    async searchDate(date) {
+        let url = `http://localhost:3000/dates?date=${date}`;
+        const response = await axios.get(url);
+        return response.data;  // das JSON-Objekt, das die Daten enthält.
+    },
     
+    /* innerhalb der isDisabled methode wird searchDate methode aufgerufen. 
+    Rückgabewert von searchdate ist ein Array von Datum-objekte, die deren date Eigenschaft das eingegebene Datum ist. 
+    Wenn dieses Array nicht leer ist und mehr als 2 Elemente hat, also schon mehr als 2 Termine für dieses Datum gebucht sind, wird das Datum in disable Array gespeichert*/
     async isDisabled(date) { 
-      
         let result = await this.searchDate(date);
-        if (Array.isArray(result) && result.length > 2){
-           
-            
-            axios.post(`http://localhost:3000/disable`, {
-             date,
-            });
+        if (Array.isArray(result) && result.length > 2){    //prüft ob result ein Array mit Länge größer als 2 ist. 
+            axios.post(`http://localhost:3000/disable`, {date,}); // in Array disable haben die Elemente 2 Eigenschaft, date und id, deswegen komma nach date.
         }
       }, 
-
-    async checkBooked(){
-      for (let time of this.timeSlots){
-        // Rufen Sie die Methode booked auf und speichern Sie den Wert in einer Variablen
-        let booked = await this.booked(this.$refs.datepicker.value,time.start);
-        time.booked = booked; 
-        
-      }
-    },
-
+    
+      /* Die Methode booked nimmt date und start von Zeitschliz als Argument entgegen und prüft, ob in Array dates diese Datum/Zeit 
+      gespeichert wurde (also schon gebucht ist).Danach gibt den Wert für boolische Variable booked zurück(wenn gebucht ist booked ist true)
+      Die Methode sendet einen GET-Aufruf an das API. Wenn `response.data` ein nicht leeres Array ist, bedeutet dies, dass ein Termin an diesem Tag und um diese Zeit gebucht wurde.
+      Da die gebuchten Termine im Array http://localhost:3000/dates gespeichert sind mit Eigenschaft booked=true.
+      In diesem Fall wird `booked` auf den Wert von `response.data[0].booked` gesetzt, der `true` ist, wenn der Termin gebucht wurde.
+      Falls `response.data` für das eingegebene Datum/Zeit leer ist, d.h. der Termin wurde noch nicht gebucht, booked wird den Wert false haben, 
+      denn der if Bedingung wird nicht erfüllt und booked ist auf false initialisiert.
+      */
     async booked(date, start) {
       // Ruft die Daten vom Server ab, mit get HTTP Anforderung
       const response = await axios.get(`http://localhost:3000/dates?date=${date}&start=${start}`);
@@ -220,11 +236,18 @@ wenn sie geändert werden. */
       return booked;
     },
     
-    async searchDate(date) {
-    
-        let url = `http://localhost:3000/dates?date=${date}`;
-        const response = await axios.get(url);
-        return response.data;    
+    /* <!-- Die checkBooked-Methode überprüft, ob ein bestimmter Zeitschlitz an einem bestimmten Datum bereits gebucht wurde,
+      und aktualisiert den gebuchten Status für den Zeitschlitze des Datums.time.booked = booked; 
+      Die booked()-Methode für das ausgewählte Datum(aus dem datepicker) und alle Zeitschlitze in timeSlots Array aufgeruft.
+      Der Rückgabewert wird dann der `booked`-Eigenschaft des entsprechenden Elements in der `timeSlots`-Liste zugewiesen.   */
+    async checkBooked(){
+      for (let time of this.timeSlots){ 
+        // Ruft die Methode booked auf und speichert den Wert in einer Variablen booked.
+        let booked = await this.booked(this.$refs.datepicker.value,time.start);
+        // Der Rückgabewert wird dann der `booked`-Eigenschaft des entsprechenden Elements in der `timeSlots`-Liste zugewiesen
+        time.booked = booked; 
+        
+      }
     },
 
     selectTimeSlot(dateOption, timeSlot) {
@@ -283,6 +306,8 @@ wenn sie geändert werden. */
 
     },
 
+    /* Diese Methode ist für Nachrichten-Anzeige als ein Rahmen mit dem Textinhalt und den gewünschten Buttons für Bestätigen, Schließen und weiter.
+    die boolische Werte als Argumente der Methode bestimmen, ob der Nachrichtenrahmen ein Button beinhalten muss oder nicht. */
     showMessage(content, confirmButton,closeButton,nextButton) {
       this.messageContent = content;
       this.showMessageBox = true;
@@ -291,6 +316,7 @@ wenn sie geändert werden. */
       this.showNextButton = nextButton;
     },
 
+    // versteckt den Nachrichtenrahmen
     hideMessageBox() {
       this.showMessageBox = false;
       this.showConfirmButton = false;
@@ -299,19 +325,17 @@ wenn sie geändert werden. */
       this.shownextButton = false;
       this.messageContent = '';
     },
-    close(){
-      this.$refs.datepicker._flatpickr.clear();
-      this.selectedTime = '';
-      this.selectedDateOption = null;
-      this.hideMessageBox();
 
+    // reset datepicker und ausgewählte Zeit
+    close(){
+      this.$refs.datepicker._flatpickr.clear(); // Der Flatpickr-Instanz, die mit dem 'datepicker' ref verbunden ist, wird angewiesen, das ausgewählte Datum zu löschen.
+      this.selectedTime = ''; // Die Variable 'selectedTime' wird auf einen leeren String gesetzt
+      this.selectedDateOption = null; // Die Variable 'selectedDateOption' wird auf 'null' gesetzt.
+      this.hideMessageBox(); // Die Funktion 'hideMessageBox' wird aufgerufen, um die Nachrichtenbox zu verstecken.
     },
 
-    scrollTop() {
-            const element = document.getElementById("contactScroll");
-            element.scrollIntoView({ behavior: "smooth" });
-            }
-        }
+    
+}
   
   
 };
@@ -365,3 +389,8 @@ Z zeigt an, dass die Zeit in der koordinierten Weltzeit (UTC) angegeben ist
   auf dem dateOptions Array angewendet wird und überpruft die Elemente aus diesem Array. Zusammengefasst:
 this.dateOptions.find(option => option.date === selectedDate) durchläuft jedes Element im Array dateOptions und gibt das erste Element zurück,
  für das die bereitgestellte Funktion true zurückgibt. -->
+
+<!--Die Funktion Array.isArray() ist eine eingebaute Funktion in JavaScript, die überprüft, ob der übergebene Wert ein Array ist.
+In Array.isArray(result), ist Array das globale Array-Objekt in JavaScript, das eine Reihe von Methoden und Eigenschaften bereitstellt, 
+die man verwenden kann, wenn man mit Arrays arbeitet. isArray() ist eine dieser Methoden und result ist der Wert, den überprüft wird.
+Wenn result ein Array ist, gibt Array.isArray(result) true zurück. Wenn result kein Array ist, gibt die Funktion false zurück. -->
