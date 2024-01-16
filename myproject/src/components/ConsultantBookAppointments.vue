@@ -139,35 +139,46 @@ wenn sie geändert werden. */
     console.log(`test first timeSlot in first date from dateoptions array : ${this.dateOptions[0].date}, ${JSON.stringify(this.dateOptions[0].timeSlots[0])}` );
   
     
-     
+    // Definiert eine asynchrone Funktion namens 'dl' 
     async function dl() {
-        let disableList =[];
-        let response = await axios.get('http://localhost:3000/disable');
-        let disableListFromApi = response.data.map(item => new Date(item.date));
-        disableList = disableList.concat(disableListFromApi);
-        console.log(disableList); // Zur Bestätigung, dass beide Datumsangaben enthalten sind
-        return disableList;
-  }
-        dl().then(disableList => {
+        
+        let response = await axios.get('http://localhost:3000/disable'); // Sendet eine GET-Anfrage an 'http://localhost:3000/disable' und speichert die Antwort in Variable 'response'
+        let disableListFromApi = response.data.map(item => new Date(item.date)); // Wandelt die Daten aus der Antwort in ein Array von Datum-Objekten um. Im ursprünglichen disable Array hat jedes Element date und id eigenschaften. Im neuen Array(disableListFromApi) hat jedes Element nur date.
+        this.disableList = this.disableList.concat(disableListFromApi); // Fügt das neue Array zur 'disableList', das in data als leeres Array initialisiert wurde, hinzu
+        console.log(this.disableList); // die Änderungen an disbleList in Konsole prüfen
+        return this.disableList; // die dl() Funktion gibt die 'disableList' zurück
+    }
+        dl().then(disableList => { //Die Methode .then() wird auf die Promise aus dl() angewendet und nimmt zwei Argumente: eine Callback-Funktion für den fullfiled Fall und eine Fehlermeldung für den rejected Fall von Promise
+
           /* Die Vue-Referenzen sind bereits in der beforeMount-Methode verfügbar. 
           Es wird auf die referenzierten DOM-Elemente über die `$refs`-Eigenschaft der Vue-Komponente zugegriefen und nicht auf die tatsächlichen DOM-Knoten.*/
             // Initialisierung von flatpickr 
           let fp =  flatpickr(this.$refs.datepicker, {
-          altInput: true,
-          altFormat: "F j, Y",
-          dateFormat: 'Y-m-d',
-          inline:true,
-          static:true,
-          minDate: this.startDate,
-          disable: disableList, 
-     
-          onClose: (selectedDates) => {
-            if (selectedDates.length === 0) return;
-            const selectedDate = selectedDates[0].toISOString().slice(0, 10);
-            this.selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
+          altInput: true, // dient zur Anzeige des ausgewählten Datums im lesbaren Format für Benutzer(definiert durch altFormat), während das ursprüngliche Eingabefeld das ausgewählte Datum im maschinenlesbaren Format (definiert durch dateFormat) behält, das an den Server gesendet wird.
+          altFormat: "F j, Y", //"F":Der vollständige Text des Monats z.B.Januar,  "j": Der Tag des Monats ohne führende Nullen z.B. 1 anstatt 01, "Y": Das Jahr in vier Ziffern z.B. 2024
+          dateFormat: 'Y-m-d', //z.B. in der Form 2024-01-01 wird an Server gesendet.
+          inline:true, // zeigt den Kalender dauerhaft an
+          static:true, // positioniert den Kalender relativ zum übergeordneten Element und nicht zum Körper
+          minDate: this.startDate, // setzt das früheste auswählbare Datum
+          disable: disableList, // nimmt ein Array von Daten, die im Kalender deaktiviert werden sollen
+          
+          /* onClose ist eine Optionen in der flatpickr-Bibliothek, die aufgerufen wird, wenn der Datepicker geschlossen wird.
+             selectedDates ist das Argument der Arrow-Funktion und ist ein Array von Daten, die vom Benutzer im Datepicker ausgewählt wurden.
+          */
+          onClose: (selectedDates) => {  
+            if (selectedDates.length === 0) return; // Überprüft, ob das Array 'selectedDates' leer ist, wenn ja wird die Funktion sofort beendet und es wird nichts zurückgegeben.
+          /* Wenn Daten ausgewählt wurden, wird das erste ausgewählte Datum genommen (selectedDates[0]),
+           in einen ISO-String konvertiert und auf die ersten 10 Zeichen zugeschnitten, um nur das Datum ohne Uhrzeit zu erhalten.
+           Dieser Wert wird dann selectedDate zugewiesen. */
+            const selectedDate = selectedDates[0].toISOString().slice(0, 10); 
+            this.selectedDateOption = this.dateOptions.find(option => option.date === selectedDate); // durchsucht this.dateOptions nach einem Objekt, dessen date-Eigenschaft dem ausgewählten Datum entspricht, und weist dieses Objekt this.selectedDateOption zu.
           },
           });
-          fp.set('disable', disableList);
+          fp.set('disable', disableList); // Setzt die 'disableList' für option disable in 'flatpickr' Konfiguration
+          },
+        error => {
+          // die then Methode wirft eine Fehlermeldung, wenn dl() Promise scheitert. 
+          console.error("Ein Fehler ist aufgetreten: ", error);
         });
     
   },
@@ -338,4 +349,19 @@ weiter. Am Ende wird eine liste aus dateoptions erstellt, Jedes Element im dateO
 und einem Array von Zeitschlitzen (timeSlots) besteht. Jeder Zeitschlitz ist ebenfalls ein Objekt, das die Eigenschaften start, end, booked und selected hat. -->
 
 
+<!-- Ausgabe der toIsoString Methode: z.B. 2024-01-01T00:00:00.000Z , was das Datum und die Uhrzeit zum Zeitpunkt der Erstellung des Date-Objekts repräsentiert.
+Die Ausgabe hat folgendes Format: YYYY-MM-DDTHH:mm:ss.sssZ, wobei:
 
+YYYY-MM-DD das Datum repräsentiert (Jahr-Monat-Tag)
+T ist ein Trennzeichen, das das Datum von der Uhrzeit trennt
+HH:mm:ss.sss repräsentiert die Uhrzeit (Stunden:Minuten:Sekunden.Millisekunden)
+Z zeigt an, dass die Zeit in der koordinierten Weltzeit (UTC) angegeben ist
+.toISOString() immer die Zeit in UTC zurückgibt, unabhängig von der Zeitzone des ursprünglichen Date-Objekts. -->
+
+<!-- find() ist eine eingebaute Methode in JavaScript, die auf Arrays angewendet wird. Als Parameter bekommt eine Funktion, 
+  die sogennante Testfunction. In diesem code Testfunction ist eine Arrow Function. 
+  Die Arrow function option => option.date === selectedDate nimmt ein Argument option und gibt true oder false zurück,
+  abhängig davon, ob option.date gleich selectedDate ist. Hier ist option ein Element aus dem dateOptions Array, weil find Methode 
+  auf dem dateOptions Array angewendet wird und überpruft die Elemente aus diesem Array. Zusammengefasst:
+this.dateOptions.find(option => option.date === selectedDate) durchläuft jedes Element im Array dateOptions und gibt das erste Element zurück,
+ für das die bereitgestellte Funktion true zurückgibt. -->
