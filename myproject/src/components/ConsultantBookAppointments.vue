@@ -236,7 +236,7 @@ wenn sie geändert werden. */
       }
     },
     /* setzt die booked Eigenschaft für alle Zeitschlitze in der Auswahlliste zurück auf false, damit sie bei der nächsten Buchung wieder auswählbar sind.
-    Array dateoptions ist ein verscgachteltes Array von allen Daten ab dem nächsten Tag im datepicker. Jedes Element hat ein date Eigenschaft sowie ein Array bestehend aus allen Daten des datepickers mit jeweiligen Zeitschlitzen */
+    Array dateoptions ist ein verschachteltes Array von allen Daten ab dem nächsten Tag im datepicker. Jedes Element hat ein date Eigenschaft sowie ein Array bestehend aus allen Daten des datepickers mit jeweiligen Zeitschlitzen */
     resetSelectedTimeSlots() {
       this.dateOptions.forEach(option => {
         option.timeSlots.forEach(slot => {
@@ -248,7 +248,7 @@ wenn sie geändert werden. */
     async confirmBooking() {
       //das ausgewählte Datum aus dem datepicker wird in variable selectedDate gespeichert.
       const selectedDate = this.$refs.datepicker.value;
-      /* Array dateoptions ist ein verscgachteltes Array von allen Daten ab dem nächsten Tag im datepicker. Jedes Element hat ein date Eigenschaft sowie ein Array bestehend 
+      /* Array dateoptions ist ein verschachteltes Array von allen Daten ab dem nächsten Tag im datepicker. Jedes Element hat ein date Eigenschaft sowie ein Array bestehend 
       aus allen Daten des datepickers mit jeweiligen Zeitschlitzen. dateOptions wird durchitteriert und das erste Element, das sein date
       Eigenschaft mit dem selectedDate übereinstimmt in variable selectedDateOption */
       const selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);

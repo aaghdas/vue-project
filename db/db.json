@@ -71,6 +71,10 @@
     {
       "date": "2024-01-31",
       "id": 19
+    },
+    {
+      "date": "2024-02-01",
+      "id": 20
     }
   ],
   "users": [
@@ -609,6 +613,38 @@
       "booked": true,
       "name": "enrico",
       "id": 66
+    },
+    {
+      "date": "2024-02-01",
+      "start": "10:00",
+      "end": "11:00",
+      "booked": true,
+      "name": "ana",
+      "id": 67
+    },
+    {
+      "date": "2024-02-01",
+      "start": "11:00",
+      "end": "12:00",
+      "booked": true,
+      "name": "ana",
+      "id": 68
+    },
+    {
+      "date": "2024-02-01",
+      "start": "12:00",
+      "end": "13:00",
+      "booked": true,
+      "name": "ana",
+      "id": 69
+    },
+    {
+      "date": "2024-02-02",
+      "start": "10:00",
+      "end": "11:00",
+      "booked": true,
+      "name": "enrico",
+      "id": 70
     }
   ],
   "contacts": [
