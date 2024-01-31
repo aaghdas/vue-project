@@ -1,6 +1,6 @@
 <template>
 
-  <HeaderLogedIn />
+  
     
     <div class="calandar-container">
         <p id="contact-text">
@@ -8,6 +8,8 @@
           Wir können dann Dir einen Hund aus unserem Tierheim vorstellen, der ein neues Zuhause sucht und Dir am besten passt. 
         </p >
 
+       
+        
         <div class="termin">
           <input  type="text" id="datepicker" ref="datepicker" @input= "checkBooked" placeholder="Datum Auswählen">
         </div>
@@ -43,7 +45,7 @@
 <script>
 
 import ContactForm from './ContactForm.vue'
-import HeaderLogedIn from './HeaderLogedIn.vue'
+
 import flatpickr from 'flatpickr';
 import 'flatpickr/dist/flatpickr.css';
 import axios from 'axios';
@@ -53,7 +55,7 @@ export default {
 
   components: {
     ContactForm,
-    HeaderLogedIn,
+    
   },
 
   data() {
@@ -84,7 +86,7 @@ export default {
       mobile: false,
       windowWidth: null,
       name:"",
-      
+
       
     };
   },
@@ -94,7 +96,7 @@ export default {
     let user = localStorage.getItem('user-info')
     user = JSON.parse(user);
     this.name = await user.name;
-   
+    
     for (let i = 0; i < this.numOfDays; i++) {
       const date = new Date(this.startDate);
       date.setDate(date.getDate() + i);
@@ -128,7 +130,7 @@ export default {
       dateFormat: 'Y-m-d',
       inline:true,
       static:true,
-      minDate: this.startDate,
+      minDate: this.startDate.getTime() + 86400000,
       disable: disableList, 
      
       onClose: (selectedDates) => {
@@ -145,22 +147,34 @@ export default {
   
 
   methods: {
-     
+    checkCustomerName() {
+    // Debug-Ausgabe, um sicherzustellen, dass der Name aktualisiert wird
+    console.log(this.customerName);
+  },
       async isDisabled(date) { 
       
         let result = await this.searchDate(date);
         if (Array.isArray(result) && result.length > 2){
-           
-            
             axios.post(`http://localhost:3000/disable`, {
              date,
             });
-            
-
         }
       }, 
 
-   
+      async booked(date, start) {
+        // Rufen Sie die Daten vom Server ab
+        const response = await axios.get(`http://localhost:3000/dates?date=${date}&start=${start}`);
+        // Initialisieren Sie eine Variable für den Wert von booked
+        let booked = false;
+        // Überprüfen Sie, ob die Antwort leer ist oder nicht
+        if (response.data.length > 0) {
+          // Wenn nicht, lesen Sie den Wert von booked für das erste Element in der Antwort
+          booked = response.data[0].booked;
+        }
+        // Geben Sie den Wert von booked zurück oder zeigen Sie ihn an
+        return booked;
+        
+      },
 
      async checkBooked(){
       for (let time of this.timeSlots){
@@ -171,34 +185,12 @@ export default {
       }
     },
 
-    async booked(date, start) {
-  // Rufen Sie die Daten vom Server ab
-  const response = await axios.get(`http://localhost:3000/dates?date=${date}&start=${start}`);
-  // Initialisieren Sie eine Variable für den Wert von booked
-  let booked = false;
-  // Überprüfen Sie, ob die Antwort leer ist oder nicht
-  if (response.data.length > 0) {
-    // Wenn nicht, lesen Sie den Wert von booked für das erste Element in der Antwort
-    booked = response.data[0].booked;
-  }
-  // Geben Sie den Wert von booked zurück oder zeigen Sie ihn an
-  return booked;
-  
-},
-    
-
     async searchDate(date) {
     
         let url = `http://localhost:3000/dates?date=${date}`;
         const response = await axios.get(url);
         return response.data;
       
-    },
-
-    selectTimeSlot(dateOption, timeSlot) {
-      if (timeSlot.booked) return;
-      timeSlot.selected = !timeSlot.selected;
-      dateOption.selected = dateOption.timeSlots.some(slot => slot.selected);
     },
 
     resetSelectedTimeSlots() {
@@ -211,41 +203,37 @@ export default {
 
     async confirmBooking() {
       const selectedDate = this.$refs.datepicker.value;
-const selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
+      let selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
+      
+      let selectedTimeSlot; //let hat Blockscope und muss vor dem if-block deklariert werden.
+      if (selectedDateOption) { // Nur wenn selectedDateOption existiert, können wir auf seine Eigenschaften zugreifen
+        selectedTimeSlot = selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime); 
+      }
 
-let selectedTimeSlot; // Hier deklarieren wir selectedTimeSlot zum ersten Mal außerhalb der if-Anweisung
-
-if (selectedDateOption) {
-  // Nur wenn selectedDateOption existiert, können wir auf seine Eigenschaften zugreifen
-  selectedTimeSlot = selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime); // Hier weisen wir selectedTimeSlot einen Wert zu
-  // ...
-}
-
-if (!selectedDate || !selectedDateOption || !selectedTimeSlot) {
-  const content = 'Bitte wählen Sie ein verfügbares Datum und eine verfügbare Zeit aus.';
-  this.showMessage(content,false,false,true);
-  return;
-}
-
-else{
-  let content = `Möchten Sie den Termin am ${selectedDate} um ${selectedTimeSlot.start} Uhr buchen?`; // Hier verwenden wir selectedTimeSlot
-  this.showMessage(content, true,false,false);
-}
-
-
-
+      if (!selectedDate || !selectedDateOption || !selectedTimeSlot) {
+        const content = 'Bitte wählen Sie ein verfügbares Datum und eine verfügbare Zeit aus.';
+        this.showMessage(content,false,false,true);
+        return;
+      } else{
+        let content = `Möchten Sie den Termin am ${selectedDate} um ${selectedTimeSlot.start} Uhr buchen?`; // Hier verwenden wir selectedTimeSlot
+        this.showMessage(content, true,false,false);
+      }
     },
 
-    bookConfirmed() {
-      const selectedDate = this.$refs.datepicker.value;
-      const selectedTimeSlot = this.selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime);
 
+
+    
+
+    bookConfirmed() {
+    let selectedDate = this.$refs.datepicker.value;
+      let selectedTimeSlot = this.selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime);
+      
       axios.post(`http://localhost:3000/dates`, {
         date: selectedDate,
         start: selectedTimeSlot.start,
         end: selectedTimeSlot.end,
         booked: true,
-        name:this.name
+        name: this.name
       }).then(() => {
         let content = `Termin am ${selectedDate} von ${selectedTimeSlot.start} - ${selectedTimeSlot.end} Uhr erfolgreich gebucht.`;
         this.showMessage(content, false,true,false);
@@ -287,7 +275,7 @@ else{
             }
         }
    
-  
+      
 };
 
 </script>

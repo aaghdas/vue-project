@@ -86,7 +86,8 @@ wenn sie geändert werden. */
     return {
       startDate: new Date(),
       numOfDays: 364,
-      timeSlots: [ // Eine Liste von verfügbaren Zeitschlitzen, jedes Element ist ein Zeitschlitz mit Start- und Endzeit sowie dem boolischen Variable booked.
+      // Eine Liste von verfügbaren Zeitschlitzen, jedes Element ist ein Zeitschlitz mit Start- und Endzeit sowie dem boolischen Variable booked.
+      timeSlots: [ 
         { start: '10:00', end: '11:00', booked: false },
         { start: '11:00', end: '12:00', booked: false },
         { start: '12:00', end: '13:00', booked: false },
@@ -113,75 +114,60 @@ wenn sie geändert werden. */
     };
   },
 
-  
-   
-  beforeMount() {  //jedes mal beim Laden der Seite müssen die Daten über verfügare Datum und Zeit aktualisiert sein.
-    
-    //Diese Methode erstellt eine Liste von Datumsoptionen (dateOptions), wobei jede Option ein bestimmtes Datum und die zugehörigen Zeitschlitze enthält. 
-    for (let i = 0; i < this.numOfDays; i++) {  // Diese Schleife läuft für die Anzahl der Tage, die in this.numOfDays definiert sind. Für jeden Tag wird eine Reihe von Operationen durchgeführt.
-      const date = new Date(this.startDate);  // Ein neues Datum basierend auf dem Startdatum erstellen
-      date.setDate(date.getDate() + i); // Das Datum um die aktuelle Schleifeniteration erhöhen.Das Datum wird um i Tage erhöht. 
-      //date.getDate() gibt den Tag des Monats (zwischen 1 und 31) für das angegebene Datum zurück.
-      let dateStr = date.toString();
-      const timeSlots = [ // Eine Liste von Zeitschlitzen erstellen
-        { start: '10:00', end: '11:00', booked: false }, // Jeden Zeitschlitz mit Startzeit, Endzeit und Buchungsstatus definieren
+  async mounted() {
+  /* jedes mal beim Laden der Seite müssen die Daten über verfügare Datum und Zeit aktualisiert sein.
+    Diese Methode erstellt eine Liste von Datumsoptionen (dateOptions), wobei jede Option ein bestimmtes Datum und die zugehörigen Zeitschlitze enthält. 
+  */ 
+    for (let i = 0; i < this.numOfDays; i++) {
+      const date = new Date(this.startDate);
+      date.setDate(date.getDate() + i);
+      const dateStr = date.toISOString().slice(0, 10);
+      const timeSlots = [
+        { start: '10:00', end: '11:00', booked: false },
         { start: '11:00', end: '12:00', booked: false },
         { start: '12:00', end: '13:00', booked: false },
-        ].map(slot => ({ ...slot, selected: false })); // Jeden Zeitschlitz klonen und eine `selected`-Eigenschaft mit dem initialen Wert false hinzufügen
-      this.dateOptions.push({ date: dateStr, timeSlots }); // Das Datum und die zugehörigen Zeitschlitze zu den Datumsoptionen Array hinzufügen
-      /* Jedes Element im dateOptions Array ist ein Objekt, das aus einem Datum (date) und einem Array von Zeitschlitzen (timeSlots) besteht.
-       Jeder Zeitschlitz ist ebenfalls ein Objekt, das die Eigenschaften start, end, booked und selected hat. */
+      ].map(slot => ({ ...slot, selected: false }));
+      this.dateOptions.push({ date: dateStr, timeSlots });
     }
-    console.log("test-dateOptions Array :" +this.dateOptions[0].date);
-    this.dateOptions[0].timeSlots.forEach(slot => {
-      console.log(`Start: ${slot.start}, End: ${slot.end}, booked:${slot.booked}, selected: ${slot.selected}`);
-    });
-    console.log(`test first timeSlot in first date from dateoptions array : ${this.dateOptions[0].date}, ${JSON.stringify(this.dateOptions[0].timeSlots[0])}` );
-  
-    
-    // Definiert eine asynchrone Funktion namens 'dl' 
-    async function dl() {
-        
-        let response = await axios.get('http://localhost:3000/disable'); // Sendet eine GET-Anfrage an 'http://localhost:3000/disable' und speichert die Antwort in Variable 'response'
-        let disableListFromApi = response.data.map(item => new Date(item.date)); // Wandelt die Daten aus der Antwort in ein Array von Datum-Objekten um. Im ursprünglichen disable Array hat jedes Element date und id eigenschaften. Im neuen Array(disableListFromApi) hat jedes Element nur date.
-        this.disableList = this.disableList.concat(disableListFromApi); // Fügt das neue Array zur 'disableList', das in data als leeres Array initialisiert wurde, hinzu
-        console.log(this.disableList); // die Änderungen an disbleList in Konsole prüfen
-        return this.disableList; // die dl() Funktion gibt die 'disableList' zurück
-    }
-        dl().then(disableList => { //Die Methode .then() wird auf die Promise aus dl() angewendet und nimmt zwei Argumente: eine Callback-Funktion für den fullfiled Fall und eine Fehlermeldung für den rejected Fall von Promise
+    },
 
-          /* Die Vue-Referenzen sind bereits in der beforeMount-Methode verfügbar. 
-          Es wird auf die referenzierten DOM-Elemente über die `$refs`-Eigenschaft der Vue-Komponente zugegriefen und nicht auf die tatsächlichen DOM-Knoten.*/
-            // Initialisierung von flatpickr 
-          let fp =  flatpickr(this.$refs.datepicker, {
-          altInput: true, // dient zur Anzeige des ausgewählten Datums im lesbaren Format für Benutzer(definiert durch altFormat), während das ursprüngliche Eingabefeld das ausgewählte Datum im maschinenlesbaren Format (definiert durch dateFormat) behält, das an den Server gesendet wird.
-          altFormat: "F j, Y", //"F":Der vollständige Text des Monats z.B.Januar,  "j": Der Tag des Monats ohne führende Nullen z.B. 1 anstatt 01, "Y": Das Jahr in vier Ziffern z.B. 2024
-          dateFormat: 'Y-m-d', //z.B. in der Form 2024-01-01 wird an Server gesendet.
-          inline:true, // zeigt den Kalender dauerhaft an
-          static:true, // positioniert den Kalender relativ zum übergeordneten Element und nicht zum Körper
-          minDate: this.startDate, // setzt das früheste auswählbare Datum
-          disable: disableList, // nimmt ein Array von Daten, die im Kalender deaktiviert werden sollen
-          
-          /* onClose ist eine Optionen in der flatpickr-Bibliothek, die aufgerufen wird, wenn der Datepicker geschlossen wird.
-             selectedDates ist das Argument der Arrow-Funktion und ist ein Array von Daten, die vom Benutzer im Datepicker ausgewählt wurden.
-          */
-          onClose: (selectedDates) => {  
-            if (selectedDates.length === 0) return; // Überprüft, ob das Array 'selectedDates' leer ist, wenn ja wird die Funktion sofort beendet und es wird nichts zurückgegeben.
-          /* Wenn Daten ausgewählt wurden, wird das erste ausgewählte Datum genommen (selectedDates[0]),
-           in einen ISO-String konvertiert und auf die ersten 10 Zeichen zugeschnitten, um nur das Datum ohne Uhrzeit zu erhalten.
-           Dieser Wert wird dann selectedDate zugewiesen. */
-            const selectedDate = selectedDates[0].toISOString().slice(0, 10); 
-            this.selectedDateOption = this.dateOptions.find(option => option.date === selectedDate); // durchsucht this.dateOptions nach einem Objekt, dessen date-Eigenschaft dem ausgewählten Datum entspricht, und weist dieses Objekt this.selectedDateOption zu.
-          },
-          });
-          fp.set('disable', disableList); // Setzt die 'disableList' für option disable in 'flatpickr' Konfiguration
-          },
-        error => {
-          // die then Methode wirft eine Fehlermeldung, wenn dl() Promise scheitert. 
-          console.error("Ein Fehler ist aufgetreten: ", error);
-        });
+  
+  beforeMount () {
+   
+   async function dl() {
+       let disableList =[];
+       // Sendet eine GET-Anfrage an 'http://localhost:3000/disable' und speichert die Antwort in Variable 'response'
+       let response = await axios.get('http://localhost:3000/disable');
+       let disableListFromApi = response.data.map(item => new Date(item.date));
+       disableList = disableList.concat(disableListFromApi);
+       console.log(disableList); // Zur Bestätigung, dass beide Datumsangaben enthalten sind
+       return disableList;
+ }
+ // Die Methode .then() wird auf die Promise aus dl() angewendet und initialisiert flatpickr mit der Liste der deaktivierten Daten 
+
+ dl().then(disableList => {
+  
+ let fp =  flatpickr(this.$refs.datepicker, {
+     
+     altInput: true,
+     altFormat: "F j, Y",
+     dateFormat: 'Y-m-d',
+     inline:true,
+     static:true,
+     minDate: this.startDate.getTime() + 86400000,
+     disable: disableList, 
     
-  },
+     onClose: (selectedDates) => {
+       if (selectedDates.length === 0) return;
+       const selectedDate = selectedDates[0].toISOString().slice(0, 10);
+       this.selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
+     },
+   });
+   fp.set('disable', disableList);
+   });
+   
+ },
+
 
   methods: {
 
@@ -249,13 +235,8 @@ wenn sie geändert werden. */
         
       }
     },
-
-    selectTimeSlot(dateOption, timeSlot) {
-      if (timeSlot.booked) return;
-      timeSlot.selected = !timeSlot.selected;
-      dateOption.selected = dateOption.timeSlots.some(slot => slot.selected);
-    },
-
+    /* setzt die booked Eigenschaft für alle Zeitschlitze in der Auswahlliste zurück auf false, damit sie bei der nächsten Buchung wieder auswählbar sind.
+    Array dateoptions ist ein verscgachteltes Array von allen Daten ab dem nächsten Tag im datepicker. Jedes Element hat ein date Eigenschaft sowie ein Array bestehend aus allen Daten des datepickers mit jeweiligen Zeitschlitzen */
     resetSelectedTimeSlots() {
       this.dateOptions.forEach(option => {
         option.timeSlots.forEach(slot => {
@@ -265,27 +246,35 @@ wenn sie geändert werden. */
     },
 
     async confirmBooking() {
+      //das ausgewählte Datum aus dem datepicker wird in variable selectedDate gespeichert.
       const selectedDate = this.$refs.datepicker.value;
+      /* Array dateoptions ist ein verscgachteltes Array von allen Daten ab dem nächsten Tag im datepicker. Jedes Element hat ein date Eigenschaft sowie ein Array bestehend 
+      aus allen Daten des datepickers mit jeweiligen Zeitschlitzen. dateOptions wird durchitteriert und das erste Element, das sein date
+      Eigenschaft mit dem selectedDate übereinstimmt in variable selectedDateOption */
       const selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
 
-      let selectedTimeSlot; // Hier deklarieren wir selectedTimeSlot zum ersten Mal außerhalb der if-Anweisung
-
+      let selectedTimeSlot; // selectedTimeSlot muss zum ersten Mal außerhalb der if-Anweisung deklariert werden, weil "let" block scope hat.
+      // Nur wenn selectedDateOption existiert, kann auf seine Eigenschaften zugriefen werden, d.h. ausgewählte Datum muss ab dem nächsten Tag sein.
       if (selectedDateOption) {
-        // Nur wenn selectedDateOption existiert, können wir auf seine Eigenschaften zugreifen
-        selectedTimeSlot = selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime); // Hier weisen wir selectedTimeSlot einen Wert zu
-        // ...
+      // das Array timeslots des ausgewählten Datums wird durchgesucht und das erste Elemen, dessen start Eigenschaft mit der ausgewählten Zeit übereinstimmt, der variable selectedTimeSlot zugewiesen.
+      selectedTimeSlot = selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime); 
+        
       }
-
-      if (!selectedDate || !selectedDateOption || !selectedTimeSlot) {
+      /* Falls kein Datum ausgewählt wurde oder das ausgewählte Datum nicht aktuell ist(ab dem nächsten Tag zum Zeitpunkt der Buchung),
+       wird eine Nachricht einblendet. Ansonsten wird nach der Bestätigung der ausgewählten Termin(Datum/Zeit) gefragt. */
+      if (!selectedDate || !selectedDateOption ) {
         const content = 'Bitte wählen Sie ein verfügbares Datum und eine verfügbare Zeit aus.';
         this.showMessage(content,false,false,true);
         return;
       } else{
-        let content = `Möchten Sie den Termin am ${selectedDate} um ${selectedTimeSlot.start} Uhr buchen?`; // Hier verwenden wir selectedTimeSlot
+        let content = `Möchten Sie den Termin am ${selectedDate} um ${selectedTimeSlot.start} Uhr buchen?`; 
         this.showMessage(content, true,false,false);
       }
     },
 
+    /* diese Methode weist den Varianblen selectedDate und 
+    selectedTimeSlot das ausgewählte Datum von datepicker bzw. die ausgewählte Zeit für den Termin zu, sendet eine HTTP post Anfrage im Array dates für
+    den gebuchten Termin, und falls promise erfüllt ist(post Anfrage erfolgreich) zeigt eine Nachricht für die Bestätigung des erfolgreichen Buchung. */
     bookConfirmed() {
       const selectedDate = this.$refs.datepicker.value;
       const selectedTimeSlot = this.selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime);
@@ -306,8 +295,9 @@ wenn sie geändert werden. */
 
     },
 
-    /* Diese Methode ist für Nachrichten-Anzeige als ein Rahmen mit dem Textinhalt und den gewünschten Buttons für Bestätigen, Schließen und weiter.
-    die boolische Werte als Argumente der Methode bestimmen, ob der Nachrichtenrahmen ein Button beinhalten muss oder nicht. */
+    /* Die Methode für Nachrichten-Anzeige als ein Rahmen mit dem Textinhalt und den gewünschten Buttons(Bestätigen, Schließen und weiter).
+    Die boolische Werte als Argumente der Methode bestimmen, ob der Nachrichtenrahmen eine der genannten Buttons beinhalten muss.
+    content ist ein string für Nachrichteninhalt */
     showMessage(content, confirmButton,closeButton,nextButton) {
       this.messageContent = content;
       this.showMessageBox = true;
