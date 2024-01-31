@@ -2,7 +2,7 @@
   <div class="app-container">
         <v-app id="app-appointment" >
 
-          <HeaderConsultant/>
+          <HeaderConsultant/><!-- Header-komponente für Berater -->
 
           <div class="calandar-container"> <!-- Container für den Kalender und die Terminbuchung -->
                   <p id="contact-text"> <!-- Textabschnitt, der den Benutzer durch den Buchungsprozess führt -->
@@ -23,7 +23,8 @@
                   
                   <div class="termin"> <!-- Container für das Datumseingabefeld -->
                    
-                    <!-- Das Eingabefeld greift auf dem datepicker zu (ref), ermöglicht dem Benutzer, ein Datum einzugeben und ruft bei jeder Eingabe die Funktion checkBooked auf, um die Verfügbarkeit des gewählten Termins zu überprüfen --> 
+                    <!-- Das Eingabefeld greift auf dem datepicker zu (ref), ermöglicht dem Benutzer, ein Datum einzugeben und ruft bei jeder Eingabe die Funktion checkBooked auf(@input), um die Verfügbarkeit des gewählten Termins zu überprüfen --> 
+                    <!-- später wird this.$refs.datepicker.value verwendet, um den aktuellen Wert des input-Elements zu erhalten. -->
                     <input  type="text" id="datepicker" ref="datepicker" @input= "checkBooked" placeholder="Datum Auswählen">
                   </div>
                   
@@ -34,7 +35,7 @@
                     selectedTime-Eigenschaft zugewiesen. Umgekehrt, wenn der Wert von selectedTime geändert wird, wird die Auswahl in der 
                     Dropdown-Liste entsprechend aktualisiert. -->
                               <select size="4" class="termin-zeit" id="time" v-model="selectedTime"  > <!-- Einen Auswahlliste erstellen -->
-                              
+                                <!-- erste option ist immer String zeit auswählen -->
                                 <option class="zeitwahl" value="1" >Zeit Auswählen &#128338;</option>
                                 <!-- Für die Optionen in select-Menü wird das Array timeSlots durchitteriert und Start- und Endzeit anzeigt.
                                 Falls time.booked Eigenschaft für jeweiliges Element des Arrays timeSlots true ist, wird diese Option deaktiviert(disabled)   -->
@@ -47,10 +48,11 @@
                       <!-- Einen Button zum Bestätigen der Buchung hinzufügen, beim klicken wird die Methode confirmBooking aufgerufen -->
                       <v-btn class="termin-absenden" v-if="!showMessageBox" @click="confirmBooking">Termin Buchen</v-btn>
                 
-                      <div v-if="showMessageBox" class="message">
-                        <p v-html="messageContent"></p>
+                      <div v-if="showMessageBox" class="message"> 
+                        <p v-text="messageContent"></p><!-- v-text direktiv für Anzeige des Strings -->
                         <!-- Einen Button zur Buchung hinzufügen, beim klicken wird die Methode bookConfirmed aufgerufen, wobei die tatsächtliche Buchung ausgeführt  -->
                         <v-btn v-if="showConfirmButton" @click="bookConfirmed" class="confirmation-buttonJa">Bestätigen</v-btn>
+                        <!-- Andere Buttons für Buchungsvorgang mit dem Aufruf der entsprechenden Methoden -->
                         <v-btn v-if="showConfirmButton" @click="hideMessageBox" class="confirmation-buttonNein">Abbrechen</v-btn>
                         <v-btn v-if="showCloseButton" @click="close" class="close-button">Vorgang beenden</v-btn>
                         <v-btn v-if="showNextButton" @click="close" class="close-button">Buchung fortfahren</v-btn>
@@ -84,7 +86,7 @@ Diese Eigenschaften sind reaktiv, d.h. Vue erkennt die Änderungen an diesen Eig
 wenn sie geändert werden. */
  data() {
     return {
-      startDate: new Date(),
+      startDate: new Date(),   //datum objekt erstellt und in Eigenschaft startdate gespeichert
       numOfDays: 364,
       // Eine Liste von verfügbaren Zeitschlitzen, jedes Element ist ein Zeitschlitz mit Start- und Endzeit sowie dem boolischen Variable booked.
       timeSlots: [ 
@@ -133,7 +135,7 @@ wenn sie geändert werden. */
 
   
   beforeMount () {
-   
+   //erstellt eine Liste aus den deaktivierten Daten (disabled list)
    async function dl() {
        let disableList =[];
        // Sendet eine GET-Anfrage an 'http://localhost:3000/disable' und speichert die Antwort in Variable 'response'
@@ -274,7 +276,9 @@ wenn sie geändert werden. */
 
     /* diese Methode weist den Varianblen selectedDate und 
     selectedTimeSlot das ausgewählte Datum von datepicker bzw. die ausgewählte Zeit für den Termin zu, sendet eine HTTP post Anfrage im Array dates für
-    den gebuchten Termin, und falls promise erfüllt ist(post Anfrage erfolgreich) zeigt eine Nachricht für die Bestätigung des erfolgreichen Buchung. */
+    den gebuchten Termin.
+    Die axios.post() Methode gibt ein Promise-Objekt zurück, das sich auflöst, wenn die HTTP-Anfrage erfolgreich abgeschlossen ist. 
+    Falls promise erfüllt ist(post Anfrage erfolgreich) wird eine Nachricht für die Bestätigung des erfolgreichen Buchung angezeigt.*/
     bookConfirmed() {
       const selectedDate = this.$refs.datepicker.value;
       const selectedTimeSlot = this.selectedDateOption.timeSlots.find(slot => slot.start === this.selectedTime);

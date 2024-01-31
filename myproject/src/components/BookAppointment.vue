@@ -3,9 +3,11 @@
    <div class="app-container">
         <v-app id="app-appointment" >
 
-            <!-- Wenn der Benutzer eingeloggt ist, wird die TerminBuchen-Komponente und Header-Komponente für den eingloggten Zustand angezeigt -->
-            <HeaderLogedIn v-if="isLoggedIn" />
-            <TerminBuchen v-if="isLoggedIn" /> 
+            <!-- Wenn der Benutzer eingeloggt ist, werden die Header-Komponente sowie die TerminBuchen-Komponente angezeigt -->
+            <div v-if="isLoggedIn"> 
+                <HeaderLogedIn/>
+                <TerminBuchen />
+            </div>
             <div v-else > <!-- Wenn der Benutzer nicht eingeloggt ist, wird die folgende Struktur angezeigt -->
                     <HeaderHome />  <!-- Die HeaderHome-Komponente für nicht eingeloggte zustand wird angezeigt -->
                     
@@ -30,15 +32,16 @@
     import FooterComponent from './FooterComponent.vue'
     
     import TerminBuchen from './TerminBuchen.vue'
+import HeaderLogedIn from './HeaderLogedIn.vue';
 
     export default {
         name:'BookAppointment',
-        components:{  //die importierten Komponenten registrieren
-            
-            HeaderHome,
-            FooterComponent,
-            TerminBuchen
-        },
+        components:{
+    HeaderHome,
+    FooterComponent,
+    TerminBuchen,
+    HeaderLogedIn
+},
 
         data(){ 
             return{  // isLoggedIn auf false Initialisieren. Es wird in mounted() geprüft und wenn Benutzer eingelogged ist, wird auf true eingesetzt.

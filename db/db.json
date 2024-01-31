@@ -75,6 +75,10 @@
     {
       "date": "2024-02-01",
       "id": 20
+    },
+    {
+      "date": "2024-02-02",
+      "id": 21
     }
   ],
   "users": [
@@ -96,21 +100,21 @@
       "name": "Armin Aghdasi Ghalati",
       "email": "a.aghdasi8800@gmail.com",
       "benutzername": "nnn",
-      "password": "2345Asd!",
+      "password": "123",
       "id": 4
     },
     {
       "name": "ana",
       "email": "a.aghdasi90@gmail.com",
       "benutzername": "Berater",
-      "password": "q^Oq9*nbY?jd",
+      "password": "123",
       "id": 10
     },
     {
       "name": "ana",
       "email": "a.aghdasi91@gmail.com",
       "benutzername": "Admin",
-      "password": "%h3J@@x4552a",
+      "password": "123",
       "id": 11
     },
     {
@@ -645,6 +649,22 @@
       "booked": true,
       "name": "enrico",
       "id": 70
+    },
+    {
+      "date": "2024-02-02",
+      "start": "11:00",
+      "end": "12:00",
+      "booked": true,
+      "name": "Armin Aghdasi Ghalati",
+      "id": 71
+    },
+    {
+      "date": "2024-02-02",
+      "start": "12:00",
+      "end": "13:00",
+      "booked": true,
+      "name": "Armin Aghdasi Ghalati",
+      "id": 72
     }
   ],
   "contacts": [
