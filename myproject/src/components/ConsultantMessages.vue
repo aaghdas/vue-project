@@ -38,7 +38,20 @@
   </div> 
    <!-- Html-Tabelle zur Darstellung der eingerichteten Kontakte -->
     <table v-if="filteredContacts.length>0"> 
-        
+      <!-- Im CSS code wird durch thead tr { position: absolute; top: -9999px; left: -9999px; } 
+      die Tabellenkopfzeile außerhalb des sichtbaren Bereichs des Bildschirms verschoben. 
+      Es ist eine Methode, um Inhalte für Screenreader zugänglich zu machen, aber sie für visuelle Benutzer
+      auszublenden. Es ist eine Methode, um die Barrierefreiheit der Webseite zu verbessern.  -->
+      <thead>
+            <tr>
+                <th></th>
+                <th></th>
+                <th>Von:</th>
+                <th>Telefonnummer:</th>
+                <th>Email:</th>
+                <th>Nachricht:</th>
+            </tr>
+        </thead>
         <tbody>
              <tr v-for="item in filteredContacts" :key="item.id">  <!-- Iteriert über jeden Kontakt in filteredContacts -->             
                 <!-- Vue.js-Ausdrucksinterpolation.Die Methode formatDate wird aufgerufen, um Datumsformat zu ändern. z.B. von  "2024-02-01T13:16:36.000Z" in "Fr., 1. Feb. 2024" umwandeln -->
