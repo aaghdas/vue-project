@@ -157,12 +157,14 @@ wenn sie geändert werden. */
         console.log(disableList); // Zur Bestätigung, dass beide Datumsangaben enthalten sind
         return disableList;
   }
-
-  dl().then(disableList => {
+/* Hier wird die Bibliothek flatpickr zur Erstellung eines Datumsauswahl-Widgets verwendet. 
+Die asynchrone Funktion dl() wird aufgerufen, die eine Liste von deaktivierten Daten zurückgibt. 
+Die then() Methode wird verwendet, um eine Funktion aufzurufen,wenn das Promise von dl() erfüllt ist. 
+disableList ist der parameter für die Funktion zur Konfiguration des flatpickrs. */
+dl().then(disableList => {
    
   let fp = flatpickr(this.$refs.datepicker, {
       altInput: true,
-      
       altFormat: "F j, Y",
       dateFormat: 'Y-m-d',
       inline:true,
@@ -170,12 +172,17 @@ wenn sie geändert werden. */
       minDate: this.startDate.getTime() + 86400000,
       disable: disableList, 
      
-      onClose: (selectedDates) => {
+     /* onClose-Funktion ist ein Ereignishandler, der aufgerufen wird, wenn der Kalender geschlossen wird.
+      Die flatpickr-Bibliothek übergibt automatisch einige Argumente an diesen Handler, wenn er aufgerufen 
+      wird (siehe https://flatpickr.js.org/events/). Eines dieser Argumente ist selectedDates, ein Array, 
+      das die vom Benutzer ausgewählten Daten enthält. */
+      onClose: (selectedDates) => {  
         if (selectedDates.length === 0) return;
         const selectedDate = selectedDates[0].toISOString().slice(0, 10);
         this.selectedDateOption = this.dateOptions.find(option => option.date === selectedDate);
       },
     });
+    //die Liste der zu deaktivierenden Daten zu aktualisieren.
     fp.set('disable', disableList);
     });
     

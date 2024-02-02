@@ -145,8 +145,10 @@ wenn sie geändert werden. */
        console.log(disableList); // Zur Bestätigung, dass beide Datumsangaben enthalten sind
        return disableList;
  }
- // Die Methode .then() wird auf die Promise aus dl() angewendet und initialisiert flatpickr mit der Liste der deaktivierten Daten 
-
+ /* Die Methode .then() wird auf die Promise aus dl() angewendet und initialisiert flatpickr mit der 
+Liste der deaktivierten Daten. Die asynchrone Funktion dl() wird aufgerufen, die eine Liste von deaktivierten Daten zurückgibt. 
+Die then() Methode wird verwendet, um eine Funktion aufzurufen,wenn das Promise von dl() erfüllt ist. 
+disableList ist der parameter für die Funktion zur Konfiguration des flatpickrs. */
  dl().then(disableList => {
   
  let fp =  flatpickr(this.$refs.datepicker, {
@@ -158,7 +160,10 @@ wenn sie geändert werden. */
      static:true,
      minDate: this.startDate.getTime() + 86400000,
      disable: disableList, 
-    
+     /* onClose-Funktion ist ein Ereignishandler, der aufgerufen wird, wenn der Kalender geschlossen wird.
+      Die flatpickr-Bibliothek übergibt automatisch einige Argumente an diesen Handler, wenn er aufgerufen 
+      wird (siehe https://flatpickr.js.org/events/). Eines dieser Argumente ist selectedDates, ein Array, 
+      das die vom Benutzer ausgewählten Daten enthält. */
      onClose: (selectedDates) => {
        if (selectedDates.length === 0) return;
        const selectedDate = selectedDates[0].toISOString().slice(0, 10);
@@ -172,8 +177,6 @@ wenn sie geändert werden. */
 
 
   methods: {
-
-
     /* Die `searchDate`-Methode sucht nach bestimmten Daten in dates Array, indem sie eine HTTP GET-Anfrage an den Server sendet. 
     Wenn date Eigenschaft eines Elements in dates Array mit dem als Argument eingegebenen Datum übereinstimmt, bildet dann eine URL für dieses Element 
     und sendet eine get Anfrage an Server, speichert das gesuchte Datum in Variable response(Das `response`-Objekt ist eine Instanz der `AxiosResponse`-Klasse von Axios.)
