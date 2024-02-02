@@ -1,25 +1,34 @@
+
+<!-- 
+ eine Vue.js-Komponente, die eine Benutzeroberfläche für die Anzeige und Verwaltung von Kontakten 
+ bereitstellt. Es ermöglicht das Sortieren, Suchen und Filtern von Kontakten und zeigt Details zu 
+ jedem Kontakt in einer Tabelle an. Wenn keine Kontakte gefunden werden, wird eine entsprechende 
+ Meldung angezeigt. Die Komponente verwendet auch separate Komponenten für Kopf- und Fußzeile (HeaderConsultant und FooterComponent).
+-->
 <template> 
 <v-app id="gallery-app" >
 <HeaderConsultant/>
 <div class="berater">
-  <div class=messages-top-sector>
+  <div class=messages-top-sector> <!-- Div für die oberen Sektoren (Sortieren, Suchen, Filtern) -->
+       <!-- Sortiersektor -->
       <div class="top-sector">
         <label class="sort-label" for="sort"><v-icon class="sort-icon">mdi-sort</v-icon>Nach Datum sortieren</label>
-        <select id="sort"  @change="sortContacts">
+        <select id="sort"  @change="sortContacts"> <!-- Bei Änderung wird die Methode sortContacts aufgerufen -->
             <option>aktuellste zuerst</option>
             <option>frühste zuerst</option>
         </select>
       </div>
-
+       <!-- Suchsektor -->
       <div class="top-sector">
       <label class="search-label" for="search"><v-icon class="search-icon">mdi-account-search</v-icon>Nach Name suchen&nbsp;&nbsp; </label>
-      <input id="search" v-model="searchQuery" type="text" @keyup="searchContacts">
+      <input id="search" v-model="searchQuery" type="text" @keyup="searchContacts"> <!-- Bei Tastendruck wird die Methode searchContacts aufgerufen -->
       </div>
 
+      <!-- Filtersektor -->
       <div class="top-sector">
           <label class="read-label" for="read"><v-icon class="filter-icon">mdi-filter</v-icon>Nach Status filtern&nbsp;&nbsp;&nbsp;&nbsp; </label>
           
-          <select id="read" v-model="readFilter">
+          <select id="read" v-model="readFilter"> <!-- Auswahlliste mit 3 Optionen. Bei Änderung wird der Wert von readFilter aktualisiert -->
               
               <option value="all">Alle</option>
               <option value="read">Gelesen</option>
@@ -27,21 +36,14 @@
           </select>
       </div> 
   </div> 
-   
+   <!-- Html-Tabelle zur Darstellung der eingerichteten Kontakte -->
     <table v-if="filteredContacts.length>0"> 
-        <thead>
-            <tr>
-                <th></th>
-                <th ></th>
-                <th>Von:</th>
-                <th>Telefonnummer:</th>
-                <th>Email:</th>
-                <th>Nachricht:</th>
-                </tr>
-        </thead>
+        
         <tbody>
-             <tr v-for="item in filteredContacts" :key="item.id">           
-                <td class="date-row">{{ formatDate(item.datumZeit) }}</td>
+             <tr v-for="item in filteredContacts" :key="item.id">  <!-- Iteriert über jeden Kontakt in filteredContacts -->             
+                <!-- Vue.js-Ausdrucksinterpolation.Die Methode formatDate wird aufgerufen, um Datumsformat zu ändern. z.B. von  "2024-02-01T13:16:36.000Z" in "Fr., 1. Feb. 2024" umwandeln -->
+                <td class="date-row">{{ formatDate(item.datumZeit) }}</td> 
+                <!-- Checkbox zum Markieren als gelesen -->
                 <td class="read"> <input  type="checkbox" v-model="item.isRead" /><label class="container">Als gelesen markieren</label></td>
                 <td>Von: {{ item.name }}</td>
                 <td>Bundesland: {{ item.state }}</td>
@@ -51,7 +53,7 @@
             </tr>
         </tbody>
     </table>
-    <!-- Wenn keine Kontakte gefunden wurden -->
+    <!-- Meldung, wenn keine Kontakte gefunden wurden --> 
     <p class="no-result" v-else>Keine Kontakte gefunden... bitte Suche anpassen</p>
 </div> 
 <FooterComponent/> 
